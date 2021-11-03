@@ -13,11 +13,16 @@ import numpy as np
 import os
 
 
-es = Elasticsearch([{'host': os.environ['ES_HOST'], 'port': os.environ['ES_PORT']}],
+try:
+    es = Elasticsearch([{'host': os.environ['ES_HOST'], 'port': os.environ['ES_PORT']}],
         sniff_on_start=True,
         sniff_on_connection_fail=True,
         sniffer_timeout=60,
-        sniff_timeout=10)
+        sniff_timeout=10,
+        timeout=30)
+except:
+    print ('Connection could not be established')
+
 if (es.indices.exists(index="database")):
     es.indices.delete(index="database")
 res = es.index(index="database", id=5, body=Database)

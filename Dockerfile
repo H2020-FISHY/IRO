@@ -1,14 +1,9 @@
-FROM python:3.6.10-alpine
+FROM python:slim
 
-RUN apk add gcc musl-dev linux-headers
+COPY . /iro
 
-COPY . /exporter
-#ADD x.tar.gz /y
-
-EXPOSE 5000
-
-RUN pip install --upgrade pip
 RUN pip install flask numpy flask_classful anytree
 RUN pip install elasticsearch
 
-CMD python /exporter/main.py
+EXPOSE 5000
+CMD python /iro/main.py
