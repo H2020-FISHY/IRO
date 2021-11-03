@@ -10,7 +10,7 @@ networks:
 services:
     iro:
         image: michalkeit/iro
-        build: .
+        build: ../iro
         container_name: iro-dashboard
         restart: always
         depends_on:
