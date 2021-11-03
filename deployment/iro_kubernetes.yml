@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iro
+spec:
+  selector:
+    matchLabels:
+      run: iro
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: iro
+    spec:
+      containers:
+      - name: iro-server
+        image: michalkeit/iro:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        env: 
+        - name: ES_PORT
+          value: "9200"
+        - name: ES_HOST
+          value: "iro-database"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iro-service
+  labels:
+    run: iro-server
+spec:
+  ports:
+  - port: 5000
+    nodePort: 30500
+    protocol: TCP
+  selector:
+    run: iro-server
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: iro-elasticsearch
+spec:
+  selector:
+    matchLabels:
+      run: iro-elasticsearch
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: iro-elasticsearch
+    spec:
+      containers:
+      - name: iro-elasticsearch
+        image: elasticsearch:7.14.2
+        ports:
+        - containerPort: 9200
+        env:
+        - name: cluster.name
+          value: "elasticsearch"
+        - name: node.name
+          value: "elasticsearch"
+        - name: cluster.initial_master_nodes
+          value: "elasticsearch"
+        - name: http.cors.allow-origin
+          value: "http://localhost:1358,http://127.0.0.1:1358"
+        - name: http.cors.enabled
+          value: "true"
+        - name: http.cors.allow-headers
+          value: "X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization"
+        - name: http.cors.allow-credentials
+          value: "true"
+        - name: ES_JAVA_OPTS
+          value: "-Xms512m -Xmx512m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: iro-database
+  labels:
+    run: iro-elasticsearch
+spec:
+  type: ClusterIP
+  ports:
+  - targetPort: 9200
+    port: 9200
+    protocol: TCP
+  selector:
+    run: iro-elasticsearch
