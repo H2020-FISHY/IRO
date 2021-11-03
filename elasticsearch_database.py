@@ -10,9 +10,14 @@
 from elasticsearch import Elasticsearch
 from intent_store import Database
 import numpy as np
+import os
 
 
-es = Elasticsearch()
+es = Elasticsearch([{'host': os.environ['ES_HOST'], 'port': os.environ['ES_PORT']}],
+        sniff_on_start=True,
+        sniff_on_connection_fail=True,
+        sniffer_timeout=60,
+        sniff_timeout=10)
 if (es.indices.exists(index="database")):
     es.indices.delete(index="database")
 res = es.index(index="database", id=5, body=Database)
