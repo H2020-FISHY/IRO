@@ -1,6 +1,7 @@
-FROM python:slim
+FROM python:3.7-slim
 
 COPY . /iro
+
 
 RUN pip install flask numpy flask_classful anytree
 RUN pip install elasticsearch

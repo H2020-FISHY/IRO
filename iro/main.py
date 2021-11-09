@@ -54,4 +54,4 @@ class UserInterface(FlaskView):
 
 if __name__ == "__main__":
     UserInterface.register(app, route_base='/')
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
