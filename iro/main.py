@@ -48,7 +48,7 @@ class UserInterface(FlaskView):
     
     @route("/policies", methods=["GET"])
     def export_policies(self):
-        with open("./output files/"+self.policies_filename, "r") as f:
+        with open("./outputfiles/"+self.policies_filename, "r") as f:
             policies = f.read()
         return render_template('policies.html', policies=policies)
 

@@ -1,43 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: iro
+  labels:
+    service: iro
+spec:
+  selector:
+    app: iro
+  ports:
+  - port: 5000
+    nodePort: 30500
+    targetPort: 5000
+  type: NodePort
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: iro
+  labels:
+    name: iro
 spec:
   selector:
     matchLabels:
-      run: iro
+      app: iro
   replicas: 1
   template:
     metadata:
       labels:
-        run: iro
+        app: iro
+      annotations:
+        k8s.v1.cni.cncf.io/networks: vmgmtpod1@mgmt
     spec:
       containers:
-      - name: iro-server
+      - name: iro
         image: michalkeit/iro:latest
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]
         imagePullPolicy: Always
-        ports:
-        - containerPort: 5000
         env: 
         - name: ES_PORT
           value: "9200"
         - name: ES_HOST
           value: "iro-database"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: iro-service
-  labels:
-    run: iro-server
-spec:
-  ports:
-  - port: 5000
-    nodePort: 30500
-    protocol: TCP
-  selector:
-    run: iro-server
-  type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -85,8 +90,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - targetPort: 9200
-    port: 9200
+  - port: 9200
     protocol: TCP
   selector:
     run: iro-elasticsearch
