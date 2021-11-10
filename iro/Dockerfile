@@ -4,5 +4,6 @@ COPY . /iro
 
 RUN pip install flask numpy flask_classful anytree elasticsearch certifi
 WORKDIR /iro
+RUN mkdir /iro/outputfiles
 
 CMD [ "python3", "main.py" ]

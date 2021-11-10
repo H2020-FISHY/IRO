@@ -11,6 +11,7 @@ import re
 import numpy as np
 import ast
 import json
+import os
 from policy_builder import PolicyGraph, IntentVerification
 from intent_determination import IntentDetermination
 from elasticsearch_database import ElasticsearchDatabase
@@ -24,7 +25,10 @@ def print_result_file(str_result):
     |   Args:
     |       str_result(str):  final string
     """
-    with open("./output files/export.txt", "a") as file:
+    if not os.path.exists("./outputfiles"):
+        os.makedirs("./outputfiles")
+    
+    with open("./outputfiles/export.txt", "a") as file:
         file.write(str_result)
 
 
@@ -144,7 +148,9 @@ class IntentManager:
         |       str: information message to User
         |
         """
-        output_file = open("./output files/" + self.json_filename)
+        if not os.path.exists("./outputfiles/" + self.json_filename):
+            os.mknod("./outputfiles/" + self.json_filename)
+        output_file = open("./outputfiles/" + self.json_filename)
         with output_file as file:
             lines = file.read()
         count = lines.count("{")
@@ -161,7 +167,7 @@ class IntentManager:
         |       str: information message to User
         |
         """
-        with open("./output files/" + self.json_filename, "w") as file:
+        with open("./outputfiles/" + self.json_filename, "w") as file:
             file.write("")
         return "reset successful !!"
 
@@ -189,7 +195,7 @@ class IntentManager:
         |       str: information message to User
         |
         """
-        if is_file_empty("./output files/" + self.json_filename):
+        if is_file_empty("./outputfiles/" + self.json_filename):
             return "Please enter Intents !!"
         self.conflict_solving()
         return "Pushing and resolving conflict !!"
@@ -204,7 +210,7 @@ class IntentManager:
         """
         str_name_store = ""
         users = np.array([[None, None]])
-        output_file = open("./output files/" + self.json_filename)
+        output_file = open("./outputfiles/" + self.json_filename)
         #users = np.append(users, [["user1", PolicyGraph()]], axis=0)
         #users = np.append(users, [["user2", PolicyGraph()]], axis=0)
         with output_file as file:
@@ -311,8 +317,8 @@ class IntentManager:
         |   Args:
         |       new_data(str):  data to be written in JSON
         """
-        with open("./output files/" + self.json_filename, "a") as file:
-            if not is_file_empty("./output files/" + self.json_filename):
+        with open("./outputfiles/" + self.json_filename, "a") as file:
+            if not is_file_empty("./outputfiles/" + self.json_filename):
                 file.write(",")
             file.write(json.dumps(new_data, indent=4, sort_keys=True))
 
@@ -324,9 +330,9 @@ class IntentManager:
         |       new_data(str):  data to be written in JSON
         """
         my_array = []
-        with open("./output files/" + self.json_filename, "a") as file:
-            if not is_file_empty("./output files/" + self.json_filename):
-                output_file = open("./output files/" + self.json_filename)
+        with open("./outputfiles/" + self.json_filename, "a") as file:
+            if not is_file_empty("./outputfiles/" + self.json_filename):
+                output_file = open("./outputfiles/" + self.json_filename)
                 with output_file as my_file:
                     lines = my_file.read()
                 my_array = ast.literal_eval(lines)
