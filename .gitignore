@@ -1,2 +1,3 @@
 deployment/.vagrant/
+.vagrant
 deployment/*.ip
