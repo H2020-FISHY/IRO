@@ -1,0 +1,12 @@
+check User1 in database of users
+allow User1 to access assets in  except Organization1
+alert admin in 
+ 
+check User1 in database of users
+allow User1 to access assets in Organization1 except Domain12 and Domain13 and realm2
+alert admin in Organization1
+ 
+check User1 in database of users
+allow User1 to access assets in Organization1 except Domain12 and Domain13 and realm2
+alert admin in Organization1
+ 

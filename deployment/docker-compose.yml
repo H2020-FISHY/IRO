@@ -1,0 +1,42 @@
+version: '3.5'
+networks:
+    iro_lan:
+        driver: bridge
+        name: iro_lan
+        ipam:
+          config:
+          - subnet: 172.21.0.0/16
+
+services:
+    iro:
+        image: michalkeit/iro
+        build: ../iro
+        container_name: iro-dashboard
+        restart: always
+        depends_on:
+            - elasticsearch
+        environment:
+            ES_HOST: "elasticsearch"
+            ES_PORT: "9200"
+        ports:
+            - "5000:5000"
+        networks:
+            - iro_lan
+
+    elasticsearch:
+        image: elasticsearch:7.14.2
+        container_name: elasticsearch
+        restart: always
+        environment:
+            - cluster.name=docker-cluster
+            - node.name=elasticsearch1
+            - cluster.initial_master_nodes=elasticsearch1
+            - http.cors.allow-origin=http://localhost:1358,http://127.0.0.1:1358
+            - http.cors.enabled=true
+            - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
+            - http.cors.allow-credentials=true
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        ports:
+                - "9200:9200"
+        networks:
+            - iro_lan
