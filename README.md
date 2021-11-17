@@ -1,5 +1,3 @@
-#IRO
-
 # README #
 
 This README would normally document whatever steps are necessary to get your application up and running.
@@ -16,10 +14,10 @@ User one can not access to domain y at Night.
 * translate intent to Grammer (Policybuilder) [Done]
 * intent Options check/get Value [Done]
 * intent Parser [Done]
-* changing intent reading system to iro + commands [Done]
+* changing intent reading system to ibt + commands [Done]
 * solving conflict on push [Done]
 * Code refactor (functions/solution improve) [Done] 
-
+* Improve Options Solution [Done] 
 
 ### Deployment ###
 #Install these two packets via your package manager: docker.io docker-compose

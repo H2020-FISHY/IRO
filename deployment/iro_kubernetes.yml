@@ -29,7 +29,7 @@ spec:
       labels:
         app: iro
       annotations:
-        k8s.v1.cni.cncf.io/networks: vmgmtpod1@mgmt
+        k8s.v1.cni.cncf.io/networks: vmgmtpod7@edc
     spec:
       containers:
       - name: iro
@@ -39,6 +39,8 @@ spec:
             add: ["NET_ADMIN"]
         imagePullPolicy: Always
         env: 
+        - name: INTERFACES_UP
+          value: "edc"
         - name: ES_PORT
           value: "9200"
         - name: ES_HOST
