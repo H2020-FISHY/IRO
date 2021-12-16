@@ -29,18 +29,18 @@ spec:
       labels:
         app: iro
       annotations:
-        k8s.v1.cni.cncf.io/networks: vmgmtpod7@edc
+        k8s.v1.cni.cncf.io/networks: vmgmtpod7@mgmt
     spec:
       containers:
       - name: iro
-        image: michalkeit/iro:latest
+        image: michalkeit/iro:1.02
         securityContext:
           capabilities:
             add: ["NET_ADMIN"]
         imagePullPolicy: Always
         env: 
         - name: INTERFACES_UP
-          value: "edc:192.168.5.1/24"
+          value: "mgmt:192.168.5.1/24"
         - name: ES_PORT
           value: "9200"
         - name: ES_HOST
@@ -62,7 +62,7 @@ spec:
     spec:
       containers:
       - name: iro-elasticsearch
-        image: elasticsearch:7.14.2
+        image: elasticsearch:7.16.1
         ports:
         - containerPort: 9200
         env:
