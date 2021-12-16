@@ -176,11 +176,13 @@ sudo rm -r $HOME/multus-cni
 sleep 40
 
 echo "Applying Kubernetes configuration files from FISHY-github/$domain_config/network_definitions/"
-kubectl create -f $HOME/FISHY-Sandbox-development/$domain_config/network_definitions/hosts/mgmt_interfaces &> /dev/null
-kubectl create -f $HOME/FISHY-Sandbox-development/$domain_config/network_definitions/pods/mgmt_interfaces &> /dev/null
-kubectl create -f $HOME/FISHY-Sandbox-development/$domain_config/network_definitions/hosts/data_interfaces &> /dev/null
-kubectl create -f $HOME/FISHY-Sandbox-development/$domain_config/network_definitions/pods/data_interfaces &> /dev/null
-kubectl create -f $HOME/FISHY-Sandbox-development/$domain_config/network_definitions/vxlans &> /dev/null
+configs=$(dirname $(find $HOME/FISHY-Sandbox-development/$domain_config/network_definitions -name *.yaml) | sort -u)
+for config in $configs
+do
+       echo "applying config $config..."
+       kubectl create -f $config
+done
+
 sleep 5
 
 kubectl create -f $HOME/FISHY-Sandbox-development/$domain_config/NED/
