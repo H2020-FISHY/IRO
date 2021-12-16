@@ -17,7 +17,9 @@ User one can not access to domain y at Night.
 * changing intent reading system to ibt + commands [Done]
 * solving conflict on push [Done]
 * Code refactor (functions/solution improve) [Done] 
-* Improve Options Solution [Done] 
+* Improve Options Solution [Done]
+* Add yaml-based IP configuration [Done]
+* Add data interface to Kubernetes definition [TODO]
 
 ### Deployment ###
 #Install these two packets via your package manager: docker.io docker-compose
