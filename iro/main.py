@@ -46,6 +46,7 @@ class UserInterface(FlaskView):
         msg = ''
         return ""
     
+    # TODO: update the interface after developing the policy builder classes
     @route("/policies", methods=["GET"])
     def export_policies(self):
         with open("./outputfiles/"+self.policies_filename, "r") as f:

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    If (IP appears more than 6 times in two hours)
+    then notifies F2F supply chain operator providing the IP and port number
+    and/or enforces IP ban
+-->
+<hspl-list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://fishy-project.eu/hspl"
+           xsi:schemaLocation="http://fishy-project.eu/hspl hspl.xsd">
+    <reaction id="reaction1">
+        <enabling-conditions>
+            <threshold>
+                <subject type="ip_address">some_ip_address</subject>
+                <value>6</value>
+                <period>2</period>
+                <time>hour</time>
+            </threshold>
+        </enabling-conditions>
+        <hspl id="hspl1">
+            <action>notify</action>
+            <object>supply_chain_operator</object>
+        </hspl>
+        <hspl id="hspl2">
+            <subject type="ip_address">some_ip_address</subject>
+            <action>no_authorise_access</action>
+            <object>all_traffic</object>
+        </hspl>
+    </reaction>
+</hspl-list>

@@ -3,8 +3,8 @@
 |   file:       intent_manager.py
 |
 |   brief:
-|   author:     Chebbi, Oussama
-|   email:      oussamachebbi16@gmail.com
+|   author:     
+|   email:      
 |   copyright:  © IDA - All rights reserved
 """
 import re

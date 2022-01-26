@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://fishy-project.eu/hspl"
+        xmlns:tns="http://fishy-project.eu/hspl" elementFormDefault="qualified">
+
+    <complexType name="subject">
+        <simpleContent>
+            <extension base="string">
+                <attribute name="type" type="tns:subject_type" use="required"/>
+            </extension>
+        </simpleContent>
+    </complexType>
+
+    <simpleType name="subject_type">
+        <restriction base="string">
+            <enumeration value="ip_address"/>
+            <enumeration value="username"/>
+            <enumeration value="wallet_id"/>
+            <enumeration value="did"/>
+        </restriction>
+    </simpleType>
+
+</schema>

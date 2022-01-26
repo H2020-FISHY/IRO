@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://fishy-project.eu/hspl"
+        xmlns:tns="http://fishy-project.eu/hspl" elementFormDefault="qualified">
+
+    <include schemaLocation="enabling_conditions.xsd"/>
+    <include schemaLocation="subjects.xsd"/>
+    <include schemaLocation="actions.xsd"/>
+    <include schemaLocation="objects.xsd"/>
+
+    <element name="hspl-list">
+        <complexType>
+            <sequence>
+                <element name="reaction" type="tns:reaction" minOccurs="0" maxOccurs="unbounded"/>
+                <element name="hspl" type="tns:hspl" minOccurs="0" maxOccurs="unbounded"/>
+            </sequence>
+        </complexType>
+    </element>
+
+    <complexType name="reaction">
+        <sequence>
+            <element name="enabling-conditions" type="tns:enabling-conditions" minOccurs="0"/>
+            <element name="hspl" type="tns:hspl" maxOccurs="unbounded"/>
+        </sequence>
+        <attribute name="id" type="ID" use="required"/>
+    </complexType>
+
+    <complexType name="hspl">
+        <sequence>
+            <element name="subject" type="tns:subject" minOccurs="0"/>
+            <element name="action" type="tns:action"/>
+            <element name="object" type="tns:object"/>
+        </sequence>
+        <attribute name="id" type="ID" use="required"/>
+    </complexType>
+
+</schema>

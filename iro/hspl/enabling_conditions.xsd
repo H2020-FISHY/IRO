@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://fishy-project.eu/hspl"
+        xmlns:tns="http://fishy-project.eu/hspl" elementFormDefault="qualified">
+
+    <include schemaLocation="subjects.xsd"/>
+
+    <complexType name="threshold">
+        <sequence>
+            <element name="subject" type="tns:subject"/>
+            <element name="value" type="integer"/>
+            <element name="period" type="integer"/>
+            <element name="time" type="tns:time"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="enabling-conditions">
+        <sequence>
+            <element name="threshold" type="tns:threshold" minOccurs="0"/>
+        </sequence>
+    </complexType>
+
+    <simpleType name="time">
+        <restriction base="string">
+            <enumeration value="second"/>
+            <enumeration value="minute"/>
+            <enumeration value="hour"/>
+            <enumeration value="day"/>
+        </restriction>
+    </simpleType>
+
+</schema>

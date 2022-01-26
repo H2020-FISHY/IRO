@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    If (Attacker DID appears more than 10 times in two hours)
+    then notifies/alerts F2F supply chain operator providing the relevant log info (Attacker DID, Device name)
+    and/or notifies IoT Island operator
+    and/or enforces DID ban
+-->
+<hspl-list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://fishy-project.eu/hspl"
+           xsi:schemaLocation="http://fishy-project.eu/hspl hspl.xsd">
+    <reaction id="reaction1">
+        <enabling-conditions>
+            <threshold>
+                <subject type="did">some_did</subject>
+                <value>10</value>
+                <period>2</period>
+                <time>hour</time>
+            </threshold>
+        </enabling-conditions>
+        <hspl id="hspl1">
+            <action>notify</action>
+            <object>supply_chain_operator</object>
+        </hspl>
+        <hspl id="hspl2">
+            <action>notify</action>
+            <object>island_operator</object>
+        </hspl>
+        <hspl id="hspl3">
+            <subject type="did">some_did</subject>
+            <action>no_authorise_access</action>
+            <object>all_traffic</object>
+        </hspl>
+    </reaction>
+</hspl-list>

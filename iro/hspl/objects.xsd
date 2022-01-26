@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://fishy-project.eu/hspl"
+        elementFormDefault="qualified">
+
+    <simpleType name="object">
+        <restriction base="string">
+            <enumeration value="internet_traffic"/>
+            <enumeration value="intranet_traffic"/>
+            <enumeration value="all_traffic"/>
+            <enumeration value="supply_chain_operator"/>
+            <enumeration value="island_operator"/>
+        </restriction>
+    </simpleType>
+
+</schema>
