@@ -23,6 +23,7 @@ This development is part of the H2020 European Project Fishy.
 
 
 ## Deployment 
+(for development only, for showcase, please use Kubernetes with the definition at deployment/iro_kubernetes.yml)
 
 ### Option 1: docker compose 
 
