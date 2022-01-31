@@ -4,8 +4,8 @@ COPY . /iro
 
 RUN apt update
 RUN DEBIAN_FRONTEND=noninteractive apt install -y iproute2
-RUN pip install flask numpy flask_classful anytree elasticsearch certifi
 WORKDIR /iro
+RUN pip install -r requirements.txt
 RUN mkdir /iro/outputfiles
 
 CMD [ "./entrypoint.sh" ]
