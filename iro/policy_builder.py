@@ -11,6 +11,25 @@ from anytree import Node, RenderTree
 import numpy as np
 
 
+
+class PolicyReader:
+    """
+    |   PolicyReader class: it reads the hspl model templates
+    |   TODO: define the needed attributes & develop all the needed methods
+    """
+    def __init__(self) -> None:
+        pass
+
+class IntentPolicyMatching:
+    """
+    |   IntentPolicyMatching class: it matches and validate an intent with policies
+    |   TODO: define the needed attributes & develop all the needed methods
+    """
+    def __init__(self) -> None:
+        pass
+
+
+# a static example for testing
 class PolicyGraph:
     """
     |   PolicyGraph Class
