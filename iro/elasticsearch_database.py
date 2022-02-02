@@ -17,6 +17,7 @@ import time
 es_url="127.0.0.1"
 es_port="9200"
 es_retry_time = 5
+es_conn_attempts = 3
 es = None
 try:
     es_url = os.environ["ES_HOST"]
@@ -37,6 +38,10 @@ while True:
     except:
         print("Connection to Elasticsearch [" + es_url + ":" + es_port + "] failed!, retrying in " + str(es_retry_time) + " seconds...")
         time.sleep(es_retry_time)
+        es_conn_attempts -= 1
+        if es_conn_attempts == 0:
+            print("Connection to Elasticsearch could not be established, exiting...")
+            exit(1)
     if es != None:
         print("Connection to Elasticsearch [" + es_url + ":" + es_port + "] has been established")
         break
