@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: iro
-        image: michalkeit/iro:1.02
+        image: michalkeit/iro:1.03
         securityContext:
           capabilities:
             add: ["NET_ADMIN"]
@@ -62,7 +62,7 @@ spec:
     spec:
       containers:
       - name: iro-elasticsearch
-        image: elasticsearch:7.16.1
+        image: elasticsearch:7.16.3
         ports:
         - containerPort: 9200
         env:

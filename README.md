@@ -23,9 +23,8 @@ This development is part of the H2020 European Project Fishy.
 
 
 ## Deployment 
-(for development only, for showcase, please use Kubernetes with the definition at deployment/iro_kubernetes.yml)
 
-### Option 1: docker compose 
+### Option 1: docker compose (development only)
 
 Prerequisites
 
@@ -50,7 +49,7 @@ To rebuild IRO without redeploying Elasticsearch:
 docker-compose up --build -d iro
 ```
 
-### Option 2: vagrant
+### Option 2: vagrant (development only)
 
 Prerequisites
 
@@ -65,3 +64,20 @@ vagrant up
 A setup containing 3 VMs with a NED instance each and one IRO on the control node will then be created. 
 
 All interactions with kubectl fom inside the VMs require 'sudo'.
+
+### Option 3: Kubernetes (showcase/production)
+
+Use Kubernetes with the definition at `deployment/iro_kubernetes.yml`.
+Deploy with:
+```shell
+kubectl apply -f deployment/iro_kubernetes.yml
+```
+The IRO pods will then be spawned in the default namespace.
+
+
+
+## Changelog
+
+### 1.03
+- Updated elasticsearch to version 7.16.3 (22-02-02)
+- Outsourced the pip requrements into extra file
