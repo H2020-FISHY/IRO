@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: iro
-        image: michalkeit/iro:1.03
+        image: michalkeit/iro:1.04
         securityContext:
           capabilities:
             add: ["NET_ADMIN"]
