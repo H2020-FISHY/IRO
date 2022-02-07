@@ -193,3 +193,7 @@ cython_debug/
 deployment/.vagrant/
 .vagrant
 deployment/*.ip
+
+
+# python files
+testing.py
