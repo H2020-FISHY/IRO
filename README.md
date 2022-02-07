@@ -78,6 +78,9 @@ The IRO pods will then be spawned in the default namespace.
 
 ## Changelog
 
+### 1.05 (22-02-07)
+- Added Classes to define HSLP policies
+
 ### 1.04 (22-02-03)
 - Fixed IP assignment for IRO pod not working
 
