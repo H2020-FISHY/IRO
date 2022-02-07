@@ -7,7 +7,9 @@ for i in "${!INTERFACE_DEFS[@]}"
 do
 	IF=$(cut -d : -f 1 <<< ${INTERFACE_DEFS[$i]})
 	IP=$(cut -d : -f 2 <<< ${INTERFACE_DEFS[$i]})
-	if $(ip address show $IF | grep $IP) != 0; then
+	if [[ -n $(ip address show $IF | grep $IP) ]]; then
+		echo "address $IP for interface $IF is already set"
+	else	
 		echo "setting $IF address to $IP..."
 		if ip addr add $IP dev $IF; then
 			echo "IP $IP for interface $IF set successfully"
@@ -15,8 +17,6 @@ do
 			else
 			echo "unable to set IP address for interface $IF"
 		fi
-	else
-		echo "address $IP for interface $IF is already set"
 	fi
 	if ip link set $IF up; then
 		echo "brought $IF up successfully"
