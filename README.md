@@ -78,12 +78,12 @@ The IRO pods will then be spawned in the default namespace.
 
 ## Changelog
 
-### 1.05 (22-02-07)
+### 1.0.5 (22-02-07)
 - Added Classes to define HSLP policies
 
-### 1.04 (22-02-03)
+### 1.0.4 (22-02-03)
 - Fixed IP assignment for IRO pod not working
 
-### 1.03 (22-02-02)
+### 1.0.3 (22-02-02)
 - Updated elasticsearch to version 7.16.3
 - Outsourced the pip requrements into extra file
