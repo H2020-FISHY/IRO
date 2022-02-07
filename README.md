@@ -78,7 +78,7 @@ The IRO pods will then be spawned in the default namespace.
 
 ## Changelog
 
-### 1.0.5 (22-02-07)
+### 1.0.5 (22-02-07) 
 - Added Classes to define HSLP policies
 
 ### 1.0.4 (22-02-03)
