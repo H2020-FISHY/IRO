@@ -78,6 +78,10 @@ The IRO pods will then be spawned in the default namespace.
 
 ## Changelog
 
+### Upcoming
+- Added Virtualbox support for Vagrantfile
+- Added host filesystem mount; mapped host's /tmp to container's /edc
+
 ### 1.0.5 (22-02-07) 
 - Added Classes to define HSLP policies
 
