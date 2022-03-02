@@ -38,6 +38,9 @@ spec:
           capabilities:
             add: ["NET_ADMIN"]
         imagePullPolicy: Always
+        volumeMounts:
+        - mountPath: /edc
+          name: edc-volume
         env: 
         - name: INTERFACES_UP
           value: "mgmt:192.168.5.1/24"
@@ -45,6 +48,12 @@ spec:
           value: "9200"
         - name: ES_HOST
           value: "iro-database"
+      volumes:
+      - name: edc-volume
+        hostPath:
+        # directory location on host
+          path: /tmp
+          type: Directory
 ---
 apiVersion: apps/v1
 kind: Deployment
