@@ -41,17 +41,16 @@
             </a>
           </div>
           <div class="u-custom-menu u-nav-container">
-            <ul class="u-nav u-unstyled u-nav-1">
-              <li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="{{url_for('UserInterface:index')}}" style="padding: 10px 20px;">Home</a>
-         </li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="{{ url_for('UserInterface:alerts') }}" style="padding: 10px 20px;">Alerts</a>
-         </li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" style="padding: 10px 20px;">Intent Configuration</a>
-         </li></ul>
+            <ul class="u-nav u-unstyled u-nav-1"><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="{{url_for('UserInterface:index')}}" style="padding: 10px 20px;">Home</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="{{ url_for('UserInterface:alerts') }}" style="padding: 10px 20px;">Alerts</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" style="padding: 10px 20px;">Intent Configuration</a>
+</li></ul>
           </div>
           <div class="u-custom-menu u-nav-container-collapse">
             <div class="u-align-center u-black u-container-style u-inner-container-layout u-opacity u-opacity-95 u-sidenav">
               <div class="u-inner-container-layout u-sidenav-overflow">
                 <div class="u-menu-close"></div>
-                <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2"><li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{url_for('UserInterface:index')}}"  style="padding: 10px 20px;">Home</a>
+                <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2"><li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{url_for('UserInterface:index')}}" style="padding: 10px 20px;">Home</a>
 </li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{ url_for('UserInterface:alerts') }}" style="padding: 10px 20px;">Alerts</a>
 </li><li class="u-nav-item"><a class="u-button-style u-nav-link" style="padding: 10px 20px;">Intent Configuration</a>
 </li></ul>
@@ -68,29 +67,7 @@
             <div class="u-layout-row">
               <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-1">
                 <div class="u-container-layout u-container-layout-1">
-                  <div class="u-form u-grey-5 u-form-1">
-                    
-
-                    <form action="" method="POST" class="u-clearfix u-form-horizontal u-form-spacing-10 u-inner-form" style="padding: 10px" source="email" name="form">
-                      <input type="hidden" id="siteId" name="siteId" value="1519516">
-                      <input type="hidden" id="pageId" name="pageId" value="1519526">
-                      <div class="u-form-email u-form-group u-form-group-1">
-                        <label for="email-2555" class="u-form-control-hidden u-label u-label-1">Email</label>
-                        <textarea class="u-border-4 u-border-white u-input u-input-rectangle u-radius-50 u-white" id="intentText" name="intentText" placeholder="Write your Intents Text here.."  onkeydown="pressed(event)"></textarea>
-                      </div>
-                      
-                      
-                    </form>
-                  </div>
-                  <div class="u-list u-list-1">
-                    <div class="u-repeater u-repeater-1">
-                      <div class="u-container-style u-custom-item u-grey-5 u-list-item u-repeater-item u-list-item-1">
-                        <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2">
-                          {% if message %} <pre >{{ message }}</pre> {% endif %}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  0
 
                   
                     
@@ -101,7 +78,7 @@
               </div>
               <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-2">
                 <div class="u-container-layout u-container-layout-3">
-                  <h5 class="u-text u-text-default u-text-palette-1-base u-text-1">Reports</h5>
+                  0
                   {% if notifications %} <pre >{{ notifications }}</pre> {% endif %} 
                 </div>
               </div>

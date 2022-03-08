@@ -56,9 +56,17 @@ class IntentManager:
     def __init__(self):
         """
         |    Create Intent Manager
+        | TODO: - update IntentCreation to consider new intent structure (eg. 
+        | "If (Attacker wallet ID appears more than 5 times in two hours) then 
+        | notifies/alerts F2F supply chain operator..")
+        |       - add intent structure to intent_strore
+        |       - update instruct_add() method
         """
         self.json_filename = "register.json"  # intent input history (intent_log)
+        # TODO: update intent store to match hspl policies
         self.intent_store = ElasticsearchDatabase()
+        # TODO: make intent_structure a list which contains all structures, 
+        # and update all the other methods using it
         self.intent_structure = IntentCreation()
 
     def reading_command(self, intent_text):
@@ -94,6 +102,10 @@ class IntentManager:
                     info_message = self.instruct_push()
                 if info_message:
                     return info_message
+
+            if match.group("start") == "reports":
+                info_message = "reports"
+                return info_message
             '''return (
                 "usage : iro <command> <args> \n"
                 "\n"

@@ -7,6 +7,7 @@
 |   email:      
 |   copyright:  © IDA - All rights reserved
 """
+import re
 from anytree import Node, RenderTree
 import numpy as np
 
@@ -144,12 +145,51 @@ class IntentVerification:
     |   IntentVerification Class
     """
     def __init__(self, intent_structure, intent_text, intent_store):
+        # get the intent to be verified
+        self.intent_text = intent_text
+
+        # TODO: to be moved under intent verification 
+        self.condition, self.reaction = None, None
+        self.is_structure_correct = self.check_intent_structure()
+
+        # get the intent store
+        self.intent_store = intent_store
+
+        # attributes for the new hspl intents
+        self.all_content_list = []
+        self.all_requirements = intent_structure.get_all_requirements()
+        self.all_options = intent_structure.get_all_options()
+        self.all_option_list = np.empty(shape=[0, 2])
+
+        # attributes for the old example
         self.content_list = []
         self.requirements = intent_structure.get_requirements()
         self.options = intent_structure.get_options()
-        self.intent_text = intent_text
-        self.intent_store = intent_store
         self.option_list = np.empty(shape=[0, 2])
+
+    def check_intent_structure(self):
+        """
+        |   check intent structure, eg. if-else statements
+        |
+        |   Returns:
+        |       bool: returns if the intent structure is valid or not
+        |
+        """
+        # create standard regular expressions (to be read from the store in the future)
+        try:
+            # if-then structure
+            if_then_match = r"^(?P<if>\w+) ?(?:\((?P<condition>.*?)\))? (?P<then>\w+)? ?(?:\((?P<reaction>.*?)\))?"
+            pattern1 = re.compile(if_then_match, re.I)
+            match1 = pattern1.search(self.intent_text)
+            args_tmp =  [match1.group("if"), match1.group("condition"), match1.group("then"), match1.group("reaction")]
+            if not (self.analyse_text(args_tmp[0], "condition")):
+                return False
+            if not (self.analyse_text(args_tmp[2], "reaction")):
+                return False 
+            self.condition, self.reaction = args_tmp[1], args_tmp[3]
+            return True
+        except:
+            return False
 
     def check_validation(self):
         """
@@ -159,6 +199,17 @@ class IntentVerification:
         |       bool: returns if the intent is valid or not
         |
         """
+        # check for if-then based intents
+        # TODO: use condition and reaction in a general way
+        if self.is_structure_correct:
+            # print("i am here")
+            for requirements in self.all_requirements:
+                for requirement in requirements:
+                    if not (self.analyse_text(self.intent_text, requirement)):
+                        return False
+            return True
+
+
         for requirement in self.requirements:
             if not (self.analyse_text(self.intent_text, requirement)):
                 return False

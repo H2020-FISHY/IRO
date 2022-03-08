@@ -9,6 +9,89 @@
 """
 
 Database = {
+    "object": {
+
+        "internet_traffic": {
+            "vocabulary": ["internet_traffic", "internet traffic"],
+            "sub_option_1": {}
+        },
+
+        "intranet_traffic": {
+            "vocabulary": ["intranet_traffic", "intranet traffic"],
+            "sub_option_1": {}
+        },
+
+        "all_traffic": {
+            "vocabulary": ["all_traffic", "all traffic"],
+            "sub_option_1": {}
+        },
+
+        "supply_chain_operator": {
+            "vocabulary": ["supply_chain_operator", "supply chain operator"],
+            "sub_option_1": {}
+        },
+
+        "island_operator": {
+            "vocabulary": ["island_operator", "island operator"],
+            "sub_option_1": {}
+        },
+    },
+
+    "subject": {
+
+        "ip_address": {
+            "vocabulary": ["ip_address", "192.168.1.2"],
+            "sub_option_1": {}
+        },
+
+        "username": {
+            "vocabulary": ["username1", "username2"],
+            "sub_option_1": {}
+        },
+
+        "wallet_id": {
+            "vocabulary": ["some_wallet_id", "some wallet id"],
+            "sub_option_1": {}
+        },
+
+        "did": {
+            "vocabulary": ["some_did", "some did"],
+            "sub_option_1": {}
+        },
+    },
+
+    "condition": {
+
+        "if": {
+            "vocabulary": ["if", "IF", "If"],
+            "sub_option_1": {}
+        },
+    },
+
+    "reaction": {
+
+        "then": {
+            "vocabulary": ["then", "Then", "THEN"],
+            "sub_option_1": {}
+        },
+    },
+    
+    "occurance": {
+
+        "occurance": {
+            "vocabulary": ["appears", "accurs"],
+            "sub_option_1": {}
+        },
+    },
+
+    "time": {
+
+        "time": {
+            "vocabulary": ["time", "times"],
+            "sub_option_1": {}
+        },
+    },
+
     "users": {
 
         "User1": {
@@ -29,7 +112,7 @@ Database = {
         },
 
         "blocked": {
-            "vocabulary": ["blocked", "can not"],
+            "vocabulary": ["blocked", "can not", "no_authorise_access", "not authorize"],
             "sub_option_1": {}
         },
     },
