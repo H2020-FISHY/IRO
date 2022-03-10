@@ -1,0 +1,97 @@
+<script>
+    $(document).ready(function(){
+        //var count_item = 0;
+        //$("#add_item").on("click", function(){
+        //    count_item += 1;
+        //    $("<input/>").attr({ type: "text", placeholder: "Enter product name",
+        //        name: "item_"+count_item}).appendTo("#products").wrap($("<div/>"));
+        //});
+        var count_action = 0;
+        var count_object = 0;
+        $("#add_action").on("click", function(){
+            count_action += 1;
+            //$("<input/>").attr({ type: "text", placeholder: "Enter n  product name",
+            //    name: "action_1_"+count_action}).appendTo("#actions");
+            //$("<select/>").attr({id:"action_"+count_action, name:"action", class:"Input" }).appendTo("#actions");
+            
+           
+            var myDiv = document.getElementById("actions");
+
+            //Create array of options to be added
+            var array = {{objects[0]['action'] | tojson}}; // get options
+
+            //Create and append select list for actions
+            var selectList = document.createElement("select");
+            selectList.name = "action_"+count_action;
+            selectList.id = "action_"+count_action;
+            selectList.className = "Input"
+            //selectList.setAttribute("action", "Select");
+            myDiv.appendChild(selectList);
+            
+
+            //Create and append the options
+            for (var i = 0; i < array.length; i++) {
+                var option = document.createElement("option");
+                option.setAttribute("value", array[i]);
+                option.text = array[i];
+                selectList.appendChild(option);
+                }
+
+            //selectList.appendTo("#actions");
+
+            count_object += 1;
+            var array2 = {{objects[0]['object'] | tojson}};
+                //Create and append select list for objects
+            var selectList2 = document.createElement("select");
+            selectList2.name = "object_"+count_object;
+            selectList2.id = "object_"+count_object;
+            selectList2.class = "Input"
+            //selectList2.setAttribute("object_"+count_object, "Select"+count_object);
+            myDiv.appendChild(selectList2);
+            
+
+            //Create and append the options
+            for (var i = 0; i < array2.length; i++) {
+                var option2 = document.createElement("option");
+                option2.setAttribute("value", array2[i]);
+                option2.text = array2[i];
+                selectList2.appendChild(option2);
+                }
+            //selectList2.appendTo("#actions").wrap($("<div/>"));
+
+           
+            $("<br/>").appendTo("#actions");
+              
+            //$("<input/>").attr({ type: "text", placeholder: "Enter product name",
+            //    name: "action_"+count_action}).appendTo("#actions").wrap($("<div/>"));
+                
+        });
+
+        $("#action_00").change(function() {
+    
+            var el = $(this) ;
+            var array_notif = {{objects[0]['object_notif'] | tojson}};
+            var array_access = {{objects[0]['object_access'] | tojson}};
+    
+            if(el.val() === "notify" ) {
+                for (var i = 0; i < array_access.length; i++) {
+                    $("#object_00 option:last-child").remove() ;
+                };
+                for (var i = 0; i < array_notif.length; i++) {
+                    $("#object_00").append("   <option>"+array_notif[i]+"</option>");
+                };
+
+                }
+            else if(el.val() === "no_authorise_access" ) {
+                for (var i = 0; i < array_notif.length; i++) {
+                    $("#object_00 option:last-child").remove() ;
+                };
+                for (var i = 0; i < array_access.length; i++) {
+                    $("#object_00").append("   <option>"+array_access[i]+"</option>");
+                }
+                }
+        });
+
+       
+    });
+</script>

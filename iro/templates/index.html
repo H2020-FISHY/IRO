@@ -12,7 +12,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
     <script class="u-script" type="text/javascript" src="../static/js/jquery-1.9.1.min.js" defer=""></script>
     <script class="u-script" type="text/javascript" src="../static/js/nicepage.js" defer=""></script>
-    
+    <script
+                src="https://code.jquery.com/jquery-1.12.4.min.js"
+                integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+                crossorigin="anonymous"></script>
     <meta name="generator" content="Nicepage 4.6.2, nicepage.com">
     <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
     
@@ -71,7 +74,7 @@
                   <div class="u-form u-grey-5 u-form-1">
                     
 
-                    <form action="" method="POST" class="u-clearfix u-form-horizontal u-form-spacing-10 u-inner-form" style="padding: 10px" source="email" name="form">
+                    <form action="" method="POST" class="u-clearfix u-form-horizontal u-form-spacing-10 u-inner-form" style="padding: 10px" source="email" name="form" value="intentbox">
                       <input type="hidden" id="siteId" name="siteId" value="1519516">
                       <input type="hidden" id="pageId" name="pageId" value="1519526">
                       <div class="u-form-email u-form-group u-form-group-1">
@@ -101,8 +104,21 @@
               </div>
               <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-2">
                 <div class="u-container-layout u-container-layout-3">
-                  <h5 class="u-text u-text-default u-text-palette-1-base u-text-1">Reports</h5>
-                  {% if notifications %} <pre >{{ notifications }}</pre> {% endif %} 
+                  <!--h5 class="u-text u-text-default u-text-palette-1-base u-text-1">Reports</h5-->
+                  {% if notifications %} <h4 >{{ notifications }}</h4> {% endif %} 
+                  {% if forms %} 
+                  {% with objects = forms %}
+                  {% include "form_threat_detection.html" %} 
+                  
+                  {% endwith %}
+                  {% endif %} 
+
+                  {% if formoutput %} 
+                  {% with objects = formoutput %}
+                  {% include "form_output.html" %} 
+                  
+                  {% endwith %}
+                  {% endif %} 
                 </div>
               </div>
             </div>
@@ -128,5 +144,9 @@
           }
       }
       </script>
+
+    {% if form_script %} {% with objects = form_script %}
+    {% include "script_form_th_d.html" %} 
+    {% endwith %} {% endif %} 
   </body>
 </html>

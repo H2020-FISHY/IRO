@@ -12,6 +12,7 @@ import numpy as np
 import ast
 import json
 import os
+from notification_manager import NotificationManager
 from policy_builder import PolicyGraph, IntentVerification
 from intent_determination import IntentDetermination
 from elasticsearch_database import ElasticsearchDatabase
@@ -53,7 +54,7 @@ class IntentManager:
     """
     |   IntentManager Class
     """
-    def __init__(self):
+    def __init__(self, notif=NotificationManager):
         """
         |    Create Intent Manager
         | TODO: - update IntentCreation to consider new intent structure (eg. 
@@ -68,6 +69,7 @@ class IntentManager:
         # TODO: make intent_structure a list which contains all structures, 
         # and update all the other methods using it
         self.intent_structure = IntentCreation()
+        self.notif = notif
 
     def reading_command(self, intent_text):
         """
@@ -87,25 +89,29 @@ class IntentManager:
         pattern = re.compile(reading_regex, re.I)
         match = pattern.search(intent_text)
         info_message = ""
+        my_form = None
+        my_form_script = None
+        notifs = None
+        
         if match:
             if match.group("start") == "iro":
                 cmd = match.group("command")
                 if cmd == "add":
-                    info_message = self.instruct_add(match.group("intent"))
+                    info_message, my_form, my_form_script, notifs = self.instruct_add(match.group("intent"))
                 elif cmd == "status":
                     info_message = self.instruct_status()
                 elif cmd == "reset":
                     info_message = self.instruct_reset()
-                elif cmd == "format":
-                    info_message = self.instruct_format()
+                elif cmd == "intents":
+                    info_message = self.instruct_intents()
                 elif cmd == "push":
                     info_message = self.instruct_push()
                 if info_message:
-                    return info_message
+                    return info_message, my_form, my_form_script, notifs
 
             if match.group("start") == "reports":
                 info_message = "reports"
-                return info_message
+                return info_message, my_form, my_form_script, notifs
             '''return (
                 "usage : iro <command> <args> \n"
                 "\n"
@@ -116,16 +122,13 @@ class IntentManager:
                 "reset               reset intent register\n"
             )
             '''
+        else:
+            if intent_text == "reports":
+                info_message = "reports..."
+                print("yes....")
+                return info_message, my_form, my_form_script, notifs
 
-        return (
-            "usage : iro <command> <args> \n"
-            "\n"
-            'add "intent"        read intents\n'
-            "format              show the intent Requirements\n"
-            "status              show intent register status\n"
-            "push                solve conflict and send to controller\n"
-            "reset               reset intent register\n"
-        )
+        return self.notif.get_instructions(), my_form, my_form_script, notifs
 
     def instruct_add(self, plain_text):
         """
@@ -138,6 +141,16 @@ class IntentManager:
         |       str: information message to User
         |
         """
+        verified = True
+        validated = True
+        my_form = None
+        my_form_script = None
+        notifs = None
+        
+        
+
+        '''
+        # TODO: re-create those methods 
         intent_verification = IntentVerification(
             self.intent_structure, plain_text, self.intent_store
         )
@@ -151,6 +164,21 @@ class IntentManager:
                 return "The intent has been successfully saved !"
             return "ERROR: Non valid intent please enter a valid intent !"
         return "ERROR: Please enter an intent "
+        '''
+
+        # the text is assumed to be verified 
+        if plain_text is not None:
+            if verified:
+                if validated:
+                    if plain_text=="wallet_id_attack_detection":
+                        notifs = "Wallet ID Attack Detection Rule"
+                        msg = "Please provide details and submit the intent !"
+                        my_form, my_form_script = self.notif.get_form("wallet_detection")
+                        return msg, my_form, my_form_script, notifs
+                    return "ERROR: Non valid intent please enter a valid intent !", my_form, my_form_script, notifs
+        return 'ERROR: Please enter an intent\n Maybe you should use quotes ""\nwrite anything to see instructions', my_form, my_form_script, notifs
+
+
 
     def instruct_status(self):
         """
@@ -183,21 +211,27 @@ class IntentManager:
             file.write("")
         return "reset successful !!"
 
-    def instruct_format(self):
+    def instruct_intents(self):
         """
-        |    return requirements of the intent
+        |    return list of the intents
         |
         |   Returns:
         |       str: information message to User
         |
         """
-        display_message = ""
+        display_message = self.notif.get_intents()
+        return (
+            "The list of intents: \n\n"
+            + display_message
+        )
+
+        '''
         for i in self.intent_structure.get_requirements():
             display_message += "√ " + i + "\n"
         return (
             "The following information should be included in the intent: \n\n"
             + display_message
-        )
+        )'''
 
     def instruct_push(self):
         """

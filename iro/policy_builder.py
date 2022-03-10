@@ -96,7 +96,7 @@ class PolicyGraph:
             if not self.hash_table.get_val(node.parent):  # if node.parent bool = False
                 continue
             if not self.hash_table.get_val(node):  # if node bool = False
-                while_node = node
+                while_node = nodeHome
                 s_node_name = "-" + while_node.name + s_node_name[0:]
                 while not while_node.is_root:
                     if while_node.parent.is_root:

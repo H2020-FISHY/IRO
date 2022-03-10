@@ -8,11 +8,12 @@
 |   copyright:  © IDA - All rights reserved
 """
 import os
-from flask import Flask, render_template, request,  url_for, redirect
+from flask import Flask, render_template, request,  url_for, redirect, jsonify
 from jinja2 import Environment, FileSystemLoader
 from flask_classful import FlaskView, route
 from intent_manager import IntentManager
 from notification_manager import NotificationManager
+import json
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_ENVIRONMENT = Environment(
@@ -29,23 +30,37 @@ class UserInterface(FlaskView):
     |   UserInterface Class
     """
     def __init__(self):
-        self.intent_manager = IntentManager()
+        
         self.notification_manager = NotificationManager()
+        self.intent_manager = IntentManager(notif=self.notification_manager)
         self.policies_filename = "export.txt"
 
     def index(self):
         notifs = self.notification_manager.get_notifications()
+        msg = self.notification_manager.get_instructions()
+        my_form, my_form_script = self.notification_manager.get_form("")
 
-        return render_template('index.html', notifications=notifs)
+        return render_template('index.html',form_script=my_form_script, forms=my_form, message=msg, notifications=notifs)
 
     def post(self):
         msg = ''
+        my_form = None
+        my_form_script = None
+        notifs = None
         if request.method == 'POST':
-            intent_text = request.form.get('intentText')
-            msg = self.intent_manager.reading_command(intent_text)
-            if msg == "reports":
-                return render_template('Alerts.html')
-        return render_template('index.html', message=msg)
+            
+            if  'intentText' in request.form:
+                intent_text = request.form.get('intentText')
+                msg, my_form, my_form_script, notifs = self.intent_manager.reading_command(intent_text)
+                if msg == "reports":
+                    return redirect(url_for('UserInterface:alerts'))
+            if 'threat_d_form' in request.form:
+                threat_data =  request.form
+                msg = self.notification_manager.get_instructions_after_form()
+                #return jsonify(request.form)                
+                return render_template('index.html', formoutput=threat_data, message=msg)
+
+        return render_template('index.html', form_script=my_form_script, forms=my_form, message=msg, notifications=notifs)
 
     @route("/alerts", methods=['GET', 'POST'])
     def alerts(self):
@@ -54,7 +69,7 @@ class UserInterface(FlaskView):
 
             # redirect to end the POST handling
             # the redirect can be to the same route or somewhere else
-            return redirect(url_for('index'))
+            return redirect(url_for('UserInterface:index'))
 
         # show the form, it wasn't submitted
         return render_template('Alerts.html')
