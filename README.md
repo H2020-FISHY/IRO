@@ -78,9 +78,16 @@ The IRO pods will then be spawned in the default namespace.
 
 ## Changelog
 
-### 1.04 (22-02-03)
+### Upcoming
+- Added Virtualbox support for Vagrantfile
+- Added host filesystem mount; mapped host's /tmp to container's /edc
+
+### 1.0.5 (22-02-07) 
+- Added Classes to define HSLP policies
+
+### 1.0.4 (22-02-03)
 - Fixed IP assignment for IRO pod not working
 
-### 1.03 (22-02-02)
+### 1.0.3 (22-02-02)
 - Updated elasticsearch to version 7.16.3
 - Outsourced the pip requrements into extra file
