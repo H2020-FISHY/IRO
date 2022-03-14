@@ -57,7 +57,8 @@ class UserInterface(FlaskView):
             if 'threat_d_form' in request.form:
                 threat_data =  request.form
                 msg = self.notification_manager.get_instructions_after_form()
-                #return jsonify(request.form)                
+                #return jsonify(request.form)
+                self.intent_manager.create_hspl_from_intent(threat_data,'wallet_id_attack_detection')                
                 return render_template('index.html', formoutput=threat_data, message=msg)
 
         return render_template('index.html', form_script=my_form_script, forms=my_form, message=msg, notifications=notifs)

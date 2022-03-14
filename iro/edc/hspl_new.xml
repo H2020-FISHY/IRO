@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<hspl-list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://fishy-project.eu/hspl"
+           xsi:schemaLocation="http://fishy-project.eu/hspl hspl.xsd">
+    <reaction id="reaction1">
+        <enabling-conditions>
+            <threshold>
+                <subject type="wallet_id">Wallet ID 0</subject>
+                <value>1</value>
+                <period>1</period>
+                <time>Second</time>
+            </threshold>
+        </enabling-conditions>
+        
+        <hspl id="hspl0">
+            <subject type="wallet_id">Wallet ID 0</subject>
+            <action>notify</action>
+            <object>supply_chain_operator</object>
+        </hspl>
+        
+        <hspl id="hspl1">
+            <subject type="wallet_id">Wallet ID 0</subject>
+            <action>no_authorise_access</action>
+            <object>internet_traffic</object>
+        </hspl>
+               
+    </reaction>
+</hspl-list>

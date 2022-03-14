@@ -36,7 +36,7 @@ class NotificationManager:
         return (
             "Submitted successfully!!\n"
             
-            'Use:  iro add "intent"   to add more intents\n '
+            'Use:  iro add "intent"   to add more intents\n'
             'Use:  iro status         to check intents\n'
             'Use:  iro push           to send to controller\n'
             'write anything to see more instructions\n'

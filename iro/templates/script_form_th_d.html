@@ -8,6 +8,10 @@
         //});
         var count_action = 0;
         var count_object = 0;
+        var action_name_1;
+        var object_name_1;
+        var array_notif = {{objects[0]['object_notif'] | tojson}};
+        var array_access = {{objects[0]['object_access'] | tojson}};
         $("#add_action").on("click", function(){
             count_action += 1;
             //$("<input/>").attr({ type: "text", placeholder: "Enter n  product name",
@@ -27,6 +31,8 @@
             selectList.className = "Input"
             //selectList.setAttribute("action", "Select");
             myDiv.appendChild(selectList);
+
+            action_name_1 = "#action_"+count_action;
             
 
             //Create and append the options
@@ -40,7 +46,8 @@
             //selectList.appendTo("#actions");
 
             count_object += 1;
-            var array2 = {{objects[0]['object'] | tojson}};
+            object_name_1 = "#object_"+count_object;
+            var array2 = {{objects[0]['object_notif'] | tojson}};
                 //Create and append select list for objects
             var selectList2 = document.createElement("select");
             selectList2.name = "object_"+count_object;
@@ -61,37 +68,92 @@
 
            
             $("<br/>").appendTo("#actions");
+
+            var current_action = document.getElementById(selectList.id)
+            var current_object = document.getElementById(selectList2.id)
+            
+
+            current_action.onchange = function() { //"#action_1"
+            
+    
+            var ell = $(this) ;
+
+            if(ell.val() === "notify" ) {
+               for (var i = 0; i < array_access.length; i++) {
+                current_object.removeChild(current_object.lastChild);
+               //$(selectList2.id+" option:last-child").remove() ;
+               };
+                for (var i = 0; i < array_notif.length; i++) {
+                    var opt = document.createElement('option');
+                    opt.setAttribute("value", array_notif[i]);
+                    opt.text = array_notif[i];
+                    //opt.value = array_notif[i];
+                    current_object.appendChild(opt);
+                   //current_object.append("   <option>"+array_notif[i]+"</option>");
+            };
+
+            }
+            else if(ell.val() === "no_authorise_access" ) {
+            for (var i = 0; i < array_notif.length; i++) {
+                current_object.removeChild(current_object.lastChild);
+                //$(selectList2.id+"  option:last-child").remove() ;
+            };
+            for (var i = 0; i < array_access.length; i++) {
+                //var opt2 = document.createElement('option');
+                //opt2.value = array_access[i];
+                //current_object.appendChild(opt2);
+
+                var opt2 = document.createElement('option');
+                opt2.setAttribute("value", array_access[i]);
+                opt2.text = array_access[i];
+                //opt.value = array_notif[i];
+                current_object.appendChild(opt2);
+                //current_object.append("   <option>"+array_access[i]+"</option>");
+            }
+            }
+            };
+
+
               
             //$("<input/>").attr({ type: "text", placeholder: "Enter product name",
             //    name: "action_"+count_action}).appendTo("#actions").wrap($("<div/>"));
                 
         });
 
-        $("#action_00").change(function() {
+        var action_name = "#action_0"
+        var object_name = "#object_0"
+
+        $(action_name).change(function() { //"#action_00"
     
             var el = $(this) ;
-            var array_notif = {{objects[0]['object_notif'] | tojson}};
-            var array_access = {{objects[0]['object_access'] | tojson}};
+            //var array_notif = {{objects[0]['object_notif'] | tojson}};
+            //var array_access = {{objects[0]['object_access'] | tojson}};
     
             if(el.val() === "notify" ) {
                 for (var i = 0; i < array_access.length; i++) {
-                    $("#object_00 option:last-child").remove() ;
+                    $(object_name+" option:last-child").remove() ;
                 };
                 for (var i = 0; i < array_notif.length; i++) {
-                    $("#object_00").append("   <option>"+array_notif[i]+"</option>");
+                    $(object_name).append("   <option>"+array_notif[i]+"</option>");
                 };
 
                 }
             else if(el.val() === "no_authorise_access" ) {
                 for (var i = 0; i < array_notif.length; i++) {
-                    $("#object_00 option:last-child").remove() ;
+                    $(object_name+" option:last-child").remove() ;
                 };
                 for (var i = 0; i < array_access.length; i++) {
-                    $("#object_00").append("   <option>"+array_access[i]+"</option>");
+                    $(object_name).append("   <option>"+array_access[i]+"</option>");
                 }
                 }
         });
 
+        
+
+       
+
        
     });
+
+    
 </script>

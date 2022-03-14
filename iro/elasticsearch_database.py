@@ -25,7 +25,7 @@ try:
 except:
     print("ES_HOST:ES_PORT environment variables do not exist!!, trying with localhost...")
 
-while True:
+for attempt in range(3):
     try:
         es = Elasticsearch(
             [{"host": es_url, "port": es_port}],
@@ -41,7 +41,7 @@ while True:
         es_conn_attempts -= 1
         if es_conn_attempts == 0:
             print("Connection to Elasticsearch could not be established, exiting...")
-            exit(1)
+            #exit(1)
     if es != None:
         print("Connection to Elasticsearch [" + es_url + ":" + es_port + "] has been established")
         break

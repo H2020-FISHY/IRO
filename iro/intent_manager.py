@@ -7,15 +7,17 @@
 |   email:      
 |   copyright:  © IDA - All rights reserved
 """
+#from msilib.schema import Error
 import re
 import numpy as np
 import ast
 import json
 import os
+from flask import render_template
 from notification_manager import NotificationManager
 from policy_builder import PolicyGraph, IntentVerification
 from intent_determination import IntentDetermination
-from elasticsearch_database import ElasticsearchDatabase
+#from elasticsearch_database import ElasticsearchDatabase
 from intent_creation import IntentCreation
 
 
@@ -65,7 +67,7 @@ class IntentManager:
         """
         self.json_filename = "register.json"  # intent input history (intent_log)
         # TODO: update intent store to match hspl policies
-        self.intent_store = ElasticsearchDatabase()
+        #self.intent_store = ElasticsearchDatabase()
         # TODO: make intent_structure a list which contains all structures, 
         # and update all the other methods using it
         self.intent_structure = IntentCreation()
@@ -245,6 +247,52 @@ class IntentManager:
             return "Please enter Intents !!"
         self.conflict_solving()
         return "Pushing and resolving conflict !!"
+
+
+    def create_hspl_from_intent(self,form_data, intent_name):
+        # create the json from the form_data
+        to_test = {'wallet_id':"wallet id 1", "value": 1, "period": 1, "time":"hour",
+        "hspl_object":[{"id":"1", "action":"notify", "object":"supply_chain_operator"}]
+        }
+        structured_data = self.get_data_from_intent(form_data, intent_name)
+        print(structured_data)
+        for  val in structured_data['hspl_object']:
+            print("it works.........")
+        #check the needed xml template
+        fpath = "edc/hspl_new.xml"
+        fname = "tmp_register/hspl1.xml"
+        with open(fpath, 'w') as f:
+            html = render_template(fname, objects=structured_data)
+            f.write(html)
+        if not os.path.exists(fpath):
+            raise Exception("it is not saved :((")
+
+        
+        return 0
+
+    def get_data_from_intent(self, form_data, intent_name):
+        structured_data = {}
+        if intent_name == 'wallet_id_attack_detection':
+            structured_data['id'] = "hspl1"
+            structured_data['wallet_id'] = form_data['subject']
+            structured_data['value'] = form_data['value']
+            structured_data['period'] = form_data['period']
+            structured_data['time'] = form_data['time']
+            structured_data['hspl_object'] = []
+            try:
+                k = 0
+                while form_data['action_'+str(k)]:
+                    structured_data['hspl_object'].append({})
+                    structured_data['hspl_object'][k]['id'] = "hspl"+str(k)
+                    structured_data['hspl_object'][k]['action'] = form_data['action_'+str(k)]
+                    structured_data['hspl_object'][k]['object'] = form_data['object_'+str(k)]
+                    k += 1
+            except:
+                pass
+
+        else:
+            print(intent_name)
+        return structured_data
 
     def conflict_solving(self):
         """
