@@ -35,14 +35,15 @@ class UserInterface(FlaskView):
     |   UserInterface Class
     """
     def __init__(self):
-        
-        self.notification_manager = NotificationManager()
-        self.intent_manager = IntentManager(notif=self.notification_manager)
-        self.policies_filename = "export.txt"
         self.session = Session()
+        self.notification_manager = NotificationManager(self.session, tim_config)
+        
+        self.policies_filename = "export.txt"
+        
+        self.intent_manager = IntentManager(notif=self.notification_manager)
 
     def index(self):
-        notifs = self.notification_manager.get_notifications()
+        notifs = self.notification_manager.get_notifications(self.session, tim_config)
         msg = self.notification_manager.get_instructions()
         my_form, my_form_script = self.notification_manager.get_form("")
 

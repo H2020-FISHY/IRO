@@ -1,19 +1,39 @@
-
-
+import ast
+import json
 
 class NotificationManager:
     """
     |   NotificationManager Class
     """
-    def __init__(self):
+    def __init__(self, session, tim_config):
         """
         |    Create Intent Manager
         | 
         """
-        self.notifs = self.get_notifications()
+        self.notifs = self.get_notifications(session, tim_config)
     
-    def get_notifications(self):
-        return ""
+    def get_notifications(self, session, tim_config):
+        notifs = []
+            
+        # add reports from TIM
+        
+        try:
+            r = session.get(f'http://{tim_config["tar"]["ip"]}:{tim_config["tar"]["port"]}/api/reports')
+            r = r.content
+            r = r.decode("UTF-8")
+            r = ast.literal_eval(r)
+            
+            for el in r:
+                alert = json.loads(el['data'])
+                alert = alert['attachments'][0]
+                el['data'] = alert
+                notifs.append(el)
+            #print(data)
+        except:
+            with open("./tim/example_report.json", "r") as f:
+                notifs = json.load(f)
+            pass
+        return notifs
 
     def get_instructions(self):
         return (

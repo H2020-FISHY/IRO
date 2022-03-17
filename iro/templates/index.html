@@ -7,8 +7,15 @@
     <meta name="description" content="">
     <meta name="page_type" content="np-template-header-footer-from-plugin">
     <title>Home</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet"> 
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../static/css/nicepage.css" media="screen">
 <link rel="stylesheet" href="../static/css/Home.css" media="screen">
+<link rel="stylesheet" href="../static/css/Alerts.css" media="screen">
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
     <script class="u-script" type="text/javascript" src="../static/js/jquery-1.9.1.min.js" defer=""></script>
     <script class="u-script" type="text/javascript" src="../static/js/nicepage.js" defer=""></script>
@@ -105,7 +112,15 @@
               <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-2">
                 <div class="u-container-layout u-container-layout-3">
                   <!--h5 class="u-text u-text-default u-text-palette-1-base u-text-1">Reports</h5-->
-                  {% if notifications %} <h4 >{{ notifications }}</h4> {% endif %} 
+                  {% if notifications %} 
+                  {% with objects = notifications %}
+                  <div class="summary"> <p>Summary reports </p> </div> 
+                  {% include "summary_reports_table.html" %} 
+
+                  {% endwith %}
+                  {% endif %} 
+
+
                   {% if forms %} 
                   {% with objects = forms %}
                   {% include "form_threat_detection.html" %} 

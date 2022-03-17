@@ -4,23 +4,17 @@
     <reaction id="reaction1">
         <enabling-conditions>
             <threshold>
-                <subject type="wallet_id">Wallet ID 1</subject>
+                <subject type="wallet_id">Wallet ID 0</subject>
                 <value>1</value>
                 <period>1</period>
-                <time>Hour</time>
+                <time>Second</time>
             </threshold>
         </enabling-conditions>
         
         <hspl id="hspl0">
-            <subject type="wallet_id">Wallet ID 1</subject>
+            <subject type="wallet_id">Wallet ID 0</subject>
             <action>notify</action>
-            <object>island_operator</object>
-        </hspl>
-        
-        <hspl id="hspl1">
-            <subject type="wallet_id">Wallet ID 1</subject>
-            <action>no_authorise_access</action>
-            <object>all_traffic</object>
+            <object>supply_chain_operator</object>
         </hspl>
                
     </reaction>
