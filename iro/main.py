@@ -7,6 +7,7 @@
 |   email:      
 |   copyright:  © IDA - All rights reserved
 """
+from builtins import print
 import os
 from flask import Flask, render_template, request,  url_for, redirect, jsonify
 from jinja2 import Environment, FileSystemLoader
@@ -14,6 +15,8 @@ from flask_classful import FlaskView, route
 from intent_manager import IntentManager
 from notification_manager import NotificationManager
 import json
+import ast
+from requests import Session
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_ENVIRONMENT = Environment(
@@ -24,6 +27,8 @@ TEMPLATE_ENVIRONMENT = Environment(
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'IRO'
 
+with open("./tim/config/default.json", "r") as read_file:
+    tim_config = json.load(read_file)
 
 class UserInterface(FlaskView):
     """
@@ -34,6 +39,7 @@ class UserInterface(FlaskView):
         self.notification_manager = NotificationManager()
         self.intent_manager = IntentManager(notif=self.notification_manager)
         self.policies_filename = "export.txt"
+        self.session = Session()
 
     def index(self):
         notifs = self.notification_manager.get_notifications()
@@ -72,8 +78,28 @@ class UserInterface(FlaskView):
             # the redirect can be to the same route or somewhere else
             return redirect(url_for('UserInterface:index'))
 
-        # show the form, it wasn't submitted
-        return render_template('Alerts.html')
+        # show reports from TIM
+        data = None
+        try:
+            r = self.session.get(f'http://{tim_config["tar"]["ip"]}:{tim_config["tar"]["port"]}/api/reports')
+            r = r.content
+            r = r.decode("UTF-8")
+            r = ast.literal_eval(r)
+            data = []
+            for el in r:
+                alert = json.loads(el['data'])
+                alert = alert['attachments'][0]
+                el['data'] = alert
+                data.append(el)
+            #print(data)
+        except:
+            with open("./tim/example_report.json", "r") as f:
+                data = json.load(f)
+            pass
+
+
+
+        return render_template('Alerts.html', data=data)
 
     @route("/addIntent", methods=["POST"])
     def addintent(self):
