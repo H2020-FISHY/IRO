@@ -173,7 +173,7 @@ class IntentManager:
             if verified:
                 if validated:
                     if plain_text=="wallet_id_attack_detection":
-                        notifs = "Wallet ID Attack Detection Rule"
+                        #notifs = "Wallet ID Attack Detection Rule"
                         msg = "Please provide details and submit the intent !"
                         my_form, my_form_script = self.notif.get_form("wallet_detection")
                         return msg, my_form, my_form_script, notifs
