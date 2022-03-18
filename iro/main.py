@@ -27,8 +27,21 @@ TEMPLATE_ENVIRONMENT = Environment(
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'IRO'
 
-with open("./tim/config/default.json", "r") as read_file:
-    tim_config = json.load(read_file)
+try:
+    tim_cfg_content = {
+            "frontend" : {
+                "ip" : os.environ["TIM_HOST"],
+                "port" : os.environ["TIM_PORT"]
+            },
+            "tar": {
+                "ip": os.environ["TIM_HOST"],
+                "port": os.environ["TIM_PORT"]
+            }
+        }
+    tim_config = json.dumps(tim_cfg_content)
+except:
+    print("TIM_HOST or TIM_PORT environment variable does not exist, setting None as TIM config...")
+    tim_cfg_content = None
 
 class UserInterface(FlaskView):
     """
