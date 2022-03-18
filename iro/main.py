@@ -7,7 +7,7 @@
 |   email:      
 |   copyright:  © IDA - All rights reserved
 """
-from builtins import print
+#from builtins import print
 import os
 from flask import Flask, render_template, request,  url_for, redirect, jsonify
 from jinja2 import Environment, FileSystemLoader
