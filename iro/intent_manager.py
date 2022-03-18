@@ -266,9 +266,15 @@ class IntentManager:
             f.write(html)
         if not os.path.exists(fpath):
             raise Exception("it is not saved :((")
+        msg = None
+        try:
+            with open(fpath) as f_obj:
+                msg = f_obj.read()
+        except FileNotFoundError:
+            msg = "Sorry, the file "+ fpath + "does not exist."
 
         
-        return 0
+        return msg
 
     def get_data_from_intent(self, form_data, intent_name):
         structured_data = {}
