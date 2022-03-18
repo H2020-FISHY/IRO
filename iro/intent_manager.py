@@ -259,7 +259,7 @@ class IntentManager:
         for  val in structured_data['hspl_object']:
             print("it works.........")
         #check the needed xml template
-        fpath = "edc/hspl_new.xml"
+        fpath = "/edc/hspl_new.xml"
         fname = "tmp_register/hspl1.xml"
         with open(fpath, 'w') as f:
             html = render_template(fname, objects=structured_data)
