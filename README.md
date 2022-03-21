@@ -79,6 +79,7 @@ The IRO pods will then be spawned in the default namespace.
 ## Changelog
 
 ### Upcoming
+- Implementation of data exchange with TIM
 - Added Virtualbox support for Vagrantfile
 - Added host filesystem mount; mapped host's /tmp to container's /edc
 
