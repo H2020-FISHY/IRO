@@ -130,4 +130,10 @@ class UserInterface(FlaskView):
 
 if __name__ == "__main__":
     UserInterface.register(app, route_base='/')
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    certs_present = [os.path.exists('/crt/cert.pem'),
+                    os.path.exists('/crt/key.pem')]
+    print("Detected [certificate, private key]: ", certs_present)
+    if all(certs_present):
+        app.run(host='0.0.0.0', port=5000, debug=True, ssl_context=('/crt/cert.pem', '/crt/key.pem'))
+    else:
+        app.run(host='0.0.0.0', port=5000, debug=True)
