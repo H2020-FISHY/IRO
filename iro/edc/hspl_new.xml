@@ -13,12 +13,6 @@
         
         <hspl id="hspl0">
             <subject type="wallet_id">Wallet ID 0</subject>
-            <action>no_authorise_access</action>
-            <object>internet_traffic</object>
-        </hspl>
-        
-        <hspl id="hspl1">
-            <subject type="wallet_id">Wallet ID 0</subject>
             <action>notify</action>
             <object>supply_chain_operator</object>
         </hspl>

@@ -13,6 +13,7 @@ class NotificationManager:
         self.notifs = self.get_notifications(session, tim_config)
     
     def get_notifications(self, session, tim_config):
+        
         notifs = []
             
         # add reports from TIM
@@ -36,6 +37,7 @@ class NotificationManager:
         return notifs
 
     def get_instructions(self):
+
         return (
             "usage : iro <command> <args> \n"
             "\n"
@@ -53,6 +55,7 @@ class NotificationManager:
         )
     
     def get_instructions_after_form(self):
+
         return (
             "Submitted successfully!!\n"
             
@@ -64,6 +67,7 @@ class NotificationManager:
         )
     
     def get_intents(self):
+
         intents = (
             "- wallet_id_attack_detection\n"
             ".. more intents will be added .."
@@ -71,6 +75,7 @@ class NotificationManager:
         return intents
 
     def get_form(self, intent_name):
+
         form, script = None, None
         wallet_detection_form =  [ {
                    'subject': [{'name':'Wallet ID 0', 'val':'Wallet ID 0'},

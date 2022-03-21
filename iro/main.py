@@ -7,7 +7,7 @@
 |   email:      
 |   copyright:  © IDA - All rights reserved
 """
-from builtins import print
+#from builtins import print
 import os
 from flask import Flask, render_template, request,  url_for, redirect, jsonify
 from jinja2 import Environment, FileSystemLoader
@@ -27,8 +27,21 @@ TEMPLATE_ENVIRONMENT = Environment(
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'IRO'
 
-with open("./tim/config/default.json", "r") as read_file:
-    tim_config = json.load(read_file)
+try:
+    tim_cfg_content = {
+            "frontend" : {
+                "ip" : os.environ["TIM_HOST"],
+                "port" : os.environ["TIM_PORT"]
+            },
+            "tar": {
+                "ip": os.environ["TIM_HOST"],
+                "port": os.environ["TIM_PORT"]
+            }
+        }
+    tim_config = json.dumps(tim_cfg_content)
+except:
+    print("TIM_HOST or TIM_PORT environment variable does not exist, setting None as TIM config...")
+    tim_cfg_content = None
 
 class UserInterface(FlaskView):
     """
@@ -63,9 +76,10 @@ class UserInterface(FlaskView):
                     return redirect(url_for('UserInterface:alerts'))
             if 'threat_d_form' in request.form:
                 threat_data =  request.form
-                msg = self.notification_manager.get_instructions_after_form()
+                
                 #return jsonify(request.form)
-                self.intent_manager.create_hspl_from_intent(threat_data,'wallet_id_attack_detection')                
+                msg = self.intent_manager.create_hspl_from_intent(threat_data,'wallet_id_attack_detection')                
+                #msg = self.notification_manager.get_instructions_after_form()
                 return render_template('index.html', formoutput=threat_data, message=msg)
 
         return render_template('index.html', form_script=my_form_script, forms=my_form, message=msg, notifications=notifs)

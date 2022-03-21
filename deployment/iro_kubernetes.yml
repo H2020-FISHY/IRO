@@ -48,6 +48,10 @@ spec:
           value: "9200"
         - name: ES_HOST
           value: "iro-database"
+        - name: TIM_HOST
+          value: "192.168.55.10"
+        - name: TIM_PORT
+          value: "8000"
       volumes:
       - name: edc-volume
         hostPath:

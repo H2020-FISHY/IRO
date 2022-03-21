@@ -259,16 +259,22 @@ class IntentManager:
         for  val in structured_data['hspl_object']:
             print("it works.........")
         #check the needed xml template
-        fpath = "edc/hspl_new.xml"
+        fpath = "/edc/hspl_new.xml"
         fname = "tmp_register/hspl1.xml"
         with open(fpath, 'w') as f:
             html = render_template(fname, objects=structured_data)
             f.write(html)
         if not os.path.exists(fpath):
             raise Exception("it is not saved :((")
+        msg = None
+        try:
+            with open(fpath) as f_obj:
+                msg = f_obj.read()
+        except FileNotFoundError:
+            msg = "Sorry, the file "+ fpath + "does not exist."
 
         
-        return 0
+        return msg
 
     def get_data_from_intent(self, form_data, intent_name):
         structured_data = {}
