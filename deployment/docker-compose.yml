@@ -24,6 +24,7 @@ services:
             - "5000:5000"
         volumes:
             - /tmp:/edc
+            - ./crt:/crt
         networks:
             - iro_lan
 
