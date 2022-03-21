@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: iro
-        image: michalkeit/iro:1.05
+        image: michalkeit/iro:1.06
         securityContext:
           capabilities:
             add: ["NET_ADMIN"]
@@ -41,6 +41,9 @@ spec:
         volumeMounts:
         - mountPath: /edc
           name: edc-volume
+        - mountPath: /crt
+          name: iro-crt-secret
+          readOnly: true
         env: 
         - name: INTERFACES_UP
           value: "mgmt:192.168.5.1/24"
@@ -55,9 +58,18 @@ spec:
       volumes:
       - name: edc-volume
         hostPath:
-        # directory location on host
+        # directory location on host, is temporary until proper EDC interface is implemented
           path: /tmp
           type: Directory
+      - name: iro-crt-secret
+        secret:
+          optional: true
+          secretName: iro-crt-secret
+          items:
+          - key: tls.crt
+            path: cert.pem
+          - key: tls.key
+            path: key.pem
 ---
 apiVersion: apps/v1
 kind: Deployment

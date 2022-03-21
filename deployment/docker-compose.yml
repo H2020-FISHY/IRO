@@ -9,7 +9,7 @@ networks:
 
 services:
     iro:
-        image: michalkeit/iro
+        image: michalkeit/iro:1.06
         build: ../iro
         container_name: iro-dashboard
         restart: always

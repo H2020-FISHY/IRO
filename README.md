@@ -31,6 +31,7 @@ Prerequisites
 - `docker`
 - `docker-compose`
 
+If you want to use HTTPS for IRO, place the certificates into the 'crt' directory. IRO will then automatically pick them up and use them when it starts up.
 
 Run this command once on your machine:
 ```shell
@@ -63,14 +64,25 @@ vagrant up
 ```
 A setup containing 3 VMs with a NED instance each and one IRO on the control node will then be created. 
 
-All interactions with kubectl fom inside the VMs require 'sudo'.
+All interactions with kubectl fom inside the VMs require 'sudo'. If you require HTTPS support, enter the VM via 'vagrant ssh' and follow the instructions for Kubernetes. You will then have to redeploy IRO.
 
 ### Option 3: Kubernetes (showcase/production)
 
-Use Kubernetes with the definition at `deployment/iro_kubernetes.yml`.
+#### Optional:
+For HTTPS deployment, create a kubernetes secret called 'iro-crt-secret' from your certificate and key file via:
+```
+kubectl create secret tls iro-crt-secret --key /PATHTO/key.pem --cert /PATHTO/cert.pem
+```
+Alternatively, you can also encode the content of the files as base64 and place them directly into a YAML file, we provide an example in 'iro\_certificate.yml'. Then simply apply the file before you deploy IRO:
+```
+kubectl apply -f deployment/iro_certificate.yml
+```
+
+#### Deployment:
+Use Kubernetes with the definition at `deployment/iro_k8s_deploy.yml`.
 Deploy with:
 ```shell
-kubectl apply -f deployment/iro_kubernetes.yml
+kubectl apply -f deployment/iro_k8s_deploy.yml
 ```
 The IRO pods will then be spawned in the default namespace.
 
@@ -79,6 +91,7 @@ The IRO pods will then be spawned in the default namespace.
 ## Changelog
 
 ### Upcoming
+- Support for HTTPS by placing key.pem and cert.pem into the 'crt' folder (docker-compose) or deploying a secret (Kubernetes)
 - Implementation of data exchange with TIM
 - Added Virtualbox support for Vagrantfile
 - Added host filesystem mount; mapped host's /tmp to container's /edc
