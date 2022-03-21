@@ -1,0 +1,1 @@
+place your certificates here if you want to deploy IRO via HTTPS. Name them 'cert.pem' and 'key.pem' and IRO will automatically detect them and start in HTTPS mode.
