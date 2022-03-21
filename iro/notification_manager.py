@@ -77,17 +77,22 @@ class NotificationManager:
     def get_form(self, intent_name):
 
         form, script = None, None
+        WALLET_IDS = [ 
+            0xb5707bdcd820694303496b74d56895902a009943,
+            0x35a69278fea8d80d9490b64cd52915575149a898,
+            0x99245a929029d8b5f6c12b7d80158f71fac19198
+            ]
         wallet_detection_form =  [ {
-                   'subject': [{'name':'Wallet ID 0', 'val':'Wallet ID 0'},
-        {'name':'Wallet ID 1', 'val':'Wallet ID 1'},
-        {'name':'Wallet ID 2', 'val':'Wallet ID 2'}],
+                   'subject': [{'name':'Malicious_User1', 'val':'0xb5707bdcd820694303496b74d56895902a009943'},
+        {'name':'Malicious_User2', 'val':'0x35a69278fea8d80d9490b64cd52915575149a898'},
+        {'name':'Malicious_User3', 'val':'0x99245a929029d8b5f6c12b7d80158f71fac19198'}],
                    'time': [{'name':'Second', 'val':'second'},
                    {'name':'Minute', 'val':'minute'},
                    {'name':'Hour', 'val':'hour'},
                    {'name':'Day', 'val':'day'}],
                    'action':[ 'notify', 'no_authorise_access'], 
                    'object_notif':[ 'supply_chain_operator', 'island_operator'],
-                   'object_access':[ 'internet_traffic', 'intranet_traffic', 'all_traffic']
+                   'object_access':[ 'Web App', 'internet_traffic', 'intranet_traffic', 'all_traffic']
      
                    }
     ]
@@ -95,7 +100,7 @@ class NotificationManager:
             'action':[ 'notify', 'no_authorise_access'], 
             'object':[ 'internet_traffic', 'intranet_traffic', 'all_traffic','supply_chain_operator', 'island_operator'],
             'object_notif':[ 'supply_chain_operator', 'island_operator'],
-            'object_access':[ 'internet_traffic', 'intranet_traffic', 'all_traffic']
+            'object_access':[ 'Web App', 'internet_traffic', 'intranet_traffic', 'all_traffic']
      
             }
         ]

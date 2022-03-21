@@ -18,6 +18,7 @@ from notification_manager import NotificationManager
 from policy_builder import PolicyGraph, IntentVerification
 from intent_determination import IntentDetermination
 #from elasticsearch_database import ElasticsearchDatabase
+from attack_intent_store import Attack_Data
 from intent_creation import IntentCreation
 
 
@@ -254,22 +255,35 @@ class IntentManager:
         to_test = {'wallet_id':"wallet id 1", "value": 1, "period": 1, "time":"hour",
         "hspl_object":[{"id":"1", "action":"notify", "object":"supply_chain_operator"}]
         }
-        structured_data = self.get_data_from_intent(form_data, intent_name)
-        print(structured_data)
-        for  val in structured_data['hspl_object']:
+        structured_data_hspl, structured_data_attacker = self.get_data_from_intent(form_data, intent_name)
+         
+        print(structured_data_hspl)
+        for  val in structured_data_hspl['hspl_object']:
             print("it works.........")
         #check the needed xml template
         fpath = "/edc/hspl_new.xml"
         fname = "tmp_register/hspl1.xml"
         with open(fpath, 'w') as f:
-            html = render_template(fname, objects=structured_data)
+            html = render_template(fname, objects=structured_data_hspl)
             f.write(html)
         if not os.path.exists(fpath):
             raise Exception("it is not saved :((")
+
+        fpatha = "/edc/attacker_new.txt"
+        fnamea = "tmp_register/attack_id1.txt"
+        with open(fpatha, 'w') as f:
+            html = render_template(fnamea, attacker=structured_data_attacker)
+            f.write(html)
+        if not os.path.exists(fpatha):
+            raise Exception("it is not saved :((")
+
         msg = None
         try:
             with open(fpath) as f_obj:
-                msg = f_obj.read()
+                tmp1 = f_obj.read()
+            with open(fpatha) as f_obja:
+                tmp2 = f_obja.read()
+            msg = "Policies saved successfully!\n\n" + tmp1 + "\n" + tmp2
         except FileNotFoundError:
             msg = "Sorry, the file "+ fpath + "does not exist."
 
@@ -278,9 +292,13 @@ class IntentManager:
 
     def get_data_from_intent(self, form_data, intent_name):
         structured_data = {}
+        structured_data_attacker = {}
         if intent_name == 'wallet_id_attack_detection':
             structured_data['id'] = "hspl1"
             structured_data['wallet_id'] = form_data['subject']
+            structured_data_attacker['name'] = form_data['subject']
+            structured_data_attacker['type'] = 'WID'
+            structured_data_attacker['id'] = Attack_Data[form_data['subject']]
             structured_data['value'] = form_data['value']
             structured_data['period'] = form_data['period']
             structured_data['time'] = form_data['time']
@@ -298,7 +316,7 @@ class IntentManager:
 
         else:
             print(intent_name)
-        return structured_data
+        return structured_data, structured_data_attacker
 
     def conflict_solving(self):
         """

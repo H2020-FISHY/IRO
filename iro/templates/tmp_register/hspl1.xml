@@ -12,11 +12,12 @@
         </enabling-conditions>
         {% for  hspl in objects['hspl_object'] %}
         <hspl id="{{hspl.id }}">
-            <subject type="wallet_id">{{objects.wallet_id}}</subject>
+            <subject>{{objects.wallet_id}}</subject>
             <action>{{hspl.action}}</action>
             <object>{{hspl.object}}</object>
         </hspl>
-        {% endfor %}       
+        {% endfor %}   
+   
     </reaction>
 </hspl-list>
 
