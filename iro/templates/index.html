@@ -97,6 +97,12 @@
                       <div class="u-container-style u-custom-item u-grey-5 u-list-item u-repeater-item u-list-item-1">
                         <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2">
                           {% if message %} <pre >{{ message }}</pre> {% endif %}
+                          {% if message_list %}
+                          {% with objects = message_list %}
+                          {% include "list_options_message.html" %} 
+
+                          {% endwith %}
+                          {% endif %}
                         </div>
                       </div>
                     </div>
@@ -163,5 +169,14 @@
     {% if form_script %} {% with objects = form_script %}
     {% include "script_form_th_d.html" %} 
     {% endwith %} {% endif %} 
+
+    <script>
+      function copyEvent(id)
+      {
+          var str = document.getElementById(id);
+          window.getSelection().selectAllChildren(str);
+          document.execCommand("Copy")
+      }
+  </script>
   </body>
 </html>

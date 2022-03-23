@@ -78,14 +78,7 @@ table {
     flex-direction: column-reverse;
 }
 
-button {
-    background-color: rgba(78,120,199,1);
-    color: white;
-    border: none;
-    display: block;
-    margin: 20px auto;
-    padding: 10px 20px;
-}
+
 
 .summary {
     color: #34568B;

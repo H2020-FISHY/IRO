@@ -1,3 +1,5 @@
-'{{attacker.name}}': {
+{
+    '{{attacker.name}}': {
     '{{attacker.type}}':'{{attacker.id}}'
+}
 }

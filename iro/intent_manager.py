@@ -222,10 +222,9 @@ class IntentManager:
         |       str: information message to User
         |
         """
-        display_message = self.notif.get_intents()
+        list_of_intents = self.notif.get_intents()
         return (
-            "The list of intents: \n\n"
-            + display_message
+             list_of_intents
         )
 
         '''

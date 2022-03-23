@@ -68,10 +68,10 @@ class NotificationManager:
     
     def get_intents(self):
 
-        intents = (
-            "- wallet_id_attack_detection\n"
+        intents = [
+            "wallet_id_attack_detection",
             ".. more intents will be added .."
-        )
+        ]
         return intents
 
     def get_form(self, intent_name):

@@ -26,7 +26,7 @@ TEMPLATE_ENVIRONMENT = Environment(
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'IRO'
-
+tim_config = None
 try:
     tim_cfg_content = {
             "frontend" : {
@@ -66,12 +66,17 @@ class UserInterface(FlaskView):
         msg = ''
         my_form = None
         my_form_script = None
+        list_options = None
         notifs = None
         if request.method == 'POST':
             
             if  'intentText' in request.form:
                 intent_text = request.form.get('intentText')
                 msg, my_form, my_form_script, notifs = self.intent_manager.reading_command(intent_text)
+                if  isinstance(msg, list):
+                    list_options = msg.copy()
+                    msg = None
+
                 if msg == "reports":
                     return redirect(url_for('UserInterface:alerts'))
             if 'threat_d_form' in request.form:
@@ -82,7 +87,7 @@ class UserInterface(FlaskView):
                 #msg = self.notification_manager.get_instructions_after_form()
                 return render_template('index.html', formoutput=threat_data, message=msg)
 
-        return render_template('index.html', form_script=my_form_script, forms=my_form, message=msg, notifications=notifs)
+        return render_template('index.html', form_script=my_form_script, forms=my_form, message=msg, notifications=notifs, message_list=list_options)
 
     @route("/alerts", methods=['GET', 'POST'])
     def alerts(self):
