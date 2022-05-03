@@ -1,6 +1,6 @@
 import ast
 import json
-
+import requests
 class NotificationManager:
     """
     |   NotificationManager Class
@@ -19,20 +19,26 @@ class NotificationManager:
         # add reports from TIM
         
         try:
-            r = session.get(f'http://{tim_config["tar"]["ip"]}:{tim_config["tar"]["port"]}/api/reports')
+            #r = session.get(f'http://{tim_config["tar"]["ip"]}:{tim_config["tar"]["port"]}/api/reports')
+            #r = self.session.get('https://fishy.xlab.si/tar/api/reports')
+            r = requests.get('https://fishy.xlab.si/tar/api/reports')
             r = r.content
             r = r.decode("UTF-8")
             r = ast.literal_eval(r)
             
             for el in r:
-                alert = json.loads(el['data'])
-                alert = alert['attachments'][0]
-                el['data'] = alert
-                notifs.append(el)
-            #print(data)
+                try:
+                    alert = json.loads(el['data'])
+                    if alert != "testAPI":
+                        alert = alert["attachments"][0]   
+                    el['data'] = alert
+                    notifs.append(el)
+                except:
+                    pass
         except:
             with open("./tim/example_report.json", "r") as f:
                 notifs = json.load(f)
+                pass
             pass
         return notifs
 

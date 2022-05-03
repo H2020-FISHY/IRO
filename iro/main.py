@@ -16,6 +16,7 @@ from intent_manager import IntentManager
 from notification_manager import NotificationManager
 import json
 import ast
+import requests
 from requests import Session
 
 PATH = os.path.dirname(os.path.abspath(__file__))
@@ -101,20 +102,33 @@ class UserInterface(FlaskView):
         # show reports from TIM
         data = None
         try:
-            r = self.session.get(f'http://{tim_config["tar"]["ip"]}:{tim_config["tar"]["port"]}/api/reports')
+            #r = self.session.get(f'http://{tim_config["tar"]["ip"]}:{tim_config["tar"]["port"]}/api/reports')
+            r = requests.get('https://fishy.xlab.si/tar/api/reports')
+            print(r)
             r = r.content
+            #print(r)
             r = r.decode("UTF-8")
+            #print(r)
             r = ast.literal_eval(r)
+            #print(r)
             data = []
+            print(len(r))
             for el in r:
-                alert = json.loads(el['data'])
-                alert = alert['attachments'][0]
-                el['data'] = alert
-                data.append(el)
+                try:
+                    alert = json.loads(el['data'])
+                
+                    if alert != "testAPI":
+                        alert = alert["attachments"][0]   
+                    el['data'] = alert
+                    data.append(el)
+                except:
+                    pass
+                
             #print(data)
         except:
             with open("./tim/example_report.json", "r") as f:
-                data = json.load(f)
+                #data = json.load(f)
+                pass
             pass
 
 
