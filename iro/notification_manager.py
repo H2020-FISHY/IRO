@@ -21,7 +21,8 @@ class NotificationManager:
         try:
             #r = session.get(f'http://{tim_config["tar"]["ip"]}:{tim_config["tar"]["port"]}/api/reports')
             #r = self.session.get('https://fishy.xlab.si/tar/api/reports')
-            r = requests.get('https://fishy.xlab.si/tar/api/reports')
+            #r = requests.get('https://fishy.xlab.si/tar/api/reports')
+            r = requests.get(tim_config["tar"]["url"])
             r = r.content
             r = r.decode("UTF-8")
             r = ast.literal_eval(r)
@@ -37,7 +38,7 @@ class NotificationManager:
                     pass
         except:
             with open("./tim/example_report.json", "r") as f:
-                notifs = json.load(f)
+                #notifs = json.load(f)
                 pass
             pass
         return notifs

@@ -32,15 +32,19 @@ try:
     tim_cfg_content = {
             "frontend" : {
                 "ip" : os.environ["TIM_HOST"],
-                "port" : os.environ["TIM_PORT"]
+                "port" : os.environ["TIM_PORT"],
+                "url" : os.environ["TIM_URL"]
             },
             "tar": {
                 "ip": os.environ["TIM_HOST"],
-                "port": os.environ["TIM_PORT"]
+                "port": os.environ["TIM_PORT"],
+                "url" : os.environ["TIM_URL"]
             }
         }
-    tim_config = json.dumps(tim_cfg_content)
+    tim_config = tim_cfg_content #json.dumps(tim_cfg_content)
 except:
+    
+    
     print("TIM_HOST or TIM_PORT environment variable does not exist, setting None as TIM config...")
     tim_cfg_content = None
 
@@ -101,16 +105,16 @@ class UserInterface(FlaskView):
 
         # show reports from TIM
         data = None
+        
         try:
             #r = self.session.get(f'http://{tim_config["tar"]["ip"]}:{tim_config["tar"]["port"]}/api/reports')
-            r = requests.get('https://fishy.xlab.si/tar/api/reports')
+            #r = requests.get('https://fishy.xlab.si/tar/api/reports')
+            
+            r = requests.get(tim_config["tar"]["url"])
             print(r)
             r = r.content
-            #print(r)
             r = r.decode("UTF-8")
-            #print(r)
             r = ast.literal_eval(r)
-            #print(r)
             data = []
             print(len(r))
             for el in r:
@@ -123,8 +127,6 @@ class UserInterface(FlaskView):
                     data.append(el)
                 except:
                     pass
-                
-            #print(data)
         except:
             with open("./tim/example_report.json", "r") as f:
                 #data = json.load(f)

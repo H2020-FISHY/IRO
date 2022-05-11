@@ -20,6 +20,7 @@ services:
             ES_PORT: "9200"
             TIM_HOST: "192.168.55.10"
             TIM_PORT: "8000"
+            TIM_URL: "https://fishy.xlab.si/tar/api/reports"
         ports:
             - "5000:5000"
         volumes:

@@ -85,11 +85,14 @@
                 </div>
               </div>
             </div-->
+            
+                        
             <section class="table-content">
               <div class="container-fluid">
                   <h2 class="title">Detailed Reports</h2>
                   <div class="row">
                       <div class="offset-1 col-10">
+                        
                           <table class="table table-striped">
                               <thead class="main-head">
                                   <tr>
@@ -101,6 +104,7 @@
                               <tbody>
   
                               </tbody>
+                   {% if data %} 
                   {% for el in data %}
                   <tr>
                       <td>{{ el.data.title }}</td>
@@ -125,12 +129,15 @@
                       </td>
                   </tr>
                   {% endfor %}
+                  {% endif %} 
               </table></div></div></div></section>
+              
 
           </div>
         </div>
       </div>
     </section>
+    
     <section class="u-clearfix u-section-2" id="sec-4b18">
       <div class="u-clearfix u-sheet u-sheet-1"></div>
     </section>

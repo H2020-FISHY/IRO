@@ -52,6 +52,8 @@ spec:
           value: "192.168.55.10"
         - name: TIM_PORT
           value: "8000"
+        - name: TIM_URL
+          value: "https://fishy.xlab.si/tar/api/reports"
       volumes:
       - name: edc-volume
         hostPath:
