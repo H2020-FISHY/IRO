@@ -31,13 +31,9 @@ tim_config = None
 try:
     tim_cfg_content = {
             "frontend" : {
-                "ip" : os.environ["TIM_HOST"],
-                "port" : os.environ["TIM_PORT"],
                 "url" : os.environ["TIM_URL"]
             },
             "tar": {
-                "ip": os.environ["TIM_HOST"],
-                "port": os.environ["TIM_PORT"],
                 "url" : os.environ["TIM_URL"]
             }
         }

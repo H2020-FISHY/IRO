@@ -7,7 +7,7 @@
                 <subject type="wallet_id">Malicious_User1</subject>
                 <value>1</value>
                 <period>1</period>
-                <time>Hour</time>
+                <time>Second</time>
             </threshold>
         </enabling-conditions>
         

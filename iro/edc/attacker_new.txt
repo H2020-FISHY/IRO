@@ -1,3 +1,5 @@
-'Malicious_User1': {
+{
+    'Malicious_User1': {
     'WID':'0xb5707bdcd820694303496b74d56895902a009943'
+}
 }
