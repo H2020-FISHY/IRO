@@ -104,9 +104,9 @@ class UserInterface(FlaskView):
         
         try:
             #r = self.session.get(f'http://{tim_config["tar"]["ip"]}:{tim_config["tar"]["port"]}/api/reports')
-            #r = requests.get('https://fishy.xlab.si/tar/api/reports')
+            r = requests.get('https://fishy.xlab.si/tar/api/reports')
             
-            r = requests.get(tim_config["tar"]["url"])
+            #r = requests.get(tim_config["tar"]["url"])
             print(r)
             r = r.content
             r = r.decode("UTF-8")
@@ -124,10 +124,13 @@ class UserInterface(FlaskView):
                 except:
                     pass
         except:
+            raise Exception(" it's not reading from tim, url: ", tim_config["tar"]["url"])
+            '''
             with open("./tim/example_report.json", "r") as f:
-                #data = json.load(f)
+                data = json.load(f)
                 pass
             pass
+            '''
 
 
 
