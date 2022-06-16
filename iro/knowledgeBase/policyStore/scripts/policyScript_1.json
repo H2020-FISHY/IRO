@@ -1,0 +1,25 @@
+{
+    "id": 1,
+    "policyname": "wallet_id_detection",  
+
+    "attributes": [
+        {"attribute_name": "action", "attribute_values": [
+            {"attribute_name": "notify","attribute_value": "notify"},
+            {"attribute_name": "no_authorise_access","attribute_value": "no_authorise_access"}
+            ]
+        },
+        {"attribute_name": "object_notif", "attribute_values": [
+            {"attribute_name": "supply_chain_operator","attribute_value": "supply_chain_operator"},
+            {"attribute_name": "island_operator","attribute_value": "island_operator"}
+            ]
+        },
+        {"attribute_name": "object_access", "attribute_values": [
+            {"attribute_name": "Web App","attribute_value": "Web App"},
+            {"attribute_name": "internet_traffic","attribute_value": "internet_traffic"},
+            {"attribute_name": "intranet_traffic","attribute_value": "intranet_traffic"},
+            {"attribute_name": "all_traffic","attribute_value": "all_traffic"}
+            ]
+        }
+    ]
+}
+         

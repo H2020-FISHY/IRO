@@ -1,16 +1,32 @@
 import ast
 import json
 import requests
+import os
+import sys
+_cwd = os.getcwd()
+sys.path.append(_cwd+ '/learningAndReasoning/notifications')
+sys.path.append(_cwd+ '/knowledgeBase/policyStore')
+sys.path.append(_cwd+ '/knowledgeBase/intentStore')
+import policyStoreManager as psm
+import intentStoreManager as ism
+
+
 class NotificationManager:
     """
     |   NotificationManager Class
     """
     def __init__(self, session, tim_config):
         """
-        |    Create Intent Manager
+        |    Create Notification Manager
         | 
         """
-        self.notifs = self.get_notifications(session, tim_config)
+        self.policyStore = psm.PolicyStoreManager()
+        self.intentStore = ism.IntentStoreManager()
+        self.notifs = self.get_notifications(session,tim_config)
+        self.last_event_id_read = None
+        self.last_event_id_treated = None
+        
+        
     
     def get_notifications(self, session, tim_config):
         
@@ -41,7 +57,28 @@ class NotificationManager:
                 #notifs = json.load(f)
                 pass
             pass
+        self.notifs = notifs
+        # get only latest and not treated
+        self.get_latest_event_id_read()
+        self.get_latest_event_id_treated()
+        self.push_events_to_policyStore()
         return notifs
+
+    def get_latest_event_id_read(self):
+        return 0
+
+    def get_latest_event_id_treated(self):
+        return 0
+    
+    def push_events_to_policyStore(self):
+        policy_config = self.policyStore.get_policyStore_config()
+        if self.notifs != []:
+            for el in self.notifs:
+                pass
+
+            pass
+
+        return 0
 
     def get_instructions(self):
 
@@ -74,17 +111,42 @@ class NotificationManager:
         )
     
     def get_intents(self):
-
-        intents = [
-            "wallet_id_attack_detection",
-            ".. more intents will be added .."
-        ]
+        intents = self.intentStore.get_all_intents()
+        #[
+        #    "wallet_id_attack_detection",
+        #    ".. more intents will be added .."
+        #]
         return intents
 
-    def get_form(self, intent_name):
+    def get_form(self, intent_json):
+        form, script, HTMLtemplate, JStemplate = None, None, "None", None
+        try:
+            
 
-        form, script = None, None
-        WALLET_IDS = [ 
+
+            #intent_name = intent_json["intentname"]
+            intent_id = intent_json["id"]
+            
+
+            if intent_json['use_template']:
+                HTMLtemplate = intent_json['HTMLtemplate']
+                JStemplate = intent_json['JStemplate']
+            else:
+                # get/generate html and js templates from attributes
+                pass
+            
+
+
+            form, script = self.policyStore.getPolicyFormAndScript(intent_id) 
+
+        except:
+            #HTMLtemplate = "except"
+            pass
+        return form, script, HTMLtemplate, JStemplate
+
+
+'''
+    WALLET_IDS = [ 
             0xb5707bdcd820694303496b74d56895902a009943,
             0x35a69278fea8d80d9490b64cd52915575149a898,
             0x99245a929029d8b5f6c12b7d80158f71fac19198
@@ -111,8 +173,4 @@ class NotificationManager:
      
             }
         ]
-
-        if intent_name == "wallet_detection":
-            return wallet_detection_form, wallet_detection_script
-            
-        return form, script
+'''

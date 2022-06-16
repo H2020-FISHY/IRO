@@ -1,0 +1,16 @@
+{
+    "id": 2,
+    "intentname": "ddos_attack",
+    "use_template": "True",
+    "HTMLtemplate": "form_threat_detection.html",
+    "JStemplate": "script_form_th_d.html",
+    "vocabularies": [
+        {"vocab_name": "ddos", "vocab_values": [
+            {"vocab_value": "ddos attack"},
+            {"vocab_value": "ddos"},
+            {"vocab_value": "DDOS"},
+            {"vocab_value": "DDoS"}
+            ]
+        }
+    ]
+}

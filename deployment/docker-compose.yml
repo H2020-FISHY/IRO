@@ -9,6 +9,8 @@ networks:
 
 services:
     iro:
+        dns:
+            - 1.1.1.1
         image: michalkeit/iro
         build: ../iro
         container_name: iro-dashboard

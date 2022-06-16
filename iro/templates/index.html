@@ -103,15 +103,13 @@
 
                           {% endwith %}
                           {% endif %}
+
+                          
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  
-                    
-
- 
 
                 </div>
               </div>
@@ -129,7 +127,9 @@
 
                   {% if forms %} 
                   {% with objects = forms %}
-                  {% include "form_threat_detection.html" %} 
+                  {% if htmltemplate %}
+                  {% include  htmltemplate  %} 
+                  {% endif %}
                   
                   {% endwith %}
                   {% endif %} 
@@ -167,7 +167,9 @@
       </script>
 
     {% if form_script %} {% with objects = form_script %}
-    {% include "script_form_th_d.html" %} 
+    {% if htmltemplate %}
+                  {% include  jstemplate  %} 
+                  {% endif %}
     {% endwith %} {% endif %} 
 
     <script>

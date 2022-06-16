@@ -2,7 +2,7 @@
     <h5> Condition:</h5>
     <select name="subject" class="Input" required>
         {% for o in objects[0]['subject'] %}
-        <option value="{{ o.name }}">{{ o.val }}</option>
+        <option value="{{ o }}">{{ o }}</option>
         {% endfor %}
       </select> appears more than
       <input class="Input" type="number" name="value" min="1" placeholder="Occurence" required/> times in 
@@ -10,7 +10,7 @@
       <!--input class="Input" type="number" name="time" placeholder="Enter period value" required/-->
       <select name="time" class="Input">
         {% for o in objects[0]['time'] %}
-        <option value="{{ o.name }}">{{ o.val }}</option>
+        <option value="{{ o }}">{{ o }}</option>
         {% endfor %}
       </select>
       <br><br>

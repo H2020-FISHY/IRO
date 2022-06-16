@@ -14,10 +14,11 @@ import ast
 import json
 import os
 from flask import render_template
-from notification_manager import NotificationManager
+from learningAndReasoning.notifications.notification_manager import NotificationManager
 from policy_builder import PolicyGraph, IntentVerification
 from intent_determination import IntentDetermination
 #from elasticsearch_database import ElasticsearchDatabase
+from knowledgeBase.intentStore import intentStoreManager as ism
 from attack_intent_store import Attack_Data
 from intent_creation import IntentCreation
 
@@ -68,6 +69,9 @@ class IntentManager:
         """
         self.json_filename = "register.json"  # intent input history (intent_log)
         # TODO: update intent store to match hspl policies
+        self.intent_store = ism.IntentStoreManager()
+        self.hspl_id_counter = 0
+        self.attack_info_id_counter = 0
         #self.intent_store = ElasticsearchDatabase()
         # TODO: make intent_structure a list which contains all structures, 
         # and update all the other methods using it
@@ -94,13 +98,15 @@ class IntentManager:
         info_message = ""
         my_form = None
         my_form_script = None
+        HTMLtemplate = None
+        JStemplate = None
         notifs = None
         
         if match:
             if match.group("start") == "iro":
                 cmd = match.group("command")
                 if cmd == "add":
-                    info_message, my_form, my_form_script, notifs = self.instruct_add(match.group("intent"))
+                    info_message, my_form, my_form_script,HTMLtemplate,JStemplate, notifs = self.instruct_add(match.group("intent"))
                 elif cmd == "status":
                     info_message = self.instruct_status()
                 elif cmd == "reset":
@@ -110,11 +116,11 @@ class IntentManager:
                 elif cmd == "push":
                     info_message = self.instruct_push()
                 if info_message:
-                    return info_message, my_form, my_form_script, notifs
+                    return info_message, my_form, my_form_script, HTMLtemplate, JStemplate, notifs
 
             if match.group("start") == "reports":
                 info_message = "reports"
-                return info_message, my_form, my_form_script, notifs
+                return info_message, my_form, my_form_script,HTMLtemplate,JStemplate, notifs
             '''return (
                 "usage : iro <command> <args> \n"
                 "\n"
@@ -129,9 +135,9 @@ class IntentManager:
             if intent_text == "reports":
                 info_message = "reports..."
                 print("yes....")
-                return info_message, my_form, my_form_script, notifs
+                return info_message, my_form, my_form_script,HTMLtemplate, notifs
 
-        return self.notif.get_instructions(), my_form, my_form_script, notifs
+        return self.notif.get_instructions(), my_form, my_form_script, HTMLtemplate, notifs
 
     def instruct_add(self, plain_text):
         """
@@ -144,14 +150,9 @@ class IntentManager:
         |       str: information message to User
         |
         """
-        verified = True
-        validated = True
         my_form = None
         my_form_script = None
         notifs = None
-        
-        
-
         '''
         # TODO: re-create those methods 
         intent_verification = IntentVerification(
@@ -168,18 +169,19 @@ class IntentManager:
             return "ERROR: Non valid intent please enter a valid intent !"
         return "ERROR: Please enter an intent "
         '''
+        
 
-        # the text is assumed to be verified 
+        # the text is assumed to be verified TODO: consider intentStore here !!
         if plain_text is not None:
-            if verified:
-                if validated:
-                    if plain_text=="wallet_id_attack_detection":
-                        #notifs = "Wallet ID Attack Detection Rule"
-                        msg = "Please provide details and submit the intent !"
-                        my_form, my_form_script = self.notif.get_form("wallet_detection")
-                        return msg, my_form, my_form_script, notifs
-                    return "ERROR: Non valid intent please enter a valid intent !", my_form, my_form_script, notifs
-        return 'ERROR: Please enter an intent\n Maybe you should use quotes ""\nwrite anything to see instructions', my_form, my_form_script, notifs
+            if self.is_intent_exist(plain_text):
+                intent_json = self.get_intent_info(plain_text)
+                intent_json = intent_json['_source']
+                msg = "Please provide details and submit the intent !"
+                if intent_json['use_template']:
+                    my_form, my_form_script, HTMLtemplate, JStemplate = self.notif.get_form(intent_json)
+                return msg, my_form, my_form_script, HTMLtemplate,JStemplate, notifs
+            return "ERROR: Non valid intent please enter a valid intent !", my_form, my_form_script,HTMLtemplate,JStemplate, notifs
+        return 'ERROR: Please enter an intent\n Maybe you should use quotes ""\nwrite anything to see instructions', my_form, my_form_script,HTMLtemplate,JStemplate, notifs
 
 
 
@@ -243,10 +245,50 @@ class IntentManager:
         |       str: information message to User
         |
         """
-        if is_file_empty("./outputfiles/" + self.json_filename):
-            return "Please enter Intents !!"
-        self.conflict_solving()
-        return "Pushing and resolving conflict !!"
+        # push to central repo 
+        # TODO: push to elasticsearch index HSPL and Attack_info
+        fpath = "edc/hspl_new.xml"
+        fname = "tmp_register/hspl1.xml"
+        with open(fpath, 'r') as f:
+            hspl_info = f.read()
+            
+        if not os.path.exists(fpath):
+            raise Exception("it is not saved :((")
+
+        fpatha = "edc/attacker_new.txt"
+        fnamea = "tmp_register/attack_id1.txt"
+        with open(fpatha, 'r') as f:
+            attacker_info = f.read()
+            
+        if not os.path.exists(fpatha):
+            raise Exception("it is not saved :((")
+
+        msg = None
+        try:
+            self.hspl_id_counter += 1
+            hspl_info = {"id": self.hspl_id_counter, "XML": hspl_info}
+            self.attack_info_id_counter += 1
+            attacker_info = {"id": self.attack_info_id_counter, "JSON": attacker_info}
+            self.intent_store.client.index(index="hspl", id=self.hspl_id_counter, document=hspl_info)
+            self.intent_store.client.index(index="attacksinfo", id=self.hspl_id_counter, document=attacker_info)
+
+            #self.conflict_solving()
+            msg = "Policies saved successfully!\n\n" 
+        except FileNotFoundError:
+            msg = "Sorry, the file "+ fpath + "does not exist."
+
+        return msg
+    
+    def is_intent_exist(self, intent_text):
+        tmp = self.intent_store.query_intentname(intent_text)
+        print(tmp)
+        if tmp['hits']['hits'] != []:
+            return True
+        return False
+
+    def get_intent_info(self, intent_text):
+        tmp = self.intent_store.query_intentname(intent_text)
+        return tmp['hits']['hits'][0]
 
 
     def create_hspl_from_intent(self,form_data, intent_name):
@@ -260,7 +302,7 @@ class IntentManager:
         for  val in structured_data_hspl['hspl_object']:
             print("it works.........")
         #check the needed xml template
-        fpath = "/edc/hspl_new.xml"
+        fpath = "edc/hspl_new.xml"
         fname = "tmp_register/hspl1.xml"
         with open(fpath, 'w') as f:
             html = render_template(fname, objects=structured_data_hspl)
@@ -268,7 +310,7 @@ class IntentManager:
         if not os.path.exists(fpath):
             raise Exception("it is not saved :((")
 
-        fpatha = "/edc/attacker_new.txt"
+        fpatha = "edc/attacker_new.txt"
         fnamea = "tmp_register/attack_id1.txt"
         with open(fpatha, 'w') as f:
             html = render_template(fnamea, attacker=structured_data_attacker)
@@ -282,7 +324,7 @@ class IntentManager:
                 tmp1 = f_obj.read()
             with open(fpatha) as f_obja:
                 tmp2 = f_obja.read()
-            msg = "Policies saved successfully!\n\n" + tmp1 + "\n" + tmp2
+            msg = "Policies generated successfully!\n\n" + tmp1 + "\n" + tmp2
         except FileNotFoundError:
             msg = "Sorry, the file "+ fpath + "does not exist."
 
@@ -294,10 +336,11 @@ class IntentManager:
         structured_data_attacker = {}
         if intent_name == 'wallet_id_attack_detection':
             structured_data['id'] = "hspl1"
-            structured_data['wallet_id'] = form_data['subject']
-            structured_data_attacker['name'] = form_data['subject']
+            structured_data['wallet_id'] = Attack_Data[form_data['subject']]
+            # should be read from policy store
+            structured_data_attacker['name'] = Attack_Data[form_data['subject']]
             structured_data_attacker['type'] = 'WID'
-            structured_data_attacker['id'] = Attack_Data[form_data['subject']]
+            structured_data_attacker['id'] = form_data['subject']
             structured_data['value'] = form_data['value']
             structured_data['period'] = form_data['period']
             structured_data['time'] = form_data['time']
@@ -325,136 +368,4 @@ class IntentManager:
         |       str: information message to User
         |
         """
-        str_name_store = ""
-        users = np.array([[None, None]])
-        output_file = open("./outputfiles/" + self.json_filename)
-        #users = np.append(users, [["user1", PolicyGraph()]], axis=0)
-        #users = np.append(users, [["user2", PolicyGraph()]], axis=0)
-        with output_file as file:
-            lines = file.read()
-        lines = ast.literal_eval(lines)
-        for line in lines:
-            str_name_store = line["users"]
-            if self.check_for_user(str_name_store, users):
-                self.change_state(line, self.get_graph(str_name_store, users))
-                print(self.get_graph(str_name_store, users).print_graph())
-            else:
-                users = np.append(users, [[str_name_store, PolicyGraph()]], axis=0)
-                self.change_state(line, self.get_graph(str_name_store, users))
-                print(self.get_graph(str_name_store, users).print_graph())
-        for user in users:
-            if user[0] is not None:
-                print_result_file(self.export_text(user[0], user[1]))
-        '''policy_graph = PolicyGraph()
-        with output_file as file:
-            lines = file.read()
-        lines = ast.literal_eval(lines)
-        for line in lines:
-            str_name_store = line["users"]
-            if line["permission"] == "blocked":
-                permission = False
-            else:
-                permission = True
-            policy_graph.change_state(line["asset"], permission)
-        policy_graph.print_graph()'''
-
-        #message = "allow " + str_name_store + " to access assets in "
-        #str_result = "check " + str_name_store + " in database of users" + "\n"
-        '''if policy_graph.print_outputnew() == "":
-            str_result += message + "" + policy_graph.org_name
-        else:
-            str_result += (
-                message
-                + ""
-                + policy_graph.org_name
-                + " except "
-                + policy_graph.print_outputnew()
-            )
-        str_result += "\n" + "alert admin in " + policy_graph.org_name'''
-        #print_result_file(str_result)
         self.instruct_reset()
-
-    def export_text(self, str_name_store, policy_graph):
-        """
-        |    return final result
-        |
-        |   Args:
-        |       str_name_store(str):
-        |       policy_graph(PolicyGraph):
-        |   Returns:
-        |       str_result(str): information message to User
-        |
-        """
-        message = "allow " + str_name_store + " to access assets in "
-        str_result = "check " + str_name_store + " in database of users" + "\n"
-        if policy_graph.print_outputnew() == "":
-            str_result += message + "" + policy_graph.org_name
-        else:
-            str_result += (
-                message
-                + ""
-                + policy_graph.org_name
-                + " except "
-                + policy_graph.print_outputnew()
-            )
-        str_result += "\n" + "alert admin in " + policy_graph.org_name + "\n \n"
-        return str_result
-
-    def change_state(self, line, policy_graph):
-        """
-        |    change state in User policy graph
-        |
-        |   Args:
-        |       line(str):
-        |       policy_graph(PolicyGraph):
-        |
-        """
-        if line["permission"] == "blocked":
-            permission = False
-        else:
-            permission = True
-        policy_graph.change_state(line["asset"], permission)
-
-    def check_for_user(self, user, users):
-        for my_user in users:
-            if my_user[0] == user:
-                return True
-        return False
-
-    def get_graph(self, user, users):
-        for my_user in users:
-            if my_user[0] == user:
-                return my_user[1]
-        return None
-
-    def write_json(self, new_data):
-        """
-        |    append intents to Intents Document.
-        |
-        |   Args:
-        |       new_data(str):  data to be written in JSON
-        """
-        with open("./outputfiles/" + self.json_filename, "a") as file:
-            if not is_file_empty("./outputfiles/" + self.json_filename):
-                file.write(",")
-            file.write(json.dumps(new_data, indent=4, sort_keys=True))
-
-    def write_new(self, new_data):
-        """
-        |    append intents to Intents Document.
-        |
-        |   Args:
-        |       new_data(str):  data to be written in JSON
-        """
-        my_array = []
-        with open("./outputfiles/" + self.json_filename, "a") as file:
-            if not is_file_empty("./outputfiles/" + self.json_filename):
-                output_file = open("./outputfiles/" + self.json_filename)
-                with output_file as my_file:
-                    lines = my_file.read()
-                my_array = ast.literal_eval(lines)
-                my_array.append(new_data)
-            else:
-                my_array.append(new_data)
-            self.instruct_reset()
-            file.write(json.dumps(my_array, indent=4, sort_keys=True))

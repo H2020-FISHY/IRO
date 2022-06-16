@@ -3,27 +3,30 @@
 |   file:       main.py
 |
 |   brief:
-|   author:    
-|   email:      
+|   author:    Mounir Bensalem
+|   email:     mounir.bensalem@tu-bs.de
 |   copyright:  © IDA - All rights reserved
 """
 #from builtins import print
 import os
+import sys
 from flask import Flask, render_template, request,  url_for, redirect, jsonify
 from jinja2 import Environment, FileSystemLoader
 from flask_classful import FlaskView, route
 from intent_manager import IntentManager
-from notification_manager import NotificationManager
+from learningAndReasoning.notifications.notification_manager import NotificationManager
 import json
 import ast
 import requests
 from requests import Session
+
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_ENVIRONMENT = Environment(
     autoescape=False,
     loader=FileSystemLoader(os.path.join(PATH, 'templates')),
     trim_blocks=False)
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'IRO'
@@ -50,16 +53,15 @@ class UserInterface(FlaskView):
     """
     def __init__(self):
         self.session = Session()
-        self.notification_manager = NotificationManager(self.session, tim_config)
+        self.notification_manager = NotificationManager( self.session, tim_config)
         
-        self.policies_filename = "export.txt"
         
         self.intent_manager = IntentManager(notif=self.notification_manager)
 
     def index(self):
         notifs = self.notification_manager.get_notifications(self.session, tim_config)
         msg = self.notification_manager.get_instructions()
-        my_form, my_form_script = self.notification_manager.get_form("")
+        my_form, my_form_script,  HTMLtemplate, JStemplate = self.notification_manager.get_form("")
 
         return render_template('index.html',form_script=my_form_script, forms=my_form, message=msg, notifications=notifs)
 
@@ -73,7 +75,7 @@ class UserInterface(FlaskView):
             
             if  'intentText' in request.form:
                 intent_text = request.form.get('intentText')
-                msg, my_form, my_form_script, notifs = self.intent_manager.reading_command(intent_text)
+                msg, my_form, my_form_script,HTMLtemplate,JStemplate, notifs = self.intent_manager.reading_command(intent_text)
                 if  isinstance(msg, list):
                     list_options = msg.copy()
                     msg = None
@@ -88,7 +90,7 @@ class UserInterface(FlaskView):
                 #msg = self.notification_manager.get_instructions_after_form()
                 return render_template('index.html', formoutput=threat_data, message=msg)
 
-        return render_template('index.html', form_script=my_form_script, forms=my_form, message=msg, notifications=notifs, message_list=list_options)
+        return render_template('index.html', form_script=my_form_script, forms=my_form, message=msg, htmltemplate=HTMLtemplate, jstemplate=JStemplate,notifications=notifs, message_list=list_options)
 
     @route("/alerts", methods=['GET', 'POST'])
     def alerts(self):
@@ -133,17 +135,12 @@ class UserInterface(FlaskView):
 
         return render_template('Alerts.html', data=data)
 
-    @route("/addIntent", methods=["POST"])
-    def addintent(self):
-        msg = ''
-        return ""
-    
-    # TODO: update the interface after developing the policy builder classes
-    @route("/policies", methods=["GET"])
-    def export_policies(self):
-        with open("./outputfiles/"+self.policies_filename, "r") as f:
-            policies = f.read()
-        return render_template('policies.html', policies=policies)
+    @route("/api/policies/all", methods=["GET"])
+    def api(self):
+        msg = self.intent_manager.intent_store.get_all_generated_policies()
+        return jsonify(msg)
+
+
 
 if __name__ == "__main__":
     UserInterface.register(app, route_base='/')

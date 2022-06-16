@@ -18,4 +18,4 @@ pipdeptree==2.2.1
   pip==21.2.4
 setuptools==57.5.0
 wheel==0.37.1
-requests
+requests==2.27.1

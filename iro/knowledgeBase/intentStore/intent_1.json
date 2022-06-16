@@ -1,0 +1,30 @@
+{
+    "id": 1,
+    "intentname": "wallet_id_detection",
+    "use_template": "True",
+    "HTMLtemplate": "form_threat_detection.html",
+    "JStemplate": "script_form_th_d.html",
+    "attributes": [
+        {"attribute_name": "wallet_id", "attribute_type": "string"},
+        {"attribute_name": "value", "attribute_type": "integer"},
+        {"attribute_name": "period", "attribute_type": "integer"},
+        {"attribute_name": "time", "attribute_value": "integer"}
+    ],
+
+    "vocabularies": [
+        {"vocab_name": "wallet id", "vocab_values": [
+            {"vocab_value": "Wallet ID"},
+            {"vocab_value": "wallet id"},
+            {"vocab_value": "Wallet id"},
+            {"vocab_value": "id of wallet"},
+            {"vocab_value": "detection"}
+            ]
+        },
+        {"vocab_name": "detection", "vocab_values": [
+            {"vocab_value": "detection"},
+            {"vocab_value": "detection"},
+            {"vocab_value": "detect"}
+            ]
+        }
+    ]
+}

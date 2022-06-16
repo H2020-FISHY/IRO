@@ -1,0 +1,37 @@
+{
+    "id": 1,
+    "policyname": "wallet_id_detection",  
+
+    "attributes": [
+        {"attribute_name": "subject", "attribute_values": [
+            {"attribute_name": "Malicious_User1", "attribute_value": "0xb5707bdcd820694303496b74d56895902a009943"},
+            {"attribute_name": "Malicious_User2","attribute_value": "0x35a69278fea8d80d9490b64cd52915575149a898"},
+            {"attribute_name": "Malicious_User3","attribute_value": "0x99245a929029d8b5f6c12b7d80158f71fac19198"}
+            ]
+        },
+        {"attribute_name": "time", "attribute_values": [
+            {"attribute_name": "Second","attribute_value": "second"},
+            {"attribute_name": "Minute","attribute_value": "minute"},
+            {"attribute_name": "Hour","attribute_value": "hour"},
+            {"attribute_name": "Day","attribute_value": "day"}
+            ]
+        },
+        {"attribute_name": "action", "attribute_values": [
+            {"attribute_name": "notify","attribute_value": "notify"},
+            {"attribute_name": "no_authorise_access","attribute_value": "no_authorise_access"}
+            ]
+        },
+        {"attribute_name": "object_notif", "attribute_values": [
+            {"attribute_name": "supply_chain_operator","attribute_value": "supply_chain_operator"},
+            {"attribute_name": "island_operator","attribute_value": "island_operator"}
+            ]
+        },
+        {"attribute_name": "object_access", "attribute_values": [
+            {"attribute_name": "Web App","attribute_value": "Web App"},
+            {"attribute_name": "internet_traffic","attribute_value": "internet_traffic"},
+            {"attribute_name": "intranet_traffic","attribute_value": "intranet_traffic"},
+            {"attribute_name": "all_traffic","attribute_value": "all_traffic"}
+            ]
+        }
+    ]
+}
