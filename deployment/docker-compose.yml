@@ -21,6 +21,10 @@ services:
             ES_HOST: "elasticsearch"
             ES_PORT: "9200"
             TIM_URL: "https://fishy.xlab.si/tar/api/reports"
+            RMQ_HOST: "fishymq.xlab.si"
+            RMQ_PORT: "45672"
+            RMQ_LOGIN: "tubs"
+            RMQ_PASSWORD: "sbut"
         ports:
             - "5000:5000"
         volumes:

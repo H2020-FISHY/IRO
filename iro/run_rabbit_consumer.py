@@ -66,7 +66,7 @@ class RMQsubscriber:
 
 queueName = 'IROQueue'
 key = 'reports.#'
-notification_consumer_config = { 'host': 'fishymq.xlab.si', 'port': 45672, 'exchange' : 'tasks', 'login':'tubs', 'password':'sbut'}
+notification_consumer_config = { 'host': os.environ["RMQ_HOST"], 'port': os.environ["RMQ_PORT"], 'exchange' : 'tasks', 'login': os.environ["RMQ_LOGIN"], 'password': os.environ["RMQ_PASSWORD"]}
 
 if __name__ == '__main__':
     try:
