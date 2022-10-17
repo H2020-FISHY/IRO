@@ -1,0 +1,3 @@
+{% for el in objects %}
+<p id="copy_"+loop.index0>{{el}}  <button type="button" onclick="copyEvent('copy_'+loop.index0)">Copy</button></p>
+{% endfor %}

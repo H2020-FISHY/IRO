@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Intent Configuration</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="../static/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <link href="../static/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url_for('UserInterface:index') }}">
+                <div class="sidebar-brand-icon rotate-n-15">
+            
+                    
+                </div>
+                <div class="sidebar-brand-text mx-3"> <img src="../static/img/FISHY_logo_v02_final_white.png" alt="FISHY" width="50" height="50"> FISHY <!--sup>2</sup--></div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('UserInterface:index') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>IRO Dashboard</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Interface
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Alerts</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header"></h6>
+                        <a class="collapse-item" href="{{ url_for('UserInterface:alerts') }}"> <i class="fas fa-fw fa-table"></i> Detailed Reports</a>
+                        <!--a class="collapse-item" href="{{ url_for('UserInterface:alerts') }}">Alerts - Detailed Reports</a-->
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Configurations</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Configuration Name:</h6>
+                        <a class="collapse-item" href="{{ url_for('UserInterface:intents') }}"> Intents</a>
+                        <a class="collapse-item" href="{{ url_for('UserInterface:policies') }}"> Policies</a>
+                        <a class="collapse-item" href="{{ url_for('UserInterface:notifications') }}"> Notifications</a>
+                        <!--a class="collapse-item" href="utilities-color.html">Colors</a-->
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <!--hr class="sidebar-divider"-->
+
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+            <!-- Sidebar Message -->
+
+
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Search -->
+                  
+                
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - Alerts -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bell fa-fw"></i>
+                                <!-- Counter - Alerts -->
+                                <span class="badge badge-danger badge-counter">{{ show_notification_data|selectattr('Status', 'equalto', 'Open')|list|length }}</span>
+                            </a>
+                            <!-- Dropdown - Alerts -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="alertsDropdown">
+                                <h6 class="dropdown-header">
+                                    Alerts Center
+                                </h6>
+
+                                                
+                                {% set count_alert = [] %}        
+                            {% for dict_item in show_notification_data |reverse %}
+                            
+
+                            
+                            {% if dict_item['Status']=='Deleted' or dict_item['Status'] == "Created" %}
+                            
+                            {% elif dict_item['Status']=='Open' and count_alert|length < 10 %}
+
+                            {% set var = count_alert.append(1) %}
+                            
+                            
+                            <a class="dropdown-item d-flex align-items-center notification-click" data-id="{{dict_item['ID']}}" href="{{ url_for('UserInterface:notifications', n_id=dict_item['ID'] ) }}" >
+                                <div class="mr-3">
+                                    <div class="icon-circle bg-primary">
+                                        <i class="fas fa-file-alt text-white"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="small text-gray-500">{{dict_item['Time']}} </div>
+                                    <span class="font-weight-bold">{{dict_item['Name']}}</span>
+                                </div>
+                            </a>
+
+                            {% elif dict_item['Status']=='Seen' and count_alert|length < 10 %}
+
+
+                            {% set var = count_alert.append(1) %}
+                            
+                            <a class="dropdown-item d-flex align-items-center notification-click" data-id="{{dict_item['ID']}}" href="{{ url_for('UserInterface:notifications', n_id=dict_item['ID'] ) }}"  >
+                                <div class="mr-3">
+                                    <div class="icon-circle bg-primary">
+                                        <i class="fas fa-file-alt text-white"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="small text-gray-500">{{dict_item['Time']}}</div>
+                                        {{dict_item['Name']}} 
+                                </div>
+                            </a>
+                            
+                            {% endif %}
+                            
+                            {% endfor %}
+
+                           
+                            
+                            <a class="dropdown-item text-center small text-gray-500" href="{{ url_for('UserInterface:notifications') }}">Show All Alerts</a>
+
+                               
+                                
+
+
+                            </div>
+                        </li>
+
+                        <!--div class="topbar-divider d-none d-sm-block"></div-->
+
+                        <!-- Nav Item - User Information -->
+ 
+
+                            <!-- Dropdown - User Information -->
+
+
+                        
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+
+                <div class="container-fluid">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-1 text-gray-800">Intent Configuration</h1>
+                    <p class="mb-4">In this page you can create, delete or show intents.</p>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Intent Configuration: Create,Delete and Show -->
+                        <div class="col-lg-6">
+                                
+                            <div class="card position-relative" >
+
+                                <div class="card-header py-3" >
+                                    <h6 class="m-0 font-weight-bold text-primary" style="text-align:left; line-height: 32.5px;"> <span style="vertical-align: middle;">Intent Creation  </span>
+                                        <span style="float:right;">
+
+                            <!-- Selection for the process. -->   
+                            
+                            <form name = "intent_selection" method="POST" action =/intents>
+
+                                        <select name='select_form' class="btn btn-primary dropdown-toggle" label='Select Form' id='select_report' list='form_list' defaulttext='(Please Select)'>
+
+
+                                        <option value="none" selected disabled hidden>Select an Option</option>
+                                        <option value="create">Create</option>
+                                        
+                                            
+                                        <option value="show">Show/Delete</option> 
+                                        
+                                        
+
+                                       
+                                        </select> 
+                                        
+                                        
+                            </form>
+                                    
+
+                                       
+                                      
+                      </h6>
+            </div>
+
+                            
+
+                                <div class="card-body">
+                                    
+                                    <p class="mb-0 small">
+
+                                 <!-- form for 'intent creation'-->
+                                 
+                                    <div class='intent-form d-none' id='create'>
+                                        <!--form name = "intentCreate" method="POST" action =/intents></form>
+                                        
+
+
+                                       
+                                            
+                                            
+                                          
+
+
+
+                                          
+                                            <div class="form-group" >
+                                                <label for="exampleInputIntentName">Intent Name</label>
+                                                <input type="create" id="create_intentname" class="form-control" data-id="create_intentname" name="intent_name" placeholder="Type Intent Name">
+                                            </div>
+                                         
+                                            <div class="form-group">
+                                                <label for="exampleInputIntentSource">Intent Source</label>
+                                                <input type="create" id="create_intentsource" class="form-control" data-id="create_intentsource" name="intent_source" placeholder="Type Intent Source">
+                                            </div>
+                                            
+                                           
+                                            <div class="form-group">
+                                                <label for="exampleInputIntentAttributes">Intent Attributes</label>
+                                                <input type="create" id="create_intentattributes" class="form-control" data-id="create_intentattributes" name="intent_attribute" placeholder="Type Intent Attribute">
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="exampleInputIntentValue">Intent Value</label>
+                                                <input type="create" id="create_intentvalue" class="form-control" data-id="create_intentvalue" name="intent_value" placeholder="Type Intent Value">
+                                            </div>
+                                            
+                                            
+                                            <button  name="intentCreate" type=submit class="btn_create" data-id="{{create_intentid}}" type="button">
+                                                Create a New Intent.
+                                            </button>   
+                                            
+
+                                            
+                                        </form-->
+                                    </div>
+
+                                    
+
+
+                    
+                                  
+                <!-- SHOW ALL INTENTS -->
+
+                
+                
+                  <div class='intent-form d-none' id='show'>
+              
+                 
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Intents</h6>
+                        </div>
+                        <div class="card-body">
+                          
+
+                            <!-- SHOW ALL INTENTS TABLE -->
+
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Source</th>
+                                            <th ></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Source</th>
+                                            <th ></th>
+
+                                            
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+
+                                        {% for dict_item in show_intent_data %}
+                                            
+                                        {%if dict_item['Status'] == "Deleted" %}
+                                        
+                                        {% else %} 
+
+
+                                         <tr id="{{dict_item['ID']}}">
+                                                <!-- first column-->
+                                            <td>
+                                                
+
+                                            {{dict_item['ID']}}</span>
+                                            
+                                          
+                                            </td>
+
+                                            <!-- second column-->
+
+                                            <td class="text-cell">{{dict_item['Name']}}</td>
+
+                                            <!-- third column-->
+
+                                            <td>{{dict_item['Source']}}</td>
+                                            <td>
+                                                
+                                                <div id="wrapper" >
+                                                    
+                                                
+                                                <div id="first" > 
+                                                        <button class="btn btn-primary btn_show"  data-id="{{dict_item['ID']}}" >
+                                                            <i class="fa fa-eye" aria-hidden="true"  ></i>
+                                                        </button>
+                                                </div>
+
+                                                <div class="space" style="width: 4px; height: auto; display: inline-block;">
+                                                </div>
+
+                                            <div id="second"> 
+                                                    <button class="btn btn-primary btn_delete"  data-id="{{dict_item['ID']}}">
+                                                    <i  class="fa fa-trash" aria-hidden="false"  ></i> 
+                                                    </button>
+                                            </div>
+
+                                        </div>
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            </td>
+                                             </tr>
+
+
+                                                    {% endif %}
+                                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                            
+
+
+
+
+
+
+
+                        <!-- END OF SHOW ALL INTENTS TABLE -->
+                        </div>
+                    </div>         
+                              
+                    
+
+                  </div>
+
+
+                       
+                                          
+                                        
+
+                                     
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+
+
+
+
+
+                        
+
+                          <!-- Result of Intent Configuration -->
+
+                        <div class="col-lg-6">
+
+                            <div class="card position-relative">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary" style="text-align:left; line-height: 32.5px;"> <span style="vertical-align: middle;">Result  </span>
+                                </div>
+                                <div class="card-body">
+
+
+
+                               <!-- Create the particular intent selected by user -->
+
+                               
+                                <!-- Successful -->
+                                <div id="success_createintent" class="alert alert-success" role="alert" style="display:none;"> 
+                                   
+                                </div>
+                                <!-- Error raised -->
+                                <div id="error_createintent" class="alert alert-danger" role="alert" style="display:none;">
+                                
+                                </div>
+
+                                   <!-- Show the particular intent selected by user -->
+                                    <!-- Successful -->
+                                <div id="success_showintent"  style="display:none;"> 
+
+                                   
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="tableShow" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Attributes</th>
+                                            <th scope="col">Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                       
+                                    </tfoot>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                    
+
+                                </div>
+
+                                 <!-- Error raised -->
+                                <div id="error_showintent" class="alert alert-success" role="alert" style="display:none;"></div>
+
+                                
+                                <!-- Delete the particular intent selected by user -->
+
+                               
+                                <!-- Successful -->
+                                <div id="success_deleteintent" class="alert alert-success" role="alert" style="display:none;"> 
+
+                                   
+                                </div>
+                                <!-- Error raised -->
+                                <div id="error_deleteintent" class="alert alert-danger" role="alert" style="display:none;">
+                                
+                                </div>
+                                 
+
+                                
+                                
+                                </div>
+
+                               
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+
+            </div>
+        <!-- /.container-fluid --> 
+    </div>
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span>Copyright &copy; IRO 2022</span>
+            </div>
+        </div>
+    </footer>
+    <!-- End of Footer -->
+
+</div>
+<!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+<i class="fas fa-angle-up"></i>
+</a>
+
+    <!-- Logout Modal-->
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="../static/vendor/jquery/jquery.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="../static/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="../static/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="../static/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="../static/js/demo/datatables-demo.js"></script>
+
+
+
+
+<script>
+    $('#select_report').on('change', function() {
+        const text = $("option:selected", this).text().toLowerCase();
+
+    $(".intent-form").each(function() {
+        $(this).toggleClass("d-none", this.id !==  `${select_report.value}` )
+        })
+            })
+    </script>
+</script>
+
+
+
+<script>
+
+
+    $(document).ready(function() {
+
+        $(document).on('click', '.btn_delete', function(event){
+
+            event.preventDefault();
+            var delete_intentid = $(this).data("id");
+            if(confirm("Are you sure you want to delete?")) {
+            $.ajax({
+                data: { delete_intentid: delete_intentid },
+                type: 'POST',
+                url : '/intents'
+
+                })
+          
+            
+            .done(function(data) {
+
+                if (data.error) {
+                    $('#error_deleteintent').text(data.error).show();
+                    $('#success_deleteintent').hide();
+
+                }
+                else {
+                    
+                    $('#success_createintent').hide()
+                    $('#success_showintent').hide()
+                    $('#success_deleteintent').empty()
+                    $('#success_deleteintent').show();
+                    $('#success_deleteintent').append(+data.delete_intentid+". Intent is successfully deleted.")
+                    $('#error_deleteintent').hide();
+                    $('#'+ data.delete_intentid).closest('tr').remove();
+                }
+
+
+            });   
+
+        } else {
+        return false;
+            }
+
+        });
+    }); 
+    </script>
+
+
+
+
+
+ <script>
+
+
+    $(document).ready(function() {
+
+        $(document).on('click', '.btn_show', function(event){
+
+            event.preventDefault();
+            var show_intentid = $(this).data("id");
+
+            $.ajax({
+                data: { show_intentid: show_intentid },
+                type: 'POST',
+                url : '/intents'
+
+                })
+            .done(function(data) {
+
+                if (data.error) {
+                    $('#error_showintent').text(data.error).show();
+                    $('#success_showintent').hide();
+
+                }
+                else {
+                    $('#success_deleteintent').hide()
+                    $('#success_createintent').hide()
+                    $('#success_showintent').show()
+                    $("#tableShow").find('tbody').empty();
+                    $('#tableShow').find('tbody').append("<tr><td>" + data.show_intentid + "</td><td>"  + data.show_intentattribute + 
+                        "</td>    <td>"+ data.show_intentvalue + "</td></tr>");
+                    
+                    $('#error_showintent').hide();
+                    
+
+
+                }
+
+
+            });   
+
+
+
+        });
+    }); 
+
+
+
+    </script>
+
+
+<script>
+
+
+    $(document).ready(function() {
+
+        $(".btn_create").click(function(event){
+
+            event.preventDefault();
+            var create_intentid = $(this).data("id");
+            var create_intentname = $("#create_intentname").val();
+            var create_intentsource = $("#create_intentsource").val();
+            var create_intentattributes = $("#create_intentattributes").val();
+            var create_intentvalue = $("#create_intentvalue").val();
+            if(confirm("Are you sure you want to create?")) {
+            $.ajax({
+                data: { create_intentid: create_intentid,
+                        create_intentname: create_intentname,
+                        create_intentsource: create_intentsource,
+                        create_intentattributes: create_intentattributes,
+                        create_intentvalue: create_intentvalue
+
+                },
+                type: 'POST',
+                url : '/intents'
+
+                })
+          
+            
+            .done(function(data) {
+
+                if (data.error) {
+                    $('#error_createintent').text(data.error).show();
+                    $('#success_createintent').hide();
+
+                }
+                else {
+                    $('#success_showintent').hide()
+                    $('#success_deleteintent').hide()
+                    $('#success_createintent').empty()
+                    $('#success_createintent').show();
+                    $('#success_createintent').append(  "New intent is successfully created:" + "<br></br>"+
+                                                        "New Intent ID: " +data.create_intentid+ "<br></br>"+
+                                                        "New Intent Name: " +data.create_intentname+ "<br></br>"+
+                                                        "New Intent Source: " +data.create_intentsource+ "<br></br>"+
+                                                        "New Intent Attributes: " +data.create_intentattributes+ "<br></br>"+
+                                                        "New Intent Value: " +data.create_intentvalue+ "<br></br>")
+                    $('#error_createintent').hide();
+                    $('#dataTable').find('tbody').append(
+                        '<tr>'
+                        +'<td>'+data.create_intentid+'</td>'
+                        +'<td>'+data.create_intentname+'</td>'    
+                        +'<td>'+data.create_intentsource+'</td>'
+                        +'<td><div id="wrapper">' 
+                        +'<div id="first">'  
+                        +'<button class="btn btn-primary btn_show"'
+                        +'data-id="'+data.create_intentid+'">'
+                        +'<i class="fa fa-eye" aria-hidden="true" ></i></button></div>'
+                        +'<div class="space" style="width: 4px; height: auto; display: inline-block;"></div>'
+                        +'<div id="second">'
+                        +'<button class="btn btn-primary btn_delete"  data-id="'+data.create_intentid+'">'
+                        +'<i  class="fa fa-trash" aria-hidden="false"></i></button></div>'
+                        +'</div></td></tr>' 
+                        );
+
+                }
+
+            });   
+
+        } else {
+        return false;
+            }
+
+        });
+    }); 
+
+
+
+    </script>
+
+
+
+</body>
+
+</html>

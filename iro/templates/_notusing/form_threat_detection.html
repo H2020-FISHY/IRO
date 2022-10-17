@@ -1,0 +1,37 @@
+<form action="/" method="post">
+    <h5> Condition:</h5>
+    <select name="subject" class="Input" required>
+        {% for o in objects[0]['subject'] %}
+        <option value="{{ o.name }}">{{ o.val }}</option>
+        {% endfor %}
+      </select> appears more than
+      <input class="Input" type="number" name="value" min="1" placeholder="Occurence" required/> times in 
+      <input class="Input" type="number" name="period" min="1" placeholder="Period" required/>
+      <!--input class="Input" type="number" name="time" placeholder="Enter period value" required/-->
+      <select name="time" class="Input">
+        {% for o in objects[0]['time'] %}
+        <option value="{{ o.name }}">{{ o.val }}</option>
+        {% endfor %}
+      </select>
+      <br><br>
+      <h5> Actions:</h5>
+      <div id="actions">
+        <select name="action_0" id="action_0" class="Input">
+            {% for o in objects[0]['action'] %}
+            <option value="{{ o }}">{{ o }}</option>
+            {% endfor %}
+          </select> 
+          <select name="object_0" id="object_0" class="Input">
+            {% for o in objects[0]['object_notif'] %}
+            <option value="{{ o }}">{{ o }}</option>
+            {% endfor %}
+          </select><br>
+      </div>
+    <button id="add_action" type="button">Add action</button>
+    <br><br>
+
+
+    <!--div id="products"></div-->
+    <!--button id="add_item" type="button">Add item</button-->
+    <p>Send Intent: <input type="submit" name="threat_d_form" value="Submit"></p>
+</form>

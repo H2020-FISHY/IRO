@@ -1,184 +1,809 @@
 <!DOCTYPE html>
-<html style="font-size: 16px;">
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="utf-8">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <meta name="page_type" content="np-template-header-footer-from-plugin">
-    <title>IRO</title>
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet"> 
+<html lang="en">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="../static/css/nicepage.css" media="screen">
-<link rel="stylesheet" href="../static/css/Home.css" media="screen">
-<link rel="stylesheet" href="../static/css/Alerts.css" media="screen">
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
-    <script class="u-script" type="text/javascript" src="../static/js/jquery-1.9.1.min.js" defer=""></script>
-    <script class="u-script" type="text/javascript" src="../static/js/nicepage.js" defer=""></script>
-    <script
-                src="https://code.jquery.com/jquery-1.12.4.min.js"
-                integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-                crossorigin="anonymous"></script>
-    <meta name="generator" content="Nicepage 4.6.2, nicepage.com">
-    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
-    
-    
-    
-    <script type="application/ld+json">{
-		"@context": "http://schema.org",
-		"@type": "Organization",
-		"name": "",
-		"logo": "../static/img/FISHY_logo_v02_final_color.png"
-}</script>
-    <meta name="theme-color" content="#478ac9">
-    <meta property="og:title" content="Home">
-    <meta property="og:type" content="website">
-  </head>
-  <body class="u-body u-overlap u-xl-mode"><header class="u-align-center-sm u-align-center-xs u-clearfix u-header u-header" id="sec-4c3f"><div class="u-clearfix u-sheet u-valign-bottom u-sheet-1">
-        <a href="{{url_for('UserInterface:index')}}" class="u-image u-logo u-image-1" data-image-width="756" data-image-height="822">
-          <img src="../static/img/FISHY_logo_v02_final_color.png" class="u-logo-image u-logo-image-1">
-        </a>
-        <nav class="u-align-left u-menu u-menu-dropdown u-offcanvas u-menu-1">
-          <div class="menu-collapse" style="font-size: 1rem;">
-            <a class="u-button-style u-nav-link" href="#">
-              <svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 302 302" style=""><use xlink:href="#svg-8a8f"></use></svg>
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="svg-8a8f" x="0px" y="0px" viewBox="0 0 302 302" style="enable-background:new 0 0 302 302;" xml:space="preserve" class="u-svg-content"><g><rect y="36" width="302" height="30"></rect><rect y="236" width="302" height="30"></rect><rect y="136" width="302" height="30"></rect>
-</g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>IRO Dashboard</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="../static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="../static/css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url_for('UserInterface:index') }}">
+                <div class="sidebar-brand-icon rotate-n-15">
+            
+                    
+                </div>
+                <div class="sidebar-brand-text mx-3"> <img src="../static/img/FISHY_logo_v02_final_white.png" alt="FISHY" width="50" height="50"> FISHY <!--sup>2</sup--></div>
             </a>
-          </div>
-          <div class="u-custom-menu u-nav-container">
-            <ul class="u-nav u-unstyled u-nav-1">
-              <li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="{{url_for('UserInterface:index')}}" style="padding: 10px 20px;">Home</a>
-         </li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="{{ url_for('UserInterface:alerts') }}" style="padding: 10px 20px;">Alerts</a>
-         </li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" style="padding: 10px 20px;">Intent Configuration</a>
-         </li></ul>
-          </div>
-          <div class="u-custom-menu u-nav-container-collapse">
-            <div class="u-align-center u-black u-container-style u-inner-container-layout u-opacity u-opacity-95 u-sidenav">
-              <div class="u-inner-container-layout u-sidenav-overflow">
-                <div class="u-menu-close"></div>
-                <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2"><li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{url_for('UserInterface:index')}}"  style="padding: 10px 20px;">Home</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{ url_for('UserInterface:alerts') }}" style="padding: 10px 20px;">Alerts</a>
-</li><li class="u-nav-item"><a class="u-button-style u-nav-link" style="padding: 10px 20px;">Intent Configuration</a>
-</li></ul>
-              </div>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('UserInterface:index') }}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>IRO Dashboard</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Interface
             </div>
-            <div class="u-black u-menu-overlay u-opacity u-opacity-70"></div>
-          </div>
-        </nav>
-      </div></header>
-    <section class="u-clearfix u-section-1" id="carousel_b295">
-      <div class="u-clearfix u-sheet u-sheet-1">
-        <div class="u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
-          <div class="u-layout">
-            <div class="u-layout-row">
-              <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-1">
-                <div class="u-container-layout u-container-layout-1">
-                  <div class="u-form u-grey-5 u-form-1">
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Alerts</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header"></h6>
+                        <a class="collapse-item" href="{{ url_for('UserInterface:alerts') }}"> <i class="fas fa-fw fa-table"></i> Detailed Reports</a>
+                        <!--a class="collapse-item" href="{{ url_for('UserInterface:alerts') }}">Alerts - Detailed Reports</a-->
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Configurations</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Configuration Name:</h6>
+                        <a class="collapse-item" href="{{ url_for('UserInterface:intents') }}"> Intents</a>
+                        <a class="collapse-item" href="{{ url_for('UserInterface:policies') }}"> Policies</a>
+                        <a class="collapse-item" href="{{ url_for('UserInterface:notifications') }}"> Notifications</a>
+                        <!--a class="collapse-item" href="utilities-color.html">Colors</a-->
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <!--hr class="sidebar-divider"-->
+
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+            <!-- Sidebar Message -->
+
+
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Search -->
+                  
+                
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - Alerts -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-bell fa-fw"></i>
+                                <!-- Counter - Alerts -->
+                                <!-- Counter - Alerts -->
+                                <span class="badge badge-danger badge-counter">{{ show_notification_data|selectattr('Status', 'equalto', 'Open')|list|length }}</span>
+                            </a>
+                            <!-- Dropdown - Alerts -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="alertsDropdown">
+                                <h6 class="dropdown-header">
+                                    Alerts Center
+                                </h6>
+
+                                                
+                                {% set count_alert = [] %}        
+                            {% for dict_item in show_notification_data |reverse %}
+                            
+
+                            
+                            {% if dict_item['Status']=='Deleted' or dict_item['Status'] == "Created" %}
+                            
+                            {% elif dict_item['Status']=='Open' and count_alert|length < 10 %}
+
+                            {% set var = count_alert.append(1) %}
+                            
+                            
+                            <a class="dropdown-item d-flex align-items-center notification-click" data-id="{{dict_item['ID']}}" href="{{ url_for('UserInterface:notifications', n_id=dict_item['ID'] ) }}" >
+                                <div class="mr-3">
+                                    <div class="icon-circle bg-primary">
+                                        <i class="fas fa-file-alt text-white"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="small text-gray-500">{{dict_item['Time']}} </div>
+                                    <span class="font-weight-bold">{{dict_item['Name']}}</span>
+                                </div>
+                            </a>
+
+                            {% elif dict_item['Status']=='Seen' and count_alert|length < 10 %}
+
+
+                            {% set var = count_alert.append(1) %}
+                            
+                            <a class="dropdown-item d-flex align-items-center notification-click" data-id="{{dict_item['ID']}}" href="{{ url_for('UserInterface:notifications', n_id=dict_item['ID'] ) }}"  >
+                                <div class="mr-3">
+                                    <div class="icon-circle bg-primary">
+                                        <i class="fas fa-file-alt text-white"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="small text-gray-500">{{dict_item['Time']}}</div>
+                                        {{dict_item['Name']}} 
+                                </div>
+                            </a>
+                            
+                            {% endif %}
+                            
+                            {% endfor %}
+
+                           
+                            
+                            <a class="dropdown-item text-center small text-gray-500" href="{{ url_for('UserInterface:notifications') }}">Show All Alerts</a>
+
+                               
+                                
+
+
+                            </div>
+                        </li>
+                        <!--div class="topbar-divider d-none d-sm-block"></div-->
+
+                        <!-- Nav Item - User Information -->
+ 
+
+                            <!-- Dropdown - User Information -->
+
+
+                        
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1  class="h3 mb-0 text-gray-800">Dashboard</h1>
+                        
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+                    
+        
+                    
+                    <!--div class="row"-->
+
+                        <div style="margin:auto; display: inline-block;" class="col-xl-5 col-lg-7" >
+                            <div class="card shadow mb-4">
+                                
+                                <!-- Instructions Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">
+                              
+                        <!-- Search -->                
                     
 
-                    <form action="" method="POST" class="u-clearfix u-form-horizontal u-form-spacing-10 u-inner-form" style="padding: 10px" source="email" name="form" value="intentbox">
-                      <input type="hidden" id="siteId" name="siteId" value="1519516">
-                      <input type="hidden" id="pageId" name="pageId" value="1519526">
-                      <div class="u-form-email u-form-group u-form-group-1">
-                        <label for="email-2555" class="u-form-control-hidden u-label u-label-1">Email</label>
-                        <textarea class="u-border-4 u-border-white u-input u-input-rectangle u-radius-50 u-white" id="intentText" name="intentText" placeholder="Write your Intents Text here.."  onkeydown="pressed(event)"></textarea>
-                      </div>
-                      
-                      
-                    </form>
-                  </div>
-                  <div class="u-list u-list-1">
-                    <div class="u-repeater u-repeater-1">
-                      <div class="u-container-style u-custom-item u-grey-5 u-list-item u-repeater-item u-list-item-1">
-                        <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2">
-                          {% if message %} <pre >{{ message }}</pre> {% endif %}
-                          {% if message_list %}
-                          {% with objects = message_list %}
-                          {% include "list_options_message.html" %} 
-
-                          {% endwith %}
-                          {% endif %}
-
-                          
+                        <form action="/inputintents" method="POST" name="intentText" >
+                        <div class="input-group" style="left: 50px;">
+                            
+                            <input   type="intent" class="form-control" name="intentText"  id="readIntentText" class="form-control" data-id="readIntentText" placeholder="Write your Intents Text here..">
+                            <div class="space" style="width: 4px; height: auto; display: inline-block;"></div>
+                            <button name='intentText' type=submit class="btn btn-primary btn_error" type="button">
+                                <i class="fas fa-search fa-sm" style="height:auto; width:auto"></i>
+                            </button>                             
+                            
+                           
                         </div>
-                      </div>
+                        
+                    </form>
+                        
+                                    
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area"  >
+                                        {% if message %}  <pre > {{ message }}     </pre> 
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- ############################################################################-->
+                         <!-- Result of Intent Configuration -->
+
+                         <div class="col-lg-6">
+
+                            <div class="card position-relative">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary" style="text-align:left; line-height: 32.5px;"> <span style="vertical-align: middle;">Result  </span>
+                                </div>
+                                <div class="card-body">
+
+                                    
+                                    <div class='intent-form d-none' id='create_intent_form'>
+                                        <!--form name = "form_inputintent" method="POST" action ="/"></form-->
+                                    </div>
+                                    <div id="success_showintent"  style="display:none;"></div>
+                                        
+
+
+
+                               <!-- Create the particular intent selected by user -->
+
+                               
+                                <!-- Successful -->
+                                <div id="success_createintent" class="alert alert-success" role="alert" style="display:none;"> 
+                                   
+                                </div>
+                                <!-- Error raised -->
+                                <div id="error_inputintent" class="alert alert-danger" role="alert" style="display:none;">
+                                
+                                </div>
+
+                                   <!-- Show the particular intent selected by user -->
+                                    <!-- Successful -->
+                                <!--div id="success_showintent"  style="display:none;"> 
+
+                                   
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="tableShow" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Attributes</th>
+                                            <th scope="col">Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                       
+                                    </tfoot>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                    
+
+                                </div-->
+
+                                 <!-- Error raised -->
+                                <div id="error_showintent" class="alert alert-success" role="alert" style="display:none;"></div>
+
+                                
+                                <!-- Delete the particular intent selected by user -->
+
+                               
+                                <!-- Successful -->
+                                <div id="success_deleteintent" class="alert alert-success" role="alert" style="display:none;"> 
+
+                                   
+                                </div>
+                                <!-- Error raised -->
+                                <div id="error_deleteintent" class="alert alert-danger" role="alert" style="display:none;">
+                                
+                                </div>
+                                 
+
+                                
+                                
+                                </div>
+
+                               
+                            </div>
+                            
+                        </div>
+                        <!-- ############################################################################-->
+
+
+
                     </div>
-                  </div>
 
+
+
+
+                    <!-- Content Row -->
+                    <!--div class="row"-->
+                          
+
+                        </div>
+                    </div>
 
                 </div>
-              </div>
-              <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-2">
-                <div class="u-container-layout u-container-layout-3">
-                  <!--h5 class="u-text u-text-default u-text-palette-1-base u-text-1">Reports</h5-->
-                  {% if notifications %} 
-                  {% with objects = notifications %}
-                  <div class="summary"> <p>Summary reports </p> </div> 
-                  {% include "summary_reports_table.html" %} 
+                <!-- /.container-fluid -->
 
-                  {% endwith %}
-                  {% endif %} 
-
-
-                  {% if forms %} 
-                  {% with objects = forms %}
-                  {% if htmltemplate %}
-                  {% include  htmltemplate  %} 
-                  {% endif %}
-                  
-                  {% endwith %}
-                  {% endif %} 
-
-                  {% if formoutput %} 
-                  {% with objects = formoutput %}
-                  {% include "form_output.html" %} 
-                  
-                  {% endwith %}
-                  {% endif %} 
-                </div>
-              </div>
             </div>
-          </div>
+            <!-- End of Main Content -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; IRO 2022</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
         </div>
-      </div>
-    </section>
-    <section class="u-clearfix u-section-2" id="sec-4b18">
-      <div class="u-clearfix u-sheet u-sheet-1"></div>
-    </section>
-    
-    
-    <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-39ef"><div class="u-clearfix u-sheet u-sheet-1">
-        <p class="u-small-text u-text u-text-variant u-text-1">IRO Dashboard</p>
-      </div></footer>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="../static/vendor/jquery/jquery.min.js"></script>
+    <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="../static/js/sb-admin-2.min.js"></script>
+
+
    
-    <script>
-      function pressed(e) {
-          // Has the enter key been pressed?
-          if ( (window.event ? event.keyCode : e.which) == 13) {
-              // If it has been so, manually submit the <form>
-              document.forms[0].submit();
-          }
-      }
-      </script>
 
-    {% if form_script %} {% with objects = form_script %}
-    {% if htmltemplate %}
-                  {% include  jstemplate  %} 
-                  {% endif %}
-    {% endwith %} {% endif %} 
+<!--script>
+    function pressed(e) {
+        // Has the enter key been pressed?
+        if ( (window.event ? event.keyCode : e.which) == 13) {
+            // If it has been so, manually submit the <form>
+            document.forms[0].submit();
+        }
+    }
+    </script-->
 
-    <script>
-      function copyEvent(id)
-      {
-          var str = document.getElementById(id);
-          window.getSelection().selectAllChildren(str);
-          document.execCommand("Copy")
-      }
-  </script>
-  </body>
+    
+ <script>
+    $(document).ready(function() {
+
+        $(document).on('click', '.btn_error', function(event){
+
+            event.preventDefault();
+            var readIntentText = $("#readIntentText").val();
+            var my_form, my_form_script, HTMLtemplate, JStemplate;
+            
+
+            
+            function create_intent_form_fun(myform) {
+			
+            // Create a form dynamically
+            var form = document.createElement("form");
+            form.setAttribute("method", "post");
+            form.setAttribute("action", "/");
+            
+            // create text element
+            var condition_text = document.createElement("H5");
+            var h5_text = document.createTextNode("Conditions");
+            condition_text.appendChild(h5_text);
+            form.appendChild(condition_text);
+            
+            // create select list of subject subject
+            var selectSubjectList = document.createElement("select");
+            selectSubjectList.name = "subject";
+            form.appendChild(selectSubjectList);
+            //Create and append the options
+            for (var i = 0; i < myform[0]['subject'].length; i++) {
+                var option = document.createElement("option");
+                option.value = myform[0]['subject'][i];
+                option.text = myform[0]['subject'][i];
+                selectSubjectList.appendChild(option);
+            }
+
+            form.append(" appears more than ")
+            var occur = document.createElement("input");
+			occur.setAttribute("type", "number");
+			occur.setAttribute("name", "value");
+			occur.setAttribute("placeholder", "Occurence");
+            occur.setAttribute("min", 1);
+            form.append(occur);
+
+            form.append("times in ");
+
+            var peri = document.createElement("input");
+			peri.setAttribute("type", "number");
+			peri.setAttribute("name", "period");
+			peri.setAttribute("placeholder", "Period");
+            peri.setAttribute("min", 1);
+            form.append(peri);
+
+            // create select list of time 
+            var selectSubjectList = document.createElement("select");
+            selectSubjectList.name = "time";
+            form.appendChild(selectSubjectList);
+            //Create and append the options
+            for (var i = 0; i < myform[0]['time'].length; i++) {
+                var option = document.createElement("option");
+                option.value = myform[0]['time'][i];
+                option.text = myform[0]['time'][i];
+                selectSubjectList.appendChild(option);
+            }
+            var br = document.createElement("br");
+
+            form.appendChild(br);
+            var br = document.createElement("br");
+
+            form.appendChild(br);
+            //form.appendChild(br);
+
+            // create text element
+            var action_text = document.createElement("H5");
+            var h5_action_text = document.createTextNode(" Actions:");
+            action_text.appendChild(h5_action_text);
+            form.appendChild(action_text);
+
+            var new_div = document.createElement("div");
+            new_div.id = "actions";
+
+            form.appendChild(new_div);
+
+            // create select list of actions 
+            var selectActionList = document.createElement("select");
+            selectActionList.name = "action_0";
+            form.appendChild(selectActionList);
+            //Create and append the options
+            for (var i = 0; i < myform[0]['action'].length; i++) {
+                var option = document.createElement("option");
+                option.value = myform[0]['action'][i];
+                option.text = myform[0]['action'][i];
+                selectActionList.appendChild(option);
+            }
+
+            // create select list of objects 
+            var selectActionList = document.createElement("select");
+            selectActionList.name = "object_0";
+            form.appendChild(selectActionList);
+            //Create and append the options
+            for (var i = 0; i < myform[0]['object_notif'].length; i++) {
+                var option = document.createElement("option");
+                option.value = myform[0]['object_notif'][i];
+                option.text = myform[0]['object_notif'][i];
+                selectActionList.appendChild(option);
+            }
+
+            // Create add action button
+			var add_action_button = document.createElement("button");
+			add_action_button.id = "add_action";
+			add_action_button.innerHTML = "Add action";
+            add_action_button.type = "button";
+            form.append(add_action_button);
+
+            var br = document.createElement("br");
+            form.appendChild(br);
+            
+
+            // Create a submit button
+            var s = document.createElement("input");
+            s.setAttribute("type", "submit");
+            s.setAttribute("value", "Submit");
+            s.setAttribute("name","threat_d_form");
+            
+            // Append the button to the form
+            form.append(s);
+            return form;
+        }
+        function update_intent_form_fun(my_form_script) {
+            var count_action = 0;
+            var count_object = 0;
+            var action_name_1;
+            var object_name_1;
+            var array_notif = my_form_script[0]['object_notif'];
+            var array_access = my_form_script[0]['object_access'];
+
+            $("#add_action").on("click", function(){
+            count_action += 1;
+            //$("<input/>").attr({ type: "text", placeholder: "Enter n  product name",
+            //    name: "action_1_"+count_action}).appendTo("#actions");
+            //$("<select/>").attr({id:"action_"+count_action, name:"action", class:"Input" }).appendTo("#actions");
+            
+           
+            var myDiv = document.getElementById("actions");
+
+            //Create array of options to be added
+            var array = my_form_script[0]['action']; // get options
+
+            //Create and append select list for actions
+            var selectList = document.createElement("select");
+            selectList.name = "action_"+count_action;
+            selectList.id = "action_"+count_action;
+            selectList.className = "Input"
+            //selectList.setAttribute("action", "Select");
+            myDiv.appendChild(selectList);
+
+            action_name_1 = "#action_"+count_action;
+
+            //Create and append the options
+            for (var i = 0; i < array.length; i++) {
+                var option = document.createElement("option");
+                option.setAttribute("value", array[i]);
+                option.text = array[i];
+                selectList.appendChild(option);
+                }
+
+            //selectList.appendTo("#actions");
+
+            count_object += 1;
+            object_name_1 = "#object_"+count_object;
+            var array2 = my_form_script[0]['object_notif'];
+                //Create and append select list for objects
+            var selectList2 = document.createElement("select");
+            selectList2.name = "object_"+count_object;
+            selectList2.id = "object_"+count_object;
+            selectList2.class = "Input"
+            //selectList2.setAttribute("object_"+count_object, "Select"+count_object);
+            myDiv.appendChild(selectList2);
+            
+
+            //Create and append the options
+            for (var i = 0; i < array2.length; i++) {
+                var option2 = document.createElement("option");
+                option2.setAttribute("value", array2[i]);
+                option2.text = array2[i];
+                selectList2.appendChild(option2);
+                }
+            //selectList2.appendTo("#actions").wrap($("<div/>"));
+
+           
+            $("<br/>").appendTo("#actions");
+
+            var current_action = document.getElementById(selectList.id)
+            var current_object = document.getElementById(selectList2.id)
+            
+
+            current_action.onchange = function() { //"#action_1"
+
+            var ell = $(this) ;
+
+            if(ell.val() === "notify" ) {
+               for (var i = 0; i < array_access.length; i++) {
+                current_object.removeChild(current_object.lastChild);
+               //$(selectList2.id+" option:last-child").remove() ;
+               };
+                for (var i = 0; i < array_notif.length; i++) {
+                    var opt = document.createElement('option');
+                    opt.setAttribute("value", array_notif[i]);
+                    opt.text = array_notif[i];
+                    //opt.value = array_notif[i];
+                    current_object.appendChild(opt);
+                   //current_object.append("   <option>"+array_notif[i]+"</option>");
+            };
+
+            }
+            else if(ell.val() === "no_authorise_access" ) {
+            for (var i = 0; i < array_notif.length; i++) {
+                current_object.removeChild(current_object.lastChild);
+                //$(selectList2.id+"  option:last-child").remove() ;
+            };
+            for (var i = 0; i < array_access.length; i++) {
+                //var opt2 = document.createElement('option');
+                //opt2.value = array_access[i];
+                //current_object.appendChild(opt2);
+
+                var opt2 = document.createElement('option');
+                opt2.setAttribute("value", array_access[i]);
+                opt2.text = array_access[i];
+                //opt.value = array_notif[i];
+                current_object.appendChild(opt2);
+                //current_object.append("   <option>"+array_access[i]+"</option>");
+            }
+            }
+            };
+
+
+              
+            //$("<input/>").attr({ type: "text", placeholder: "Enter product name",
+            //    name: "action_"+count_action}).appendTo("#actions").wrap($("<div/>"));
+                
+        });
+
+
+        var action_name = "#action_0"
+        var object_name = "#object_0"
+
+        $(action_name).change(function() { //"#action_00"
+    
+            var el = $(this) ;
+           
+            if(el.val() === "notify" ) {
+                for (var i = 0; i < array_access.length; i++) {
+                    $(object_name+" option:last-child").remove() ;
+                };
+                for (var i = 0; i < array_notif.length; i++) {
+                    $(object_name).append("   <option>"+array_notif[i]+"</option>");
+                };
+
+                }
+            else if(el.val() === "no_authorise_access" ) {
+                for (var i = 0; i < array_notif.length; i++) {
+                    $(object_name+" option:last-child").remove() ;
+                };
+                for (var i = 0; i < array_access.length; i++) {
+                    $(object_name).append("   <option>"+array_access[i]+"</option>");
+                }
+                }
+        });
+
+
+
+            
+    
+        }
+            
+
+            $.ajax({
+                data: { readIntentText: readIntentText },
+                type: 'POST',
+                url : '/inputintents'
+
+                })
+            .done(function(data) {
+
+                if (data.error) {
+                    $('#error_inputintent').text(data.error).show();
+                    $('#success_showintent').hide();
+
+                }
+                else {
+                    if (data.readIntentText === "reports" ) {
+                        window.location.assign("/alerts");
+                    }
+                    else if (data.my_form){
+                    $('#success_showintent').empty()
+                    $('#success_createintent').hide()
+                    //$('#create_intent_form').empty()
+                    $('#success_showintent').show()
+                    
+                    //$('#success_createintent').append("test"+create_intent_form_fun(data.my_form))
+                    document.getElementById("success_showintent").appendChild(create_intent_form_fun(data.my_form))
+                    update_intent_form_fun(data.my_form_script)
+
+                    }
+                    else {
+
+                    $('#success_deleteintent').hide()
+                    $('#success_createintent').hide()
+                    $('#error_inputintent').empty()
+                    $('#error_inputintent').show()
+                    $('#error_inputintent').append(  "NO correct intent is successfully sent:" + "<br></br>"+
+                                                        "msg: " +data.readIntentText+ "<br></br>")
+                    
+                    
+                    $('#success_createintent').hide();
+                    }
+                    
+                }
+            });   
+        });
+    }); 
+    </script>
+
+
+</body>
+
 </html>

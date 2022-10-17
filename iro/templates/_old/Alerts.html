@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="page_type" content="np-template-header-footer-from-plugin">
+    <title>Alerts</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet"> 
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../static/css/nicepage.css" media="screen">
+<link rel="stylesheet" href="../static/css/Home.css" media="screen">
+<link rel="stylesheet" href="../static/css/Alerts.css" media="screen">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script class="u-script" type="text/javascript" src="../static/js/jquery-1.9.1.min.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="../static/js/nicepage.js" defer=""></script>
+    
+    <meta name="generator" content="Nicepage 4.6.2, nicepage.com">
+    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i">
+    
+    
+    
+    <script type="application/ld+json">{
+		"@context": "http://schema.org",
+		"@type": "Organization",
+		"name": "",
+		"logo": "../static/img/FISHY_logo_v02_final_color.png"
+}</script>
+    <meta name="theme-color" content="#478ac9">
+    <meta property="og:title" content="Home">
+    <meta property="og:type" content="website">
+  </head>
+  <body class="u-body u-overlap u-xl-mode"><header class="u-align-center-sm u-align-center-xs u-clearfix u-header u-header" id="sec-4c3f"><div class="u-clearfix u-sheet u-valign-bottom u-sheet-1">
+        <a href="{{url_for('UserInterface:index')}}" class="u-image u-logo u-image-1" data-image-width="756" data-image-height="822">
+          <img src="../static/img/FISHY_logo_v02_final_color.png" class="u-logo-image u-logo-image-1">
+        </a>
+        <nav class="u-align-left u-menu u-menu-dropdown u-offcanvas u-menu-1">
+          <div class="menu-collapse" style="font-size: 1rem;">
+            <a class="u-button-style u-nav-link" href="#">
+              <svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 302 302" style=""><use xlink:href="#svg-8a8f"></use></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="svg-8a8f" x="0px" y="0px" viewBox="0 0 302 302" style="enable-background:new 0 0 302 302;" xml:space="preserve" class="u-svg-content"><g><rect y="36" width="302" height="30"></rect><rect y="236" width="302" height="30"></rect><rect y="136" width="302" height="30"></rect>
+</g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+            </a>
+          </div>
+          <div class="u-custom-menu u-nav-container">
+            <ul class="u-nav u-unstyled u-nav-1"><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="{{url_for('UserInterface:index')}}" style="padding: 10px 20px;">Home</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="{{ url_for('UserInterface:alerts') }}" style="padding: 10px 20px;">Alerts</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" style="padding: 10px 20px;">Intent Configuration</a>
+</li></ul>
+          </div>
+          <div class="u-custom-menu u-nav-container-collapse">
+            <div class="u-align-center u-black u-container-style u-inner-container-layout u-opacity u-opacity-95 u-sidenav">
+              <div class="u-inner-container-layout u-sidenav-overflow">
+                <div class="u-menu-close"></div>
+                <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2"><li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{url_for('UserInterface:index')}}" style="padding: 10px 20px;">Home</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link" href="{{ url_for('UserInterface:alerts') }}" style="padding: 10px 20px;">Alerts</a>
+</li><li class="u-nav-item"><a class="u-button-style u-nav-link" style="padding: 10px 20px;">Intent Configuration</a>
+</li></ul>
+              </div>
+            </div>
+            <div class="u-black u-menu-overlay u-opacity u-opacity-70"></div>
+          </div>
+        </nav>
+      </div></header>
+    <section class="u-clearfix u-section-1" id="carousel_b295">
+      <div class="u-clearfix u-sheet u-sheet-1">
+        <div class="u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
+          <div class="u-layout">
+            <!--div class="u-layout-row">
+              <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-1">
+                <div class="u-container-layout u-container-layout-1">
+                  0
+                </div>
+              </div>
+              <div class="u-container-style u-layout-cell u-size-30 u-layout-cell-2">
+                <div class="u-container-layout u-container-layout-3">
+                  0
+                  {% if notifications %} <pre >{{ notifications }}</pre> {% endif %} 
+                </div>
+              </div>
+            </div-->
+            
+                        
+            <section class="table-content">
+              <div class="container-fluid">
+                  <h2 class="title">Detailed Reports</h2>
+                  <div class="row">
+                      <div class="offset-1 col-10">
+                        
+                          <table class="table table-striped">
+                              <thead class="main-head">
+                                  <tr>
+                                      <th scope="col">Description</th>
+                                      <th scope="col">Full Text</th>
+                                      <th scope="col">Additional info</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+  
+                              </tbody>
+                   {% if data %} 
+                  {% for el in data %}
+                  <tr>
+                      <td>{{ el.data.title }}</td>
+                      <td class="text-cell">{{ el.data.text }}</td>
+                      <td>
+                          <table>
+                              <thead class="thead-light">
+                              <tr>
+                                  {% for field in el.data.fields %}
+                                  <th>{{ field.title }}</th>
+                                  {% endfor %}
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <tr>
+                                  {% for field in el.data.fields %}
+                                  <td>{{ field.value }}</td>
+                                  {% endfor %}
+                              </tr>
+                          </tbody>
+                          </table>
+                      </td>
+                  </tr>
+                  {% endfor %}
+                  {% endif %} 
+              </table></div></div></div></section>
+              
+
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="u-clearfix u-section-2" id="sec-4b18">
+      <div class="u-clearfix u-sheet u-sheet-1"></div>
+    </section>
+    
+    
+    <footer class="u-align-center u-clearfix u-footer u-grey-80 u-footer" id="sec-39ef"><div class="u-clearfix u-sheet u-sheet-1">
+        <p class="u-small-text u-text u-text-variant u-text-1">IRO Dashboard</p>
+      </div></footer>
+   
+    <script>
+      function pressed(e) {
+          // Has the enter key been pressed?
+          if ( (window.event ? event.keyCode : e.which) == 13) {
+              // If it has been so, manually submit the <form>
+              document.forms[0].submit();
+          }
+      }
+      </script>
+  </body>
+</html>

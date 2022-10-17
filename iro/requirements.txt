@@ -19,3 +19,4 @@ pipdeptree==2.2.1
 setuptools==57.5.0
 wheel==0.37.1
 requests==2.27.1
+pika==1.3.0

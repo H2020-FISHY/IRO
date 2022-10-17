@@ -1,0 +1,24 @@
+<section class="table-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="offset-1 col-10">
+                <table class="table table-striped">
+                    <thead class="main-head">
+                        <tr>
+                            <th scope="col">Description</th>
+                            <th scope="col">Source</th>
+                            <th scope="col">Additional info</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+        {% for el in objects %}
+        <tr>
+            <td>{{ el["data"]["title"] }}</td>
+            <td>{{ el["source"] }}</td>
+            <td class="text-cell">{{ el.data.text }}</td>
+            
+        </tr>
+        {% endfor %}
+    </table></div></div></div></section>

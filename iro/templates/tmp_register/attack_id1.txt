@@ -1,5 +1,5 @@
 {
-    '{{attacker.name}}': {
-    '{{attacker.type}}':'{{attacker.id}}'
-}
+    "name": "{{attacker.name}}",
+    "type":"{{attacker.type}}",
+    "location":"{{attacker.id}}"
 }

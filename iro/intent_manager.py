@@ -22,36 +22,11 @@ from knowledgeBase.intentStore import intentStoreManager as ism
 from attack_intent_store import Attack_Data
 from intent_creation import IntentCreation
 
-
-def print_result_file(str_result):
-    """
-    |    prints result in export text file.
-    |
-    |   Args:
-    |       str_result(str):  final string
-    """
-    if not os.path.exists("./outputfiles"):
-        os.makedirs("./outputfiles")
-    
-    with open("./outputfiles/export.txt", "a") as file:
-        file.write(str_result)
+import requests
+from datetime import datetime
 
 
-def is_file_empty(file):
-    """
-    |    check if the file contains anything.
-    |
-    |   Args:
-    |       file(str):  data to be written in JSON
-    |
-    |   Returns:
-    |       bool: return if the file is empty or not
-    """
-    with open(file, "r") as r_file:
-        file_content = r_file.read()
-    if re.search(r"^\s*$", file_content):
-        return True
-    return False
+
 
 
 class IntentManager:
@@ -95,7 +70,7 @@ class IntentManager:
         reading_regex = r"^(?P<start>\w+) (?P<command>\w+)? ?(?:\"(?P<intent>.*?)\")?"
         pattern = re.compile(reading_regex, re.I)
         match = pattern.search(intent_text)
-        info_message = ""
+        info_message = "None"
         my_form = None
         my_form_script = None
         HTMLtemplate = None
@@ -121,23 +96,13 @@ class IntentManager:
             if match.group("start") == "reports":
                 info_message = "reports"
                 return info_message, my_form, my_form_script,HTMLtemplate,JStemplate, notifs
-            '''return (
-                "usage : iro <command> <args> \n"
-                "\n"
-                'add "intent"        read intents\n'
-                "format              show the intent Requirements\n"
-                "status              show intent register status\n"
-                "push                solve conflict and send to controller\n"
-                "reset               reset intent register\n"
-            )
-            '''
+            
         else:
             if intent_text == "reports":
-                info_message = "reports..."
-                print("yes....")
-                return info_message, my_form, my_form_script,HTMLtemplate, notifs
+                info_message = "reports"
+                return info_message, my_form, my_form_script,HTMLtemplate,JStemplate, notifs
 
-        return self.notif.get_instructions(), my_form, my_form_script, HTMLtemplate, notifs
+        return info_message,  my_form, my_form_script,HTMLtemplate,JStemplate, notifs
 
     def instruct_add(self, plain_text):
         """
@@ -153,22 +118,8 @@ class IntentManager:
         my_form = None
         my_form_script = None
         notifs = None
-        '''
-        # TODO: re-create those methods 
-        intent_verification = IntentVerification(
-            self.intent_structure, plain_text, self.intent_store
-        )
-        if plain_text is not None:
-            if intent_verification.check_validation():
-                intent_determine = IntentDetermination(
-                    self.intent_store, self.intent_structure, intent_verification
-                )
-                #self.write_json(intent_determine.json_text)
-                self.write_new(intent_determine.json_text)
-                return "The intent has been successfully saved !"
-            return "ERROR: Non valid intent please enter a valid intent !"
-        return "ERROR: Please enter an intent "
-        '''
+        HTMLtemplate = None
+        JStemplate = None
         
 
         # the text is assumed to be verified TODO: consider intentStore here !!
@@ -298,33 +249,41 @@ class IntentManager:
         }
         structured_data_hspl, structured_data_attacker = self.get_data_from_intent(form_data, intent_name)
          
-        print(structured_data_hspl)
-        for  val in structured_data_hspl['hspl_object']:
-            print("it works.........")
+        
         #check the needed xml template
         fpath = "edc/hspl_new.xml"
         fname = "tmp_register/hspl1.xml"
         with open(fpath, 'w') as f:
-            html = render_template(fname, objects=structured_data_hspl)
-            f.write(html)
+            html_hspl = render_template(fname, objects=structured_data_hspl)
+            f.write(html_hspl)
         if not os.path.exists(fpath):
             raise Exception("it is not saved :((")
 
         fpatha = "edc/attacker_new.txt"
         fnamea = "tmp_register/attack_id1.txt"
         with open(fpatha, 'w') as f:
-            html = render_template(fnamea, attacker=structured_data_attacker)
-            f.write(html)
+            html_info = render_template(fnamea, attacker=structured_data_attacker)
+            f.write(html_info)
+            html_info = json.loads(html_info)
         if not os.path.exists(fpatha):
             raise Exception("it is not saved :((")
 
+        # a validation should happen outside, then the policy is saved. At the moment we will post the policy here
+        # TODO: move the post outside and save the policy temorarely to be validated
+        _timestamp = datetime.now()
+        url = "https://fishy.xlab.si/tar/api/policies"
+        data = {"source": "IRO", "status": "both", "timestamp": str(_timestamp), "HSPL": html_hspl, "attack_info": html_info}
+        headers = {'Content-type': 'application/json'}
+        r = requests.post(url, data=json.dumps(data), headers=headers)
+        print(r.status_code)
+        
         msg = None
         try:
             with open(fpath) as f_obj:
                 tmp1 = f_obj.read()
             with open(fpatha) as f_obja:
                 tmp2 = f_obja.read()
-            msg = "Policies generated successfully!\n\n" + tmp1 + "\n" + tmp2
+            msg = "Policies generated successfully!\n\n "
         except FileNotFoundError:
             msg = "Sorry, the file "+ fpath + "does not exist."
 

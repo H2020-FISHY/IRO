@@ -3,8 +3,8 @@
 |   file:       intentStore.py
 |
 |   brief:
-|   author:     
-|   email:      
+|   author:   Mounir Bensalem  
+|   email:    mounir.bensalem@tu-bs.de
 |   copyright:  © IDA - All rights reserved
 """
 import sys
