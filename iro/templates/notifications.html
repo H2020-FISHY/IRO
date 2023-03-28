@@ -259,12 +259,39 @@
                         </div>
                     </li>
 
-                        <!--div class="topbar-divider d-none d-sm-block"></div-->
+                    <div class="topbar-divider d-none d-sm-block"></div>
 
-                        <!-- Nav Item - User Information -->
- 
-
-                            <!-- Dropdown - User Information -->
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user_info.preferred_username}}</span>
+                            <img class="img-profile rounded-circle"
+                                src="../static/img/user.png">
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                {{user_info.email}}
+                            </a>
+                            <!--a class="dropdown-item" href="#">
+                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Settings
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Activity Log
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Logout
+                            </a-->
+                        </div>
+                    </li>
+                    
 
 
                         
@@ -279,33 +306,14 @@
                 <div class="container-fluid">
 
 
-
-
-
-
-
-
-
-
-
-
                 <!-- Page Heading -->
 
-
-
-
-               
                                     <!-- Page Heading -->
-                                    <h1 class="h3 mb-1 text-gray-800">Notifications</h1>
-                                    <p class="mb-4">In this page you see the notifications.</p>
+                                    <h1 class="h3 mb-1 text-gray-800"></h1>
+                                    <p class="mb-4"></p>
                 
                                     <!-- Content Row -->
                                     <div class="row">
-                
-                
-                
-                
-                
                                         <!-- Intent Configuration: Create,Delete and Show -->
                          <div class="col-lg-6">
                                                 
@@ -330,19 +338,8 @@
                                                     
                                                     <p class="mb-0 small">
                 
-                                                 
-                                                    
-                
-                
-                                    
                         
                                 <!-- Notification Table TABLE (DATATABLES)-->
-                
-                                
-                                
-                                  
-                              
-                                 
                 
                                     <!-- DataTables Example -->
                                     <div class="card shadow mb-4" >
@@ -362,22 +359,21 @@
                                                     <thead>
                                                         <tr>
                                                             <th scope="col">ID</th>
-                                                            <th scope="col">Name</th>
+                                                            <!--th scope="col">Name</th-->
                                                             <th scope="col">Source</th>
-                                                            <th ></th>
+                                                            <th scope="col">Actions</th>
                                                         </tr>
                                                     </thead>
                                                     <tfoot>
                                                         <tr>
                                                             <th scope="col">ID</th>
-                                                            <th scope="col">Name</th>
+                                                            <!--th scope="col">Name</th-->
                                                             <th scope="col">Source</th>
-                                                            <th ></th>
+                                                            <th scope="col">Actions</th>
+                                                            
                                                         </tr>
                                                     </tfoot>
                                                     <tbody>
-                                                        
-                                                        
                                                         {% for dict_item in show_notification_data %}
                                                         {%if dict_item['Status'] == "Deleted" or dict_item['Status'] == "Created" %}
                                                         
@@ -398,7 +394,7 @@
                                                             <!-- second column-->
                                                            
                 
-                                                            <td class="text-cell">{{dict_item['Name']}}</td>
+                                                            <!--td class="text-cell">{{dict_item['Name']}}</td-->
                 
                                                             <!-- third column-->
                                                             
@@ -409,15 +405,10 @@
                                                                     
                                                                 <div id="first"> 
                 
-                                                                   
-                
                                                                         <button class="btn btn-primary btn_create" data-id="{{dict_item['ID']}}">
                                                                             <i class="fa fa-plus" aria-hidden="true" ></i>
                                                                         </button>
                         
-                                                                   
-                
-                                                        
                                                                 </div>
 
 
@@ -426,15 +417,10 @@
                                                                 
                                                                 <div id="second"> 
                 
-                                                                   
-                
                                                                         <button class="btn btn-primary btn_show" data-id="{{dict_item['ID']}}">
                                                                             <i class="fa fa-eye" aria-hidden="true" ></i>
                                                                         </button>
                         
-                                                                   
-                
-                                                        
                                                                 </div>
 
                                                                 <div class="space" style="width: 4px; height: auto; display: inline-block;">
@@ -448,17 +434,9 @@
                                                                     <i  class="fa fa-trash" aria-hidden="false"></i> 
                                                                     </button>
                            
-                                                               
-                
-                
                                                             </div>
                 
                                                         </div>
-                                                            
-                                                            
-                                                            
-                                                            
-                                                            
                                                             
                                                             </td>
                                                              </tr>
@@ -477,8 +455,8 @@
                                             <!--End of All Notification Table-->
 
                                           
-                                        <!-- Single Notification Table -->
-                                        {%if notification_selection == "Single" %}
+                    <!-- Single Notification Table -->
+                    {%if notification_selection == "Single" %}
                                 <div id="single_notification" > 
 
                                    
@@ -487,7 +465,7 @@
                                             <thead>
                                                 <tr>
                                                     <th scope="col">ID</th>
-                                                    <th scope="col">Name</th>
+                                                    <!--th scope="col">Name</th-->
                                                     <th scope="col">Source</th>
                                                     <th scope="col">Actions</th>
                                                 </tr>
@@ -517,10 +495,10 @@
                                                             <!-- second column-->
                                                            
                 
-                                                            <td class="text-cell">{{dict_item['Name']}}
+                                                            <!--td class="text-cell">{{dict_item['Name']}}
 
 
-                                                            </td>
+                                                            </td-->
                 
                                                             <!-- third column-->
                 
@@ -582,7 +560,7 @@
                                     
                                         </div>
 
-                                        {% endif %}
+                    {% endif %}
 
 
                                         <!-- Single Notification Table with Ajax-->
@@ -597,7 +575,7 @@
                                                      <thead>
                                                          <tr>
                                                              <th scope="col">ID</th>
-                                                             <th scope="col">Name</th>
+                                                             <!--th scope="col">Name</th-->
                                                              <th scope="col">Source</th>
                                                              <th scope="col">Actions</th>
                                                          </tr>
@@ -611,17 +589,9 @@
                                                  </table>
                                              </div>
                                              
-                                            
-                                             
                                                  </div>
          
                                                  <!-- Single Notification Notification with Ajax -->
-
-
-
-
-
-
 
                                         </div>
                                        
@@ -631,14 +601,6 @@
                                             </div>
                 
                                         </div>
-                                        
-                
-                                            
-                
-                
-                
-                
-                
                                         
                 
                                           <!-- Result of Intent Configuration -->
@@ -694,25 +656,7 @@
                                         <div id="error_deletenotification" class="alert alert-danger" role="alert" style="display:none;">
                                         
                                         </div>
-                
-                                            
-                
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                                
-                                                
+                   
                                                 </div>
                 
                                                
@@ -722,54 +666,6 @@
                                         
                                     </div>
                                     
-                
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                
-
-
-
-
-              
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     
             </div>
             <!-- /.container-fluid --> 
@@ -780,7 +676,7 @@
         <footer class="sticky-footer bg-white">
             <div class="container my-auto">
                 <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; IRO 2022</span>
+                    <span>Copyright &copy; IRO 2023</span>
                 </div>
             </div>
         </footer>
@@ -968,7 +864,7 @@
                         $('#singleNotificationTable_ajax').find('tbody').append(
                         '<tr>'
                         +'<td>'+data.single_notification_id+'</td>'
-                        +'<td>'+data.single_notification_name+'</td>'    
+                        //+'<td>'+data.single_notification_name+'</td>'    
                         +'<td>'+ data.single_notification_source +'</td>'
                         +'<td><div id="wrapper">'
                         +'<div id="first">' 

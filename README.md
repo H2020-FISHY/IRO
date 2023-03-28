@@ -11,7 +11,7 @@ This development is part of the H2020 European Project Fishy.
 - Intent manager: WIP
 - Intent compiler: WIP
 - Policy configurator: WIP
-- Learning and reasoning: TODO
+- Learning and reasoning: WIP
 
 
 ## Progress on integration
@@ -19,7 +19,8 @@ This development is part of the H2020 European Project Fishy.
 - Containerization: Done
 - Integration with Fishy sandbox: Done
 - Integration with EDC: WIP
-- Integration with TIM: TODO
+- Integration with Central Repository: Done
+- Integration with Smart Contracts: Done
 
 
 ## Deployment 
@@ -79,15 +80,9 @@ The IRO pods will then be spawned in the default namespace.
 ## Changelog
 
 ### Upcoming
-
-### 2.0 (22-10-17)
 - Implementation of data exchange with TIM
 - Added Virtualbox support for Vagrantfile
 - Added host filesystem mount; mapped host's /tmp to container's /edc
-- Integration of RabbitMQ connectivity
-- Rework of the GUI
-- Deployment of notification center
-- Fixed connection to Elasticsearch, it is now used by intent search
 
 ### 1.0.5 (22-02-07) 
 - Added Classes to define HSLP policies

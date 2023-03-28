@@ -2,14 +2,16 @@
 #import  notification_configuration as ntc
 import pika, sys, os
 import json
+from datetime import datetime
 
-class RMQsubscriber:
+class SCsubscriber:
     def __init__(self, queueName, bindingKey, config):
       self.queueName = queueName
       self.bindingKey = bindingKey
       self.config = config
       #self.notif_counter = 10
       self.connection = self._create_connection()
+      self.sc_path = "notification_store/smart_contracts/verified_sc.json"
 
     def __del__(self):
       self.connection.close()
@@ -20,7 +22,6 @@ class RMQsubscriber:
                           port=self.config['port'],
                           virtual_host='/', 
                           credentials=credentials)
-        
         connection = pika.BlockingConnection(parameters)
         #parameters=pika.ConnectionParameters(host=self.config['host'],  port = self.config['port'])
         return connection
@@ -31,20 +32,28 @@ class RMQsubscriber:
         print(" [x] Received %r" % body)
         info = json.loads(body.decode('utf-8'))
         
-        notif = { 
-            "Name":  info["id"],
-            "Source": info["details"]["report"]["source"],
-            "Attributes": "Data",
-            "Value": info["details"]["report"]["data"],
+        notif = {
             "ID": info["id"],
-            "Time": "2022-07-20 22:48:41",
+            "Name": "SC"+ info["id"],
+            "type": info["type"],
+            "link": info["link"],
+            "tx_hash": info["tx_hash"],
+            "error_message": info["error_message"],
+            "Time": datetime.today().strftime("%Y-%m-%d %H:%M:%S"),
             "Status": "Open"
             }
         
-        fpath = "notification_store/reports/"+info["id"]+".json"
+        fpath = "notification_store/smart_contracts"+"notification_SC_"+info["id"]+".json"
         with open(fpath, 'w') as f:
-            notif = json.dumps(notif)
-            f.write(notif)
+            _notif = json.dumps(notif)
+            f.write(_notif)
+        with open(self.sc_path) as sc_file:
+            json_decoded = json.load(sc_file)
+        json_decoded[info["id"]] = notif["error_message"]
+        with open(self.sc_path, 'w') as sc_file:
+            json.dump(json_decoded, sc_file)
+
+
         #self.notif_counter += 1
 
 
@@ -64,19 +73,13 @@ class RMQsubscriber:
         except KeyboardInterrupt:
             channel.stop_consuming()
 
-
-queueName = 'IROQueue'
-key = 'reports.#'
-notification_consumer_config = { 'host': 'fishymq.xlab.si', 'port': 45672, 'exchange' : 'tasks', 'login':'tubs', 'password':'sbut'}
-
-if __name__ == '__main__':
+def run_rabbit(queueName, bindingKey , config):
     try:
-       init_rabbit = RMQsubscriber(queueName, key, notification_consumer_config)
-       init_rabbit.setup()
+        init_rabbit = SCsubscriber(queueName, bindingKey , config)
+        init_rabbit.setup()
     except KeyboardInterrupt:
         print('Interrupted')
         try:
             sys.exit(0)
         except SystemExit:
             os._exit(0)
-      

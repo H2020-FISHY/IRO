@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: iro
-        image: michalkeit/iro:2.0
+        image: michalkeit/iro:1.05
         securityContext:
           capabilities:
             add: ["NET_ADMIN"]
@@ -54,14 +54,6 @@ spec:
           value: "8000"
         - name: TIM_URL
           value: "https://fishy.xlab.si/tar/api/reports"
-        - name: RMQ_HOST
-          value: "fishymq.xlab.si"
-        - name: RMQ_PORT
-          value: "45672"
-        - name: RMQ_LOGIN
-          value: "tubs"
-        - name: RMQ_PASSWORD
-          value: "sbut"
       volumes:
       - name: edc-volume
         hostPath:

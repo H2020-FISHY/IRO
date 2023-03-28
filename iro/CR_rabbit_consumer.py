@@ -9,6 +9,8 @@ class RMQsubscriber:
       self.bindingKey = bindingKey
       self.config = config
       #self.notif_counter = 10
+      
+
       self.connection = self._create_connection()
 
     def __del__(self):
@@ -63,20 +65,15 @@ class RMQsubscriber:
             channel.start_consuming()
         except KeyboardInterrupt:
             channel.stop_consuming()
-
-
-queueName = 'IROQueue'
-key = 'reports.#'
-notification_consumer_config = { 'host': 'fishymq.xlab.si', 'port': 45672, 'exchange' : 'tasks', 'login':'tubs', 'password':'sbut'}
-
-if __name__ == '__main__':
+    
+def run_rabbit(queueName, bindingKey , config):
     try:
-       init_rabbit = RMQsubscriber(queueName, key, notification_consumer_config)
-       init_rabbit.setup()
+        init_rabbit = RMQsubscriber(queueName, bindingKey , config)
+        init_rabbit.setup()
     except KeyboardInterrupt:
         print('Interrupted')
         try:
             sys.exit(0)
         except SystemExit:
             os._exit(0)
-      
+    
