@@ -32,16 +32,28 @@ class RMQsubscriber:
         binding_key = method.routing_key
         print(" [x] Received %r" % body)
         info = json.loads(body.decode('utf-8'))
-        
-        notif = { 
-            "Name":  info["id"],
-            "Source": info["details"]["report"]["source"],
-            "Attributes": "Data",
-            "Value": info["details"]["report"]["data"],
-            "ID": info["id"],
-            "Time": "2022-07-20 22:48:41",
-            "Status": "Open"
-            }
+        try:
+                        
+            notif = { 
+                "Name":  info["id"],
+                "Source": info["details"]["report"]["source"],
+                "Attributes": "Data",
+                "Value": info["details"]["report"]["data"],
+                "ID": info["id"],
+                "Time": "2022-07-20 22:48:41",
+                "Status": "Open"
+                }
+        except:
+            notif = { 
+                "Name":  info["id"],
+                "Source": info["details"]["device_product"],
+                "Attributes": "Data",
+                "Value": info["details"],
+                "ID": info["id"],
+                "Time": info["details"]["updated_at"],
+                "Status": "Open"
+                }
+
         
         fpath = "notification_store/reports/"+info["id"]+".json"
         with open(fpath, 'w') as f:
@@ -66,7 +78,13 @@ class RMQsubscriber:
         except KeyboardInterrupt:
             channel.stop_consuming()
     
-def run_rabbit(queueName, bindingKey , config):
+def run_rabbit(): #queueName, bindingKey , config):
+
+    # Central repository RabbitMQ parameters
+    queueName = 'IROQueue'
+    bindingKey = 'reports.#'
+    config = { 'host': 'fishymq.xlab.si', 'port': 45672, 'exchange' : 'tasks', 'login':'tubs', 'password':'sbut'}
+
     try:
         init_rabbit = RMQsubscriber(queueName, bindingKey , config)
         init_rabbit.setup()

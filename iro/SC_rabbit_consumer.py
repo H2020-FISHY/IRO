@@ -73,9 +73,14 @@ class SCsubscriber:
         except KeyboardInterrupt:
             channel.stop_consuming()
 
-def run_rabbit(queueName, bindingKey , config):
+def run_rabbit():
+    # Smart Contracts RabbitMQ parameters
+    SCqueueName = 'SCQueue'
+    SCkey = 'sc.validation'
+    SCnotification_consumer_config = { 'host': 'fishymq.xlab.si', 'port': 45672, 'exchange' : 'sc-results', 'login':'tubs', 'password':'sbut'}
+
     try:
-        init_rabbit = SCsubscriber(queueName, bindingKey , config)
+        init_rabbit = SCsubscriber(SCqueueName, SCkey , SCnotification_consumer_config)
         init_rabbit.setup()
     except KeyboardInterrupt:
         print('Interrupted')

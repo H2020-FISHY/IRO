@@ -261,13 +261,28 @@ class UserInterface(FlaskView):
                             if alert != 'test':
                                 if el['source'] == "SACM":
                                     try:
-                                        print("HERE: ", ast.literal_eval(el['data'])["rule"] )
-
-                                        alert = {"id":el['id'], "title":  ast.literal_eval(el['data'])['rule'], "text": "Source: SACM\n timestamp: "+ast.literal_eval(el['data'])['timestamp']+"\n id: "+ ast.literal_eval(el['data'])['id'], "fields":[{"title": "tool", "value":ast.literal_eval(el['data'])['tool']},{"title": "result", "value":ast.literal_eval(el['data'])['result']}]}
-                                        #alert = {"title": "test", "text": "SACM", "fields":[{"title": "test", "value":"test"},{"title": "test", "value":"test"}]}
+                                        print("#########################################")
+                                        print("HERE: ", ast.literal_eval(el['data']) ) # ast.literal_eval(el['data'])['rule']
+                                        alert = {"id":el['id'], "sc_id":ast.literal_eval(el['data'])['AssessmentResultID'], "title":  ast.literal_eval(el['data'])['rule'], "text": "Source: SACM\n timestamp: "+ast.literal_eval(el['data'])['timestamp']+"\n id: "+ ast.literal_eval(el['data'])['id'], "fields":[{"title": "tool", "value":ast.literal_eval(el['data'])['tool']},{"title": "result", "value":ast.literal_eval(el['data'])['result']}]}
+                                            #alert = {"title": "test", "text": "SACM", "fields":[{"title": "test", "value":"test"},{"title": "test", "value":"test"}]}
                                         element['data'] = alert
+
+                                        
                                     except:
-                                        raise Exception("E: Error in reading wazuh data")
+                                        try:
+                                            print("HERE: ", ast.literal_eval(el['data'])['pilot'])
+                                            _text = ""
+                                            for _key, data_info in ast.literal_eval(el['data']).items():
+                                                try:
+                                                    _text += _key + ": " + str(data_info) + "\n"
+                                                except:
+                                                    pass
+                                            alert = {"id":el['id'], "sc_id":ast.literal_eval(el['data'])['AssessmentResultID'], "title": "Source: SACM" , "text": _text , "fields":[{"title": "Sender", "value":ast.literal_eval(el['data'])['Sender']},{"title": "Outcome", "value":ast.literal_eval(el['data'])['Outcome']}]} # "Source: SACM\n pilot: "+ ast.literal_eval(el['data'])['pilot']+ "\ntimestamp: "+ast.literal_eval(el['data'])['@timestamp']+"\n AssessmentResultID: "+ ast.literal_eval(el['data'])['AssessmentResultID'],
+                                            
+                                            #alert = {"title": "test", "text": "SACM", "fields":[{"title": "test", "value":"test"},{"title": "test", "value":"test"}]}
+                                            element['data'] = alert
+                                        except:
+                                            raise Exception("E: Error in reading wazuh data")
 
                                 elif el['source'] == "Wazuh":
                                     
@@ -565,7 +580,11 @@ class UserInterface(FlaskView):
             return render_template('404.html',error="MISSING TOKEN") #'MISSING TOKEN'
             
 
-        
+def runAppssl():
+    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False, ssl_context=('/crt/cert.pem', '/crt/key.pem'))
+
+def runApp():
+    app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
 
 	
 if __name__ == "__main__":
@@ -573,13 +592,17 @@ if __name__ == "__main__":
     certs_present = [os.path.exists('/crt/cert.pem'),
                     os.path.exists('/crt/key.pem')]
     print("Detected [certificate, private key]: ", certs_present)
-    if all(certs_present):
-        #app.run(host='0.0.0.0', port=5000, debug=True, ssl_context=('/crt/cert.pem', '/crt/key.pem'))
-        Thread(target=lambda: app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False, ssl_context=('/crt/cert.pem', '/crt/key.pem'))).start()
-        Thread(target = crc.run_rabbit(CRqueueName, CRkey, notification_consumer_config)).start()
-        Thread(target = crc.run_rabbit(SCqueueName, SCkey, SCnotification_consumer_config)).start()
-    else:
-        #app.run(host='0.0.0.0', port=5000, debug=True)
-        Thread(target=lambda: app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)).start()
-        Thread(target = crc.run_rabbit(CRqueueName, CRkey, notification_consumer_config)).start()
-        Thread(target = scc.run_rabbit(SCqueueName, SCkey, SCnotification_consumer_config)).start()
+    try:
+        if all(certs_present):
+            #app.run(host='0.0.0.0', port=5000, debug=True, ssl_context=('/crt/cert.pem', '/crt/key.pem'))
+            Thread(target=runAppssl).start()
+            Thread(target = crc.run_rabbit).start()
+            Thread(target = crc.run_rabbit).start()
+        else:
+            #app.run(host='0.0.0.0', port=5000, debug=True)
+            Thread(target=runApp).start()
+            Thread(target = crc.run_rabbit).start()
+            Thread(target = scc.run_rabbit).start()
+    
+    except Exception as e:
+        print("Unexpected error:" + str(e))
