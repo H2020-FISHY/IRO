@@ -32,21 +32,31 @@ class RMQsubscriber:
         binding_key = method.routing_key
         print(" [x] Received %r" % body)
         info = json.loads(body.decode('utf-8'))
+        _src = "Not Defined"
+
+        try:
+            _src = info["details"]["report"]["source"]
+        except:
+            try:
+                _src = info["details"]["device_product"]
+            except:
+                _src = "Not Defined"
+
         try:
                         
             notif = { 
                 "Name":  info["id"],
-                "Source": info["details"]["report"]["source"],
+                "Source": _src,
                 "Attributes": "Data",
                 "Value": info["details"]["report"]["data"],
                 "ID": info["id"],
-                "Time": "2022-07-20 22:48:41",
+                "Time": info["details"]["updated_at"],
                 "Status": "Open"
                 }
         except:
             notif = { 
                 "Name":  info["id"],
-                "Source": info["details"]["device_product"],
+                "Source": _src,
                 "Attributes": "Data",
                 "Value": info["details"],
                 "ID": info["id"],

@@ -34,7 +34,7 @@ class SCsubscriber:
         
         notif = {
             "ID": info["id"],
-            "Name": "SC"+ info["id"],
+            "Name": "SC"+ str(info["id"]),
             "type": info["type"],
             "link": info["link"],
             "tx_hash": info["tx_hash"],
