@@ -226,14 +226,38 @@
 
                             </div>
                         </li>
-                        <!--div class="topbar-divider d-none d-sm-block"></div-->
+                        <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
- 
-
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user_info.preferred_username}}</span>
+                                <img class="img-profile rounded-circle"
+                                    src="../static/img/user.png">
+                            </a>
                             <!-- Dropdown - User Information -->
-
-
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                        aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            {{user_info.email}}
+                        </a>
+                        <!--a class="dropdown-item" href="#">
+                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Settings
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Activity Log
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            Logout
+                        </a-->
+                    </div>
+                        </li>
                         
 
                     </ul>
@@ -266,33 +290,36 @@
                     <!-- DataTables Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables 1</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">DataTable</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
+                                            <th scope="col">ID</th>
                                             <th scope="col">Description</th>
                                             <th scope="col">Full Text</th>
                                             <th scope="col">Additional info</th>
-                                            <!--th scope="col">Smart contract verification</th-->
+                                            <th scope="col">Smart contract verification</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
+                                            <th scope="col">ID</th>
                                             <th scope="col">Description</th>
                                             <th scope="col">Full Text</th>
                                             <th scope="col">Additional info</th>
-                                            <!--th scope="col">Smart contract verification</th-->
+                                            <th scope="col">Smart Contracts verification</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
                                         {% if data %} 
                   {% for el in data %}
                   <tr>
-                      <td>{{ el.data.title }}</td>
-                      <td class="text-cell">{{ el.data.text }}</td>
+                    <td><pre> {{ el.data.id }}</pre></td>
+                      <td><pre> {{ el.data.title }}</pre></td>
+                      <td class="text-cell"><pre> {{ el.data.text }}</pre></td>
                       <td>
                           <table>
                               <thead class="thead-light">
@@ -305,13 +332,35 @@
                               <tbody>
                               <tr>
                                   {% for field in el.data.fields %}
-                                  <td>{{ field.value }}</td>
+                                  <td><pre> {{ field.value }}</pre></td>
                                   {% endfor %}
                               </tr>
                           </tbody>
                           </table>
                       </td>
-                      <!--td>TODO</td-->
+                      <td> 
+                        {% if smart_contracts %} 
+                        {%if el.data.sc_id in smart_contracts %}
+                        {%if smart_contracts[el.data.sc_id]=="" %}
+                        <svg xmlns="http://www.w3.org/2000/svg" title="Verified" width="24" height="24" fill="currentColor" color="green" class="bi bi-shield-fill-check" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" title="Verified" d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.777 11.777 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7.159 7.159 0 0 0 1.048-.625 11.775 11.775 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.541 1.541 0 0 0-1.044-1.263 62.467 62.467 0 0 0-2.887-.87C9.843.266 8.69 0 8 0zm2.146 5.146a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647z"/>
+                      </svg>  Verified 
+                      {% else %}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" color="red" class="bi bi-shield-fill-x" viewBox="0 0 16 16">
+                        <path d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.777 11.777 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7.159 7.159 0 0 0 1.048-.625 11.775 11.775 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.541 1.541 0 0 0-1.044-1.263 62.467 62.467 0 0 0-2.887-.87C9.843.266 8.69 0 8 0zM6.854 5.146 8 6.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 7l1.147 1.146a.5.5 0 0 1-.708.708L8 7.707 6.854 8.854a.5.5 0 1 1-.708-.708L7.293 7 6.146 5.854a.5.5 0 1 1 .708-.708z"/>
+                      </svg>    {{ smart_contracts[el.data.sc_id] }}
+                      {% endif %}
+                      {% else %}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-shield-fill-exclamation" viewBox="0 0 16 16" title="Waiting">
+                        <path fill-rule="evenodd" d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.777 11.777 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7.159 7.159 0 0 0 1.048-.625 11.775 11.775 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.541 1.541 0 0 0-1.044-1.263 62.467 62.467 0 0 0-2.887-.87C9.843.266 8.69 0 8 0zm-.55 8.502L7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0zM8.002 12a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                      </svg>   Pending
+                      <!--svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" color="red" class="bi bi-shield-fill-x" viewBox="0 0 16 16">
+                        <path d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.777 11.777 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7.159 7.159 0 0 0 1.048-.625 11.775 11.775 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.541 1.541 0 0 0-1.044-1.263 62.467 62.467 0 0 0-2.887-.87C9.843.266 8.69 0 8 0zM6.854 5.146 8 6.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 7l1.147 1.146a.5.5 0 0 1-.708.708L8 7.707 6.854 8.854a.5.5 0 1 1-.708-.708L7.293 7 6.146 5.854a.5.5 0 1 1 .708-.708z"/>
+                      </svg-->
+                      {% endif %}
+                      {% endif %}
+
+                    </td>
                   </tr>
                   {% endfor %}
                   {% endif %} 
@@ -363,14 +412,14 @@
                 <!-- End of Main Content -->
     
                 <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2021</span>
-                        </div>
-                    </div>
-                </footer>
-                <!-- End of Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; IRO 2023</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
     
             </div>
             <!-- End of Content Wrapper -->

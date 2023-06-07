@@ -13,12 +13,6 @@
         
         <hspl id="hspl0">
             <subject>Malicious_User1</subject>
-            <action>no_authorise_access</action>
-            <object>island_operator</object>
-        </hspl>
-        
-        <hspl id="hspl1">
-            <subject>Malicious_User1</subject>
             <action>notify</action>
             <object>supply_chain_operator</object>
         </hspl>

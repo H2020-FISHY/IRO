@@ -86,8 +86,6 @@ class IntentStoreManager:
         self.client = es
         self.add_intent_from_JSON(1, "intent_1.json")
         self.add_intent_from_JSON(2, "intent_2.json")
-        
-        
 
     def query_single_vocab(self, word):
         res = self.client.search(index="intent", body=iq.query_single_vocab(word))

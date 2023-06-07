@@ -91,10 +91,6 @@ class PolicyStoreManager:
             _data[el['attribute_name']] = val_list
         return _data
 
-    
-
-   
-    
     def get_policyStore_config(self):
         return 0
 

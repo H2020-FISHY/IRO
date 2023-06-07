@@ -20,6 +20,7 @@ class RMQsubscriber:
                           port=self.config['port'],
                           virtual_host='/', 
                           credentials=credentials)
+        
         connection = pika.BlockingConnection(parameters)
         #parameters=pika.ConnectionParameters(host=self.config['host'],  port = self.config['port'])
         return connection
@@ -31,7 +32,7 @@ class RMQsubscriber:
         info = json.loads(body.decode('utf-8'))
         
         notif = { 
-            "Name": "Report"+ info["id"],
+            "Name":  info["id"],
             "Source": info["details"]["report"]["source"],
             "Attributes": "Data",
             "Value": info["details"]["report"]["data"],
@@ -40,7 +41,7 @@ class RMQsubscriber:
             "Status": "Open"
             }
         
-        fpath = "notification_store/"+"notification_"+info["id"]+".json"
+        fpath = "notification_store/reports/"+info["id"]+".json"
         with open(fpath, 'w') as f:
             notif = json.dumps(notif)
             f.write(notif)
@@ -66,7 +67,7 @@ class RMQsubscriber:
 
 queueName = 'IROQueue'
 key = 'reports.#'
-notification_consumer_config = { 'host': os.environ["RMQ_HOST"], 'port': os.environ["RMQ_PORT"], 'exchange' : 'tasks', 'login': os.environ["RMQ_LOGIN"], 'password': os.environ["RMQ_PASSWORD"]}
+notification_consumer_config = { 'host': 'fishymq.xlab.si', 'port': 45672, 'exchange' : 'tasks', 'login':'tubs', 'password':'sbut'}
 
 if __name__ == '__main__':
     try:
