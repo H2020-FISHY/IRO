@@ -97,7 +97,9 @@ class UserInterface(FlaskView):
         self.intent_manager = IntentManager(notif=self.notification_manager)
         self.intent_conf_manager = icm()
         self.notification_conf_manager = ncm()
-        self.oicd_url = "https://fishy-idm.dsi.uminho.pt/auth/realms/fishy-realm/protocol/openid-connect/userinfo"
+        #self.oicd_url = "https://fishy-idm.dsi.uminho.pt/auth/realms/fishy-realm/protocol/openid-connect/userinfo"
+        # with in the FRF
+        self.oicd_url =  '192.168.0.10:8443/auth/realms/fishy-realm/protocol/openid-connect/userinfo'
         self.oicd_headers = {
             'Content-Type': 'application/x-www-form-urlencoded'
             }

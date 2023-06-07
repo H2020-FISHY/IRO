@@ -197,3 +197,6 @@ deployment/*.ip
 
 # python files
 testing.py
+
+# python exe
+*.pyc
