@@ -2,6 +2,7 @@
 #import  notification_configuration as ntc
 import pika, sys, os
 import json
+import ast
 
 class RMQsubscriber:
     def __init__(self, queueName, bindingKey, config):
@@ -32,40 +33,101 @@ class RMQsubscriber:
         binding_key = method.routing_key
         print(" [x] Received %r" % body)
         info = json.loads(body.decode('utf-8'))
-        _src = "Not Defined"
+        _device_product = "Not Defined"
+        _time = "Error"
+        _pilot = "Not Defined"
+        _event_name = "Not Defined"
 
+
+
+        # Parse CEF format
         try:
-            _src = info["details"]["report"]["source"]
+            _id = info["details"]['id']
         except:
             try:
-                _src = info["details"]["device_product"]
+                _id = info['id']
             except:
-                _src = "Not Defined"
+                _id = "Not Defined"
+        # Parse device_event_class_id
+        try:
+            _device_event_class_id = info["details"]['device_event_class_id']
+        except:
+            _device_event_class_id = "Not Defined"
+        # Parse 
+        try:
+            
+            _extensions_list = ast.literal_eval(info["details"]['extensions_list'])
+        except:
+            _extensions_list = ""
+
+        # Parse severity
+        try:
+            _severity = info["details"]['severity']
+        except:
+            _severity = "Not Defined"
 
         try:
-                        
-            notif = { 
-                "Name":  info["id"],
-                "Source": _src,
-                "Attributes": "Data",
-                "Value": info["details"]["report"]["data"],
-                "ID": info["id"],
-                "Time": info["details"]["updated_at"],
-                "Status": "Open"
-                }
+            _event_name = info["details"]['event_name']
         except:
-            notif = { 
-                "Name":  info["id"],
-                "Source": _src,
-                "Attributes": "Data",
-                "Value": info["details"],
-                "ID": info["id"],
-                "Time": info["details"]["updated_at"],
-                "Status": "Open"
-                }
+            _event_name = "Not Defined"
+        
+
+        # Parse time
+        try:
+            _time = info["details"]["updated_at"]
+        except:
+            try:
+                _time = _extensions_list['ts']
+            except:
+                _time = "Not Defined"
+        # Parse device_version
+        try:
+            _device_version = info["details"]['device_version']
+        except:
+            _device_version = "Not Defined"
+        # Parse source
+        try:
+            _device_product = info["details"]['device_product']
+        except:
+            try:
+                _device_product = info["details"]["report"]["source"]
+            except:
+                try:
+                    _device_product = info["details"]["device_product"]
+                except:
+                    _device_product = "Not Defined"
+        # Parse pilot
+        try:
+            _pilot_ = info["details"]['pilot']
+        except:
+            try:
+                pilot = info["details"]["report"]["data"]["pilot"]
+            except:
+                _pilot = "Not Defined"
+
+
+
+
+
 
         
-        fpath = "notification_store/reports/"+info["id"]+".json"
+        
+        # create notif info
+        notif = { 
+                "Name": _event_name, #_event_name,
+                "Source": _device_product,
+                "Attributes": _device_version,
+                "Value": _extensions_list,
+                "ID": _id,
+                "pilot": _pilot,
+                "Time": _time,
+                "Status": "Open"
+                }
+        
+
+        
+        # save notif info and state
+        fpath = "notification_store/reports/"+_id+".json"
         with open(fpath, 'w') as f:
             notif = json.dumps(notif)
             f.write(notif)
@@ -89,6 +151,7 @@ class RMQsubscriber:
             channel.stop_consuming()
     
 def run_rabbit(): #queueName, bindingKey , config):
+    #https://fishy.xlab.si/tar/api/reports/v2
 
     # Central repository RabbitMQ parameters
     queueName = 'IROQueue'

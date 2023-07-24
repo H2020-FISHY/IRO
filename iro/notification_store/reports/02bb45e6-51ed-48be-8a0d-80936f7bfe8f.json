@@ -1,9 +1,0 @@
-{
-    "Name": "02bb45e6-51ed-48be-8a0d-80936f7bfe8f",
-    "Source": "SACM",
-    "Attributes": "Data",
-    "Value": "{\"pilot\": \"F2F\", \"Sender\": \"AuditingComponent\", \"@timestamp\": \"2023-03-30T10:02:32.907776Z\", \"Description\": \"\", \"Outcome\": \"Satisfaction\", \"Arguments\": [], \"AssessmentResultID\": \"235\", \"Receiver\": \"monitor\", \"Severity\": 0, \"AssessmentExecutionID\": 79, \"AssetID\": 11, \"Source\": \"EventCaptors\", \"AssetName\": \"990175\"}",
-    "ID": "02bb45e6-51ed-48be-8a0d-80936f7bfe8f",
-    "Time": "2022-07-20 22:48:41",
-    "Status": "Deleted"
-}

@@ -13,13 +13,20 @@ class NotificationConfigurationManager:
         self.reset_notifications()
         
 
-    def show_notification(self, show_notification_data):
+    def show_notification(self, show_notification_data , pilot):
         self.reset_notifications()
         for x in self.file_set: #range(1,self.No_of_intents+1):
             with open("./notification_store/reports/"+str(x), "r", encoding='utf-8') as f:
                 load_notification_data=json.load(f)
                 print(x)
-                show_notification_data.append(load_notification_data)
+                try:
+
+                    if load_notification_data['pilot'] == pilot:
+                        show_notification_data.append(load_notification_data)
+                except:
+                    print("++++++++++++++++++++")
+                    print("event does have pilot definition")
+                    print("++++++++++++++++++++")
             
         return show_notification_data
     # Notifications have possibly following status:

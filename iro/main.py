@@ -29,6 +29,8 @@ import requests
 from requests import Session
 from threading import Thread
 
+import policies.remediation.api as rem
+
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_ENVIRONMENT = Environment(
@@ -71,8 +73,6 @@ except:
 #        'OIDC_TOKEN_TYPE_HINT': 'access_token',
 #        'OIDC-SCOPES': ['openid']
 #    })
-
-
 #oidc = OpenIDConnect(app)
 
 # Central repository RabbitMQ parameters
@@ -140,11 +140,12 @@ class UserInterface(FlaskView):
             
             if response.status_code == 200: # or self.test_allowed == True:
                 user_info = json.loads(response.text)
+                _pilot = user_info['pilot']
                 notifs = self.notification_manager.get_notifications(self.session, tim_config)
                 msg = self.notification_manager.get_instructions()
                 my_form, my_form_script,  HTMLtemplate, JStemplate = self.notification_manager.get_form("")
                 show_notification_data = []
-                self.notification_conf_manager.show_notification(show_notification_data)
+                self.notification_conf_manager.show_notification(show_notification_data, _pilot)
                 return render_template('index.html',form_script=my_form_script, forms=my_form, message=msg, notifications=notifs, show_notification_data=show_notification_data,user_info=user_info)
             else:
                 return render_template('404.html',error="NOT CONNECTED")#'NOT CONNECTED'
@@ -173,6 +174,7 @@ class UserInterface(FlaskView):
             
             if response.status_code == 200: # or self.test_allowed == True:
                 user_info = json.loads(response.text)
+                _pilot = user_info['pilot']
                 msg = ''
                 my_form = None
                 my_form_script = None
@@ -192,6 +194,8 @@ class UserInterface(FlaskView):
                             return redirect(url_for('UserInterface:alerts'))
                         if msg == "hello":
                             return redirect(url_for('UserInterface:index'))
+                        if msg== "EDC":
+                            return redirect(url_for('UserInterface:remediation'))
                     if 'threat_d_form' in request.form:
                         threat_data =  request.form
                         
@@ -229,95 +233,29 @@ class UserInterface(FlaskView):
             
             if response.status_code == 200:# or self.test_allowed == True:
                 user_info = json.loads(response.text)
+                _pilot = user_info['pilot']
                 show_notification_data=[]
-                self.notification_conf_manager.show_notification(show_notification_data)
-                if request.method == 'POST':
-                    # do stuff when the form is submitted
+                self.notification_conf_manager.show_notification(show_notification_data,  _pilot)
 
-                    # redirect to end the POST handling
-                    # the redirect can be to the same route or somewhere else
-                    return redirect(url_for('UserInterface:index'))
-
-                # show reports from TIM
-                data = None
-                
-                try:
-                    #r = self.session.get(f'http://{tim_config["tar"]["ip"]}:{tim_config["tar"]["port"]}/api/reports')
-                    r = requests.get('https://fishy.xlab.si/tar/api/reports')
-                    #r = requests.get(tim_config["tar"]["url"])
-                    r = r.content
-                    r = r.decode("UTF-8")
-                    r = ast.literal_eval(r)
-                    data = []
-                    print(len(r))
-                    for el in r:
-                        element = el.copy()
-                        try:
-                            try:
-                                alert = json.loads(el['data'])
-                            except:
-                                alert = el['data']
-                                pass
-                            if alert != 'test':
-                                if el['source'] == "SACM":
-                                    try:
-                                        print("#########################################")
-                                        print("HERE: ", ast.literal_eval(el['data']) ) # ast.literal_eval(el['data'])['rule']
-                                        alert = {"id":el['id'], "sc_id":ast.literal_eval(el['data'])['AssessmentResultID'], "title":  ast.literal_eval(el['data'])['rule'], "text": "Source: SACM\n timestamp: "+ast.literal_eval(el['data'])['timestamp']+"\n id: "+ ast.literal_eval(el['data'])['id'], "fields":[{"title": "tool", "value":ast.literal_eval(el['data'])['tool']},{"title": "result", "value":ast.literal_eval(el['data'])['result']}]}
-                                            #alert = {"title": "test", "text": "SACM", "fields":[{"title": "test", "value":"test"},{"title": "test", "value":"test"}]}
-                                        element['data'] = alert
-
-                                        
-                                    except:
-                                        try:
-                                            print("HERE: ", ast.literal_eval(el['data'])['pilot'])
-                                            _text = ""
-                                            for _key, data_info in ast.literal_eval(el['data']).items():
-                                                try:
-                                                    _text += _key + ": " + str(data_info) + "\n"
-                                                except:
-                                                    pass
-                                            alert = {"id":el['id'], "sc_id":ast.literal_eval(el['data'])['AssessmentResultID'], "title": "Source: SACM" , "text": _text , "fields":[{"title": "Sender", "value":ast.literal_eval(el['data'])['Sender']},{"title": "Outcome", "value":ast.literal_eval(el['data'])['Outcome']}]} # "Source: SACM\n pilot: "+ ast.literal_eval(el['data'])['pilot']+ "\ntimestamp: "+ast.literal_eval(el['data'])['@timestamp']+"\n AssessmentResultID: "+ ast.literal_eval(el['data'])['AssessmentResultID'],
-                                            
-                                            #alert = {"title": "test", "text": "SACM", "fields":[{"title": "test", "value":"test"},{"title": "test", "value":"test"}]}
-                                            element['data'] = alert
-                                        except:
-                                            raise Exception("E: Error in reading wazuh data")
-
-                                elif el['source'] == "Wazuh":
-                                    
-                                    try:
-                                        alert = alert["attachments"][0] 
-                                    except:
-                                        raise Exception("E: Error in reading wazuh data")
-                                else:
-                                    alert = {"id":"test", "title": "test", "text": "test", "fields":[{"title": "test", "value":"test"},{"title": "test", "value":"test"}]}
-                            else:
-                                alert = {"id":"test","title": "test", "text": "test", "fields":[{"title": "test", "value":"test"},{"title": "test", "value":"test"}]}
-                            #el['data'] = alert
-                            element['data'] = alert
-                            data.append(element)
-                        except:
-                            pass
-                except:
-                    with open("./tim/example_report.json", "r") as f:
-                        #data = json.load(f)
-                        pass
-                    pass
+                # Get all reports
+                data = self.notification_manager.get_all_reports(_pilot=_pilot)
                 
                 sc_path = "notification_store/smart_contracts/verified_sc.json"
                 try:
                     with open(sc_path) as sc_file:
                         json_decoded = json.load(sc_file)
-                        print(type(json_decoded))
+                        print(".....................")
+                        print(".....................")
+                        print(json_decoded)
+                        print(".....................")
+                         
                     
                     smart_contracts = json_decoded#.keys()
                 except:
                     smart_contracts = []
 
 
-
-                return render_template('tables.html', data=data,smart_contracts=smart_contracts, show_notification_data=show_notification_data, user_info=user_info)
+                return render_template('tables.html', data=data, smart_contracts=smart_contracts, show_notification_data=show_notification_data, user_info=user_info)
             else:
                 return render_template('404.html',error="NOT CONNECTED")#'NOT CONNECTED'
         except:
@@ -400,13 +338,14 @@ class UserInterface(FlaskView):
             
             if response.status_code == 200: # or self.test_allowed == True:
                 user_info = json.loads(response.text)
+                _pilot = user_info['pilot']
                 empty_data={'Status': 'Deleted', 'Time': str(datetime.now().replace(microsecond=0)) }
                 intent_data={}
                 show_intent_data=[]
                 self.intent_conf_manager.show_intent(show_intent_data)
                 create_intentid=int(self.intent_conf_manager.No_of_intents+1)
                 show_notification_data = []
-                self.notification_conf_manager.show_notification(show_notification_data)
+                self.notification_conf_manager.show_notification(show_notification_data, _pilot)
 
                 if request.method == 'POST':
 
@@ -456,6 +395,136 @@ class UserInterface(FlaskView):
     #    """OAuth 2.0 protected API endpoint accessible via AccessToken"""
     #    return json.dumps({'hello': 'Welcome %s' % g.oidc_token_info['sub']})
 
+    @route("/remediation", methods=['GET', 'POST'])
+    def remediation(self): 
+
+        try:
+            try:
+                self.login_session = request.args['session']
+                with open("./keyclock_last_token.json") as token_file:
+                    json_decoded = json.load(token_file)
+                json_decoded["token"] = self.login_session
+                with open("./keyclock_last_token.json", 'w') as token_file:
+                    json.dump(json_decoded, token_file)
+            except:
+                try:
+                    with open("./keyclock_last_token.json", "r") as f:
+                        data = json.load(f)
+                        self.login_session = data["token"]
+                        
+                except:
+                    return render_template('404.html',error="MISSING TOKEN")
+            payload='access_token=' + self.login_session
+            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
+            
+            if response.status_code == 200:# or self.test_allowed == True:
+                user_info = json.loads(response.text)
+                _pilot = user_info['pilot']
+                show_notification_data=[]
+                self.notification_conf_manager.show_notification(show_notification_data,  _pilot)
+                
+                ################
+                (_title, _items, _show_success_notice, _success_notice) = rem.main_remediation()
+
+                return render_template('remediation.html', title=_title,
+                           items=_items,
+                           show_success_notice=_show_success_notice,
+                           success_notice=_success_notice, 
+                           show_notification_data=show_notification_data, 
+                           user_info=user_info)
+            else:
+                return render_template('404.html',error="NOT CONNECTED")#'NOT CONNECTED'
+        except:
+            return render_template('404.html',error="MISSING TOKEN") #'MISSING TOKEN'
+
+    
+    @route("/remediation_selected", methods=['GET', 'POST'])
+    def remediation_selected(self, _show_success_notice=None):
+
+        try:
+            try:
+                self.login_session = request.args['session']
+                with open("./keyclock_last_token.json") as token_file:
+                    json_decoded = json.load(token_file)
+                json_decoded["token"] = self.login_session
+                with open("./keyclock_last_token.json", 'w') as token_file:
+                    json.dump(json_decoded, token_file)
+            except:
+                try:
+                    with open("./keyclock_last_token.json", "r") as f:
+                        data = json.load(f)
+                        self.login_session = data["token"]
+                        
+                except:
+                    return render_template('404.html',error="MISSING TOKEN")
+            payload='access_token=' + self.login_session
+            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
+            
+            if response.status_code == 200:# or self.test_allowed == True:
+                user_info = json.loads(response.text)
+                _pilot = user_info['pilot']
+                show_notification_data=[] 
+                self.notification_conf_manager.show_notification(show_notification_data,  _pilot)
+                ##############
+                (_title, _items, _show_success_notice, _success_notice) = rem.remediation_selected(_show_success_notice=_show_success_notice)
+                return render_template('remediation.html', title=_title,
+                           items=_items,
+                           show_success_notice=_show_success_notice,
+                           success_notice=_success_notice, 
+                           show_notification_data=show_notification_data, 
+                           user_info=user_info)
+            else:
+                return render_template('404.html',error="NOT CONNECTED")#'NOT CONNECTED'
+        except:
+            return render_template('404.html',error="MISSING TOKEN") #'MISSING TOKEN'
+
+    
+
+    @route("/accept_remediation/<item_id>", methods=['GET', 'POST'])
+    def accept_remediation(self, item_id):
+
+        try:
+            try:
+                self.login_session = request.args['session']
+                with open("./keyclock_last_token.json") as token_file:
+                    json_decoded = json.load(token_file)
+                json_decoded["token"] = self.login_session
+                with open("./keyclock_last_token.json", 'w') as token_file:
+                    json.dump(json_decoded, token_file)
+            except:
+                try:
+                    with open("./keyclock_last_token.json", "r") as f:
+                        data = json.load(f)
+                        self.login_session = data["token"]
+                        
+                except:
+                    return render_template('404.html',error="MISSING TOKEN")
+            payload='access_token=' + self.login_session
+            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
+            
+            if response.status_code == 200:# or self.test_allowed == True:
+                user_info = json.loads(response.text)
+                _pilot = user_info['pilot']
+                show_notification_data=[]
+                self.notification_conf_manager.show_notification(show_notification_data,  _pilot)
+                
+                ##############
+                _show_success_notice = rem.accept(item_id)
+                return redirect(url_for('UserInterface:remediation_selected', show_success_notice=_show_success_notice))
+            else:
+                return render_template('404.html',error="NOT CONNECTED")#'NOT CONNECTED'
+        except:
+            return render_template('404.html',error="MISSING TOKEN") #'MISSING TOKEN'
+
+    
+
+        
+    #@route('/api', methods=['GET'])#    @oidc.accept_token(require_token=True, scopes_required=['openid'])
+    #def hello_api(self):
+    #    """OAuth 2.0 protected API endpoint accessible via AccessToken"""
+    #    return json.dumps({'hello': 'Welcome %s' % g.oidc_token_info['sub']})
+
+
 
     @route("/notifications", methods=['GET', 'POST'])
     def notifications(self):
@@ -481,13 +550,14 @@ class UserInterface(FlaskView):
             
             if response.status_code == 200: # or self.test_allowed == True:
                 user_info = json.loads(response.text)
+                _pilot = user_info['pilot']
                 intent_data={}
                 n_id = request.args.get('n_id', None)
                 # notification_selection is set to all in default to show all notification.
                 notification_selection = 'All'
                 show_notification_data=[]
                 single_notification_data=[]
-                self.notification_conf_manager.show_notification(show_notification_data)
+                self.notification_conf_manager.show_notification(show_notification_data, _pilot)
 
                 open_notifications=0
                 create_intentid=int(self.intent_conf_manager.No_of_intents+1)

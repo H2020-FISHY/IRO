@@ -25,7 +25,107 @@ class NotificationManager:
         self.notifs = self.get_notifications(session,tim_config)
         self.last_event_id_read = None
         self.last_event_id_treated = None
+    
+    def get_all_reports(self, _pilot=None):
+        # show reports from TIM
+        data = None
         
+        try:
+            #r = requests.get('https://fishy.xlab.si/tar/api/reports')
+            r = requests.get('https://fishy.xlab.si/tar/api/reports/v2')
+            #r = requests.get(tim_config["tar"]["url"])
+            r = r.content
+            r = r.decode("UTF-8")
+            r = ast.literal_eval(r)
+            data = []
+            pilot = None
+            print(len(r))
+            print(r)
+            print('/////////////////////////////////')
+            for el in r:
+                element = el.copy()
+
+                try:
+                    _id = element['id']
+                    _device_product = element['device_product']
+                    _device_version = element['device_version']
+                    _event_name = element['event_name']
+                    _device_event_class_id = element['device_event_class_id']
+                    _severity = element['severity']
+                    _extensions_list = element['extensions_list']
+                    _pilot_ = element['pilot']
+
+                    if _pilot == _pilot_:
+
+
+                        _text = "" #"*** pilot: "+_pilot_+" *** [TO BE REMOVED]\n"
+                        for _key, data_info in ast.literal_eval(_extensions_list).items():
+                            try:
+                                if "," in str(data_info):
+                                    tmp_val =  ",\n      ".join(str(data_info).split(","))
+                                    _text += "*  "+_key + ": " + tmp_val + "\n"
+                                elif ";" in str(data_info):
+                                    tmp_val =  ";\n      ".join(str(data_info).split(";"))
+                                    _text += "*  "+_key + ": " + tmp_val + "\n"
+                                else:
+                                    _text += "*  "+_key + ": " + str(data_info) + "\n"
+                            except:
+                                pass
+
+                        element['text'] = _text
+                        data.append(element)
+                    else:
+                        pass
+
+                except:
+                    try:
+                        alert = json.loads(el['data'])
+                        print(alert)
+                    except:
+                        alert = el['data']
+                        pass
+                    if alert != 'test':
+
+                        if el['source'] == "SACM":
+                            try:
+                                print("HERE: ", ast.literal_eval(el['data'])['pilot'])
+                                _text = ""
+                                for _key, data_info in ast.literal_eval(el['data']).items():
+                                    try:
+                                        if "," in str(data_info):
+                                            tmp_val =  ",\n".join(str(data_info).split(","))
+                                            _text += _key + ": " + tmp_val + "\n"
+                                        else:
+                                            _text += _key + ": " + str(data_info) + "\n"
+                                    except:
+                                        pass
+                                alert = {"id":el['id'], "sc_id":str(ast.literal_eval(el['data'])['AssessmentResultID']), "title": "Source: SACM" , "text": _text , "fields":[{"title": "Sender", "value":ast.literal_eval(el['data'])['Sender']},{"title": "Outcome", "value":ast.literal_eval(el['data'])['Outcome']}]} # "Source: SACM\n pilot: "+ ast.literal_eval(el['data'])['pilot']+ "\ntimestamp: "+ast.literal_eval(el['data'])['@timestamp']+"\n AssessmentResultID: "+ ast.literal_eval(el['data'])['AssessmentResultID'],
+                                    
+                                #alert = {"title": "test", "text": "SACM", "fields":[{"title": "test", "value":"test"},{"title": "test", "value":"test"}]}
+                                element['data'] = alert
+                            except:
+                                raise Exception("E: Error in reading SACM data")
+
+                        elif el['source'] == "Wazuh":
+                            
+                            try:
+                                alert = alert["attachments"][0] 
+                            except:
+                                raise Exception("E: Error in reading wazuh data")
+                        else:
+                            alert = {"id":"test", "title": "test", "text": "test", "fields":[{"title": "test", "value":"test"},{"title": "test", "value":"test"}]}
+                    else:
+                        alert = {"id":"test","title": "test", "text": "test", "fields":[{"title": "test", "value":"test"},{"title": "test", "value":"test"}]}
+                    #el['data'] = alert
+                    element['data'] = alert
+                    data.append(element)
+                
+        except:
+            with open("./tim/example_report.json", "r") as f:
+                #data = json.load(f)
+                pass
+            pass
+        return data
         
     
     def get_notifications(self, session, tim_config):

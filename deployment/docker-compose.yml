@@ -20,7 +20,7 @@ services:
         environment:
             ES_HOST: "elasticsearch"
             ES_PORT: "9200"
-            TIM_URL: "https://fishy.xlab.si/tar/api/reports"
+            TIM_URL: "https://fishy.xlab.si/tar/api/reports/v2"
         ports:
             - "5000:5000"
         volumes:
