@@ -75,15 +75,27 @@ except:
 #    })
 #oidc = OpenIDConnect(app)
 
-# Central repository RabbitMQ parameters
-CRqueueName = 'IROQueue'
-CRkey = 'reports.#'
-notification_consumer_config = { 'host': 'fishymq.xlab.si', 'port': 45672, 'exchange' : 'tasks', 'login':'tubs', 'password':'sbut'}
+# Central repository RabbitMQ parameters CR_QUEUE_NAME  CR_KEY
+
+
+try:
+    CRqueueName = os.environ["CR_QUEUE_NAME"]
+    CRkey = os.environ["CR_KEY"]
+    notification_consumer_config =  { 'host': os.environ["RABBIT_NOTIF_HOST"], 'port': os.environ["RABBIT_NOTIF_PORT"], 'exchange' : os.environ["RABBIT_NOTIF_EXCHANGE"], 'login':os.environ["RABBIT_NOTIF_LOGIN"], 'password':os.environ["RABBIT_NOTIF_PASS"]} 
+except:
+    CRqueueName = "IROQueue"
+    CRkey = "reports.#"
+    notification_consumer_config = { 'host': 'fishymq.xlab.si', 'port': 45672, 'exchange' : 'tasks', 'login':'tubs', 'password':'sbut'}
 
 # Smart Contracts RabbitMQ parameters
-SCqueueName = 'SCQueue'
-SCkey = 'sc.validation'
-SCnotification_consumer_config = { 'host': 'fishymq.xlab.si', 'port': 45672, 'exchange' : 'sc-results', 'login':'tubs', 'password':'sbut'}
+try:
+    SCqueueName = os.environ["SC_QUEUE_NAME"]
+    SCkey = os.environ["SC_KEY"]
+    SCnotification_consumer_config =  { 'host': os.environ["RABBIT_NOTIF_HOST"], 'port': os.environ["RABBIT_NOTIF_PORT"], 'exchange' : os.environ["RABBIT_SC_EXCHANGE"], 'login':os.environ["RABBIT_NOTIF_LOGIN"], 'password':os.environ["RABBIT_NOTIF_PASS"]} 
+except:
+    SCqueueName = 'SCQueue'
+    SCkey = 'sc.validation'
+    SCnotification_consumer_config = { 'host': 'fishymq.xlab.si', 'port': 45672, 'exchange' : 'sc-results', 'login':'tubs', 'password':'sbut'}
 
 class UserInterface(FlaskView):
     """
@@ -97,7 +109,10 @@ class UserInterface(FlaskView):
         self.intent_manager = IntentManager(notif=self.notification_manager)
         self.intent_conf_manager = icm()
         self.notification_conf_manager = ncm()
-        self.oicd_url = "https://fishy-idm.dsi.uminho.pt/auth/realms/fishy-realm/protocol/openid-connect/userinfo"
+        try:
+            self.oicd_url = os.environ["OICD_URL"] 
+        except:
+            self.oicd_url = "https://fishy-idm.dsi.uminho.pt/auth/realms/fishy-realm/protocol/openid-connect/userinfo"
         self.oicd_headers = {
             'Content-Type': 'application/x-www-form-urlencoded'
             }
@@ -136,7 +151,6 @@ class UserInterface(FlaskView):
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session 
             response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
-            print("HERE: ", json.loads(response.text))
             
             if response.status_code == 200: # or self.test_allowed == True:
                 user_info = json.loads(response.text)
@@ -170,7 +184,6 @@ class UserInterface(FlaskView):
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session 
             response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
-            print("HERE: ", json.loads(response.text))
             
             if response.status_code == 200: # or self.test_allowed == True:
                 user_info = json.loads(response.text)
@@ -186,6 +199,7 @@ class UserInterface(FlaskView):
                     if  'intentText' in request.form:              
                         intent_text = request.form.get('intentText')
                         msg, my_form, my_form_script, notifs = self.intent_manager.reading_command(intent_text)
+                        
                         if  isinstance(msg, list):
                             list_options = msg.copy()
                             msg = None
@@ -201,6 +215,13 @@ class UserInterface(FlaskView):
                         
                         #return jsonify(request.form)
                         msg = self.intent_manager.create_hspl_from_intent(threat_data,'wallet_id_attack_detection')                
+                        #msg = self.notification_manager.get_instructions_after_form()
+                        return render_template('index.html', formoutput=threat_data, message=msg, user_info=user_info)
+                    if 'pmem_config_form' in request.form:
+                        threat_data =  request.form
+                        
+                        #return jsonify(request.form)
+                        msg = self.intent_manager.create_policy_from_intent(threat_data,'pmem_config_form')                
                         #msg = self.notification_manager.get_instructions_after_form()
                         return render_template('index.html', formoutput=threat_data, message=msg, user_info=user_info)
 
@@ -243,12 +264,7 @@ class UserInterface(FlaskView):
                 sc_path = "notification_store/smart_contracts/verified_sc.json"
                 try:
                     with open(sc_path) as sc_file:
-                        json_decoded = json.load(sc_file)
-                        print(".....................")
-                        print(".....................")
-                        print(json_decoded)
-                        print(".....................")
-                         
+                        json_decoded = json.load(sc_file)                         
                     
                     smart_contracts = json_decoded#.keys()
                 except:
@@ -282,7 +298,6 @@ class UserInterface(FlaskView):
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session 
             response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
-            print("HERE: ", json.loads(response.text))
             
             if response.status_code == 200: # or self.test_allowed == True:
                 user_info = json.loads(response.text)
@@ -294,11 +309,10 @@ class UserInterface(FlaskView):
                 HTMLtemplate = None
                 JStemplate = None
 
-                if request.method == 'POST':
+                if request.method == 'POST': 
                     if  'readIntentText' in request.form:
                         intent_text = request.form['readIntentText']
                         msg, my_form, my_form_script,HTMLtemplate,JStemplate, notifs = self.intent_manager.reading_command(intent_text)
-                            
                         #intent_text = request.form['readIntentText']
                         #msg, my_form, my_form_script, notifs = self.intent_manager.reading_command(intent_text)
                         #msg ="test"
@@ -334,7 +348,6 @@ class UserInterface(FlaskView):
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session 
             response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
-            print("HERE: ", json.loads(response.text))
             
             if response.status_code == 200: # or self.test_allowed == True:
                 user_info = json.loads(response.text)
@@ -546,7 +559,6 @@ class UserInterface(FlaskView):
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session 
             response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
-            print("HERE: ", json.loads(response.text))
             
             if response.status_code == 200: # or self.test_allowed == True:
                 user_info = json.loads(response.text)
@@ -566,14 +578,9 @@ class UserInterface(FlaskView):
                 #selecting particular notification from another page.
                 if n_id!=None:
                     notification_selection = 'Single'
-                    print(n_id, "type", type(n_id))
                 
                     #set status to seen.
                     single_notification_status = 'Seen'
-                    
-                    print(show_notification_data)
-                    for  i,_ in enumerate(show_notification_data):
-                        print(_["ID"])
                     
                     single_notification_id=[i for i,_ in enumerate(show_notification_data) if _["ID"] == n_id][0]
                     self.notification_conf_manager.notification_status(single_notification_status, n_id)
@@ -616,11 +623,12 @@ class UserInterface(FlaskView):
                 if 'show_notificationid' in request.form:   
                     #show_notificationid=int(request.form['show_notificationid'])
                     nn_id=request.form['show_notificationid']
-                    print(nn_id)
+                    #print(nn_id)
                     show_notificationid=[i for i,_ in enumerate(show_notification_data) if _["ID"] == nn_id][0]
                 
-                    show_notificationattribute=show_notification_data[show_notificationid]['Attributes']
-                    show_notificationvalue=show_notification_data[show_notificationid]['Value']
+                    show_notificationattribute=show_notification_data[show_notificationid]['Time']
+                    show_notificationvalue=",\n".join(show_notification_data[show_notificationid]['Value'].split(","))
+                    #print(show_notificationvalue)
                     show_notificationid=request.form['show_notificationid']
                     return jsonify({'show_notificationid': show_notificationid, 'show_notificationattribute' : show_notificationattribute, 'show_notificationvalue': show_notificationvalue})
                 if 'create_intentid' in request.form:

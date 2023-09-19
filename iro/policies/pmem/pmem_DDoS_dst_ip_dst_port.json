@@ -1,0 +1,9 @@
+{
+    "tool": "pmem",
+    "attack": "DDoS",
+    "IP": "dst_ip",
+    "PORT": "dst_port",
+    "severity": "Medium",
+    "action": "no_authorise_access",
+    "object": "dst_PORT"
+}

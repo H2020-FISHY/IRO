@@ -1,0 +1,23 @@
+{
+    "id": 4,
+    "policyname": "pmem_config",  
+
+    "attributes": [
+        {"attribute_name": "action", "attribute_values": [
+            {"attribute_name": "notify","attribute_value": "notify"},
+            {"attribute_name": "no_authorise_access","attribute_value": "no_authorise_access"}
+            ]
+        },
+        {"attribute_name": "notif", "attribute_values": [
+            {"attribute_name": "supply_chain_operator","attribute_value": "supply_chain_operator"},
+            {"attribute_name": "island_operator","attribute_value": "island_operator"}
+            ]
+        },
+        {"attribute_name": "ban", "attribute_values": [
+            {"attribute_name": "src_IP","attribute_value": "src_IP"},
+            {"attribute_name": "dst_PORT","attribute_value": "dst_PORT"}
+            ]
+        }
+    ]
+}
+         

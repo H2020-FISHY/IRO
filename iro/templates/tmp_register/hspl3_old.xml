@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<hspl-list xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://fishy-project.eu/hspl"
+           xsi:schemaLocation="http://fishy-project.eu/hspl hspl.xsd">
+    <reaction id="reaction1">
+        <enabling-conditions>
+            <threshold>
+                <subject type="src_ip">{{objects.ip}}</subject>
+                <value>{{objects.value}}</value>
+                <period>{{objects.period}}</period>
+                <time>{{objects.time}}</time>
+            </threshold>
+        </enabling-conditions>
+        {% for  hspl in objects['hspl_object'] %}
+        <hspl id="{{hspl.id }}">
+            <subject>{{objects.ip}}</subject>
+            <action>{{hspl.action}}</action>
+            <object>{{hspl.object}}</object>
+        </hspl>
+        {% endfor %}   
+   
+    </reaction>
+</hspl-list>
+

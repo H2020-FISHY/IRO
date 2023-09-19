@@ -1,0 +1,21 @@
+{
+    "id": 3,
+    "intentname": "pmem_config",
+    "use_template": "True",
+    "HTMLtemplate": "form_pmem_config.html",
+    "JStemplate": "script_form_pmem_config.html",
+    "attributes": [
+        {"attribute_name": "id", "attribute_type": "string"},
+        {"attribute_name": "value", "attribute_type": "integer"},
+        {"attribute_name": "period", "attribute_type": "integer"},
+        {"attribute_name": "time", "attribute_value": "integer"}
+    ],
+
+    "vocabularies": [
+        {"vocab_name": "old", "vocab_values": [
+            {"vocab_value": "old"},
+            {"vocab_value": "old"}
+            ]
+        }
+    ]
+}

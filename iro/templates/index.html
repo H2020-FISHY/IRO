@@ -518,7 +518,9 @@
 
             
             function create_intent_form_fun(myform) {
-			
+
+            if (myform[0]['policyname'] === "wallet_id_detection" ){
+            
             // Create a form dynamically
             var form = document.createElement("form");
             form.setAttribute("method", "post");
@@ -526,9 +528,11 @@
             
             // create text element
             var condition_text = document.createElement("H5");
+            
             var h5_text = document.createTextNode("Conditions");
             condition_text.appendChild(h5_text);
             form.appendChild(condition_text);
+            
             
             // create select list of subject subject
             var selectSubjectList = document.createElement("select");
@@ -592,6 +596,8 @@
             // create select list of actions 
             var selectActionList = document.createElement("select");
             selectActionList.name = "action_0";
+            selectActionList.id = "action_0";
+            selectActionList.className = "Input";
             form.appendChild(selectActionList);
             //Create and append the options
             for (var i = 0; i < myform[0]['action'].length; i++) {
@@ -602,15 +608,17 @@
             }
 
             // create select list of objects 
-            var selectActionList = document.createElement("select");
-            selectActionList.name = "object_0";
-            form.appendChild(selectActionList);
+            var selectObjectList = document.createElement("select");
+            selectObjectList.name = "object_0";
+            selectObjectList.id = "object_0";
+            selectObjectList.class = "Input";
+            form.appendChild(selectObjectList);
             //Create and append the options
             for (var i = 0; i < myform[0]['object_notif'].length; i++) {
                 var option = document.createElement("option");
                 option.value = myform[0]['object_notif'][i];
                 option.text = myform[0]['object_notif'][i];
-                selectActionList.appendChild(option);
+                selectObjectList.appendChild(option);
             }
 
             // Create add action button
@@ -629,10 +637,152 @@
             s.setAttribute("type", "submit");
             s.setAttribute("value", "Submit");
             s.setAttribute("name","threat_d_form");
+        }
+            else if (myform[0]['policyname'] === "pmem_config" ){
+               // Create a form dynamically
+            var form = document.createElement("form");
+            form.setAttribute("method", "post");
+            form.setAttribute("action", "/");
+            
+            // create text element
+            var condition_text = document.createElement("H5");
+            
+            var h5_text = document.createTextNode("Conditions");
+            condition_text.appendChild(h5_text);
+            form.appendChild(condition_text);
+
+            form.append("If Label is   ")
+            
+            
+            // create select list of attack
+            var selectAttackList = document.createElement("select");
+            selectAttackList.name = "attack";
+            form.appendChild(selectAttackList);
+            //Create and append the options
+            for (var i = 0; i < myform[0]['attack'].length; i++) {
+                var option = document.createElement("option");
+                option.value = myform[0]['attack'][i];
+                option.text = myform[0]['attack'][i];
+                selectAttackList.appendChild(option);
+            }
+
+            form.append("  and  ");
+            // create select list of attack
+            var selectIPList = document.createElement("select");
+            selectIPList.name = "IP";
+            form.appendChild(selectIPList);
+            //Create and append the options
+            for (var i = 0; i < myform[0]['ip'].length; i++) {
+                var option = document.createElement("option");
+                option.value = myform[0]['ip'][i];
+                option.text = myform[0]['ip'][i];
+                selectIPList.appendChild(option);
+            }
+
+            form.append("  and  ");
+            // create select list of attack
+            var selectPORTList = document.createElement("select");
+            selectPORTList.name = "PORT";
+            form.appendChild(selectPORTList);
+            //Create and append the options
+            for (var i = 0; i < myform[0]['port'].length; i++) {
+                var option = document.createElement("option");
+                option.value = myform[0]['port'][i];
+                option.text = myform[0]['port'][i];
+                selectPORTList.appendChild(option);
+            }
+
+            
+
+            form.append("  has a  ");
+
+
+            // create select list of time 
+            var selectSubjectList = document.createElement("select");
+            selectSubjectList.name = "severity";
+            form.appendChild(selectSubjectList);
+            //Create and append the options
+            for (var i = 0; i < myform[0]['severity'].length; i++) {
+                var option = document.createElement("option");
+                option.value = myform[0]['severity'][i];
+                option.text = myform[0]['severity'][i];
+                selectSubjectList.appendChild(option);
+            }
+
+            form.append("  severity  ");
+            var br = document.createElement("br");
+
+            form.appendChild(br);
+            var br = document.createElement("br");
+
+            form.appendChild(br);
+            //form.appendChild(br);
+
+            // create text element
+            var action_text = document.createElement("H5");
+            var h5_action_text = document.createTextNode(" Actions:");
+            action_text.appendChild(h5_action_text);
+            form.appendChild(action_text);
+
+            var new_div = document.createElement("div");
+            new_div.id = "actions";
+
+            form.appendChild(new_div);
+
+            // create select list of actions 
+            var selectActionList = document.createElement("select");
+            selectActionList.name = "action_x";
+            selectActionList.id = "action_x";
+            selectActionList.className = "Input";
+            form.appendChild(selectActionList);
+            //Create and append the options
+            for (var i = 0; i < myform[0]['action'].length; i++) {
+                var option = document.createElement("option");
+                option.value = myform[0]['action'][i];
+                option.text = myform[0]['action'][i];
+                selectActionList.appendChild(option);
+            }
+
+            // create select list of objects 
+            var selectObjectList = document.createElement("select");
+            selectObjectList.name = "object_x";
+            selectObjectList.id = "object_x";
+            selectObjectList.class = "Input";
+            form.appendChild(selectObjectList);
+            //Create and append the options
+            for (var i = 0; i < myform[0]['notif'].length; i++) {
+                var option = document.createElement("option");
+                option.value = myform[0]['notif'][i];
+                option.text = myform[0]['notif'][i];
+                selectObjectList.appendChild(option);
+            }
+
+            // Create add action button
+			//var add_action_button = document.createElement("button");
+			//add_action_button.id = "add_action";
+			//add_action_button.innerHTML = "Add action";
+            //add_action_button.type = "button";
+            //form.append(add_action_button);
+
+            var br = document.createElement("br");
+            form.appendChild(br);
+            
+
+            // Create a submit button
+            var s = document.createElement("input");
+            s.setAttribute("type", "submit");
+            s.setAttribute("value", "Submit");
+            s.setAttribute("name","pmem_config_form");
+
+            };
             
             // Append the button to the form
             form.append(s);
             return form;
+        //};
+        //        else if (myform[0]['policyname'] === "pmem_config"){
+
+        //        };
         }
         function update_intent_form_fun(my_form_script) {
             var count_action = 0;
@@ -641,6 +791,58 @@
             var object_name_1;
             var array_notif = my_form_script[0]['object_notif'];
             var array_access = my_form_script[0]['object_access'];
+
+
+            var action_name = "#action_0";
+            var object_name = "#object_0";
+
+        $(action_name).change(function() { //"#action_00"
+    
+            var el = $(this) ;
+           
+            if(el.val() === "notify" ) {
+                for (var i = 0; i < array_access.length; i++) {
+                    $(object_name+" option:last-child").remove() ;
+                };
+                for (var i = 0; i < array_notif.length; i++) {
+                    $(object_name).append("   <option>"+array_notif[i]+"</option>");
+                };
+
+                }
+            else if(el.val() === "no_authorise_access" ) {
+                for (var i = 0; i < array_notif.length; i++) {
+                    $(object_name+" option:last-child").remove() ;
+                };
+                for (var i = 0; i < array_access.length; i++) {
+                    $(object_name).append("   <option>"+array_access[i]+"</option>");
+                }
+                }
+        });
+        var action_x = "#action_x";
+        var object_x = "#object_x";
+
+        $(action_x).change(function() { //"#action_00"
+    
+            var el = $(this) ;
+           
+            if(el.val() === "notify" ) {
+                for (var i = 0; i < my_form_script[0]['ban'].length; i++) {
+                    $(object_x+" option:last-child").remove() ;
+                };
+                for (var i = 0; i <  my_form_script[0]['notif'].length; i++) {
+                    $(object_x).append("   <option>"+ my_form_script[0]['notif'][i]+"</option>");
+                };
+
+                }
+            else if(el.val() === "no_authorise_access" ) {
+                for (var i = 0; i <  my_form_script[0]['notif'].length; i++) {
+                    $(object_x+" option:last-child").remove() ;
+                };
+                for (var i = 0; i < my_form_script[0]['ban'].length; i++) {
+                    $(object_x).append("   <option>"+my_form_script[0]['ban'][i]+"</option>");
+                }
+                }
+        });
 
             $("#add_action").on("click", function(){
             count_action += 1;
@@ -658,7 +860,7 @@
             var selectList = document.createElement("select");
             selectList.name = "action_"+count_action;
             selectList.id = "action_"+count_action;
-            selectList.className = "Input"
+            selectList.className = "Input";
             //selectList.setAttribute("action", "Select");
             myDiv.appendChild(selectList);
 
@@ -749,31 +951,7 @@
         });
 
 
-        var action_name = "#action_0"
-        var object_name = "#object_0"
-
-        $(action_name).change(function() { //"#action_00"
-    
-            var el = $(this) ;
-           
-            if(el.val() === "notify" ) {
-                for (var i = 0; i < array_access.length; i++) {
-                    $(object_name+" option:last-child").remove() ;
-                };
-                for (var i = 0; i < array_notif.length; i++) {
-                    $(object_name).append("   <option>"+array_notif[i]+"</option>");
-                };
-
-                }
-            else if(el.val() === "no_authorise_access" ) {
-                for (var i = 0; i < array_notif.length; i++) {
-                    $(object_name+" option:last-child").remove() ;
-                };
-                for (var i = 0; i < array_access.length; i++) {
-                    $(object_name).append("   <option>"+array_access[i]+"</option>");
-                }
-                }
-        });
+        
 
 
 
@@ -800,24 +978,26 @@
                         window.location.assign("/alerts");
                     }
                     else if (data.my_form){
-                    $('#success_showintent').empty()
-                    $('#success_createintent').hide()
+                    $('#error_inputintent').empty();
+                    $('#error_inputintent').hide();
+                    $('#success_showintent').empty();
+                    $('#success_createintent').hide();
                     //$('#create_intent_form').empty()
-                    $('#success_showintent').show()
+                    $('#success_showintent').show();
                     
                     //$('#success_createintent').append("test"+create_intent_form_fun(data.my_form))
-                    document.getElementById("success_showintent").appendChild(create_intent_form_fun(data.my_form))
-                    update_intent_form_fun(data.my_form_script)
+                    document.getElementById("success_showintent").appendChild(create_intent_form_fun(data.my_form));
+                    update_intent_form_fun(data.my_form_script);
 
                     }
                     else {
 
-                    $('#success_deleteintent').hide()
-                    $('#success_createintent').hide()
-                    $('#error_inputintent').empty()
-                    $('#error_inputintent').show()
+                    $('#success_deleteintent').hide();
+                    $('#success_createintent').hide();
+                    $('#error_inputintent').empty();
+                    $('#error_inputintent').show();
                     $('#error_inputintent').append(  "NO correct intent is successfully sent:" + "<br></br>"+
-                                                        "msg: " +data.readIntentText+ "<br></br>")
+                                                        "msg: " +data.readIntentText+ "<br></br>");
                     
                     
                     $('#success_createintent').hide();

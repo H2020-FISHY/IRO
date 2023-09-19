@@ -57,7 +57,7 @@ es_index_client = IndicesClient(es)
 # creation of intent store in elasticsearch
 with open(_cwd + "/knowledgeBase/intentStore/intentConfig.json") as f:
     configurations = json.load(f)
-    print(configurations)
+    #print(configurations)
 if es_index_client.exists(index="intent"):
     es_index_client.delete(index="intent", ignore=404)
     es_index_client.delete(index="test", ignore=404)
@@ -67,7 +67,7 @@ es_index_client.create(index="intent", body=configurations)
 # creation of index for generated policy for EDC
 with open(_cwd + "/knowledgeBase/intentStore/HSPLConfig.json") as f:
     configurations = json.load(f)
-    print(configurations)
+    #print(configurations)
 if es_index_client.exists(index="hspl"):
     es_index_client.delete(index="hspl", ignore=404)
 
@@ -75,7 +75,7 @@ es_index_client.create(index="hspl", body=configurations)
 
 with open(_cwd + "/knowledgeBase/intentStore/AttacksConfig.json") as f:
     configurations = json.load(f)
-    print(configurations)
+    #print(configurations)
 if es_index_client.exists(index="attacksinfo"):
     es_index_client.delete(index="attacksinfo", ignore=404)
 
@@ -86,6 +86,7 @@ class IntentStoreManager:
         self.client = es
         self.add_intent_from_JSON(1, "intent_1.json")
         self.add_intent_from_JSON(2, "intent_2.json")
+        self.add_intent_from_JSON(4, "intent_4.json")
 
     def query_single_vocab(self, word):
         res = self.client.search(index="intent", body=iq.query_single_vocab(word))

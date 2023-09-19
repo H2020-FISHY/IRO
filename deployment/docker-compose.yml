@@ -21,6 +21,17 @@ services:
             ES_HOST: "elasticsearch"
             ES_PORT: "9200"
             TIM_URL: "https://fishy.xlab.si/tar/api/reports/v2"
+            OICD_URL: "192.168.0.10:8443/auth/realms/fishy-realm/protocol/openid-connect/userinfo"
+            CR_QUEUE_NAME: "IROQueue"
+            CR_KEY: "reports.#"
+            RABBIT_NOTIF_HOST: "fishymq.xlab.si"
+            RABBIT_NOTIF_PORT : 45672
+            RABBIT_NOTIF_EXCHANGE: "tasks"
+            RABBIT_NOTIF_LOGIN: "tubs"
+            RABBIT_NOTIF_PASS: "sbut"
+            SC_QUEUE_NAME: "SCQueue"
+            SC_KEY: "sc.validation"
+            RABBIT_SC_EXCHANGE: "sc-results"
         ports:
             - "5000:5000"
         volumes:

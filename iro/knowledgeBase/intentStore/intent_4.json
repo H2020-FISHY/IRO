@@ -1,0 +1,19 @@
+{
+    "id": 4,
+    "intentname": "pmem_config",
+    "use_template": "True",
+    "HTMLtemplate": "form_pmem_config.html",
+    "JStemplate": "script_form_pmem_config.html",
+    "attributes": [
+        {"attribute_name": "id", "attribute_type": "string"},
+        {"attribute_name": "severity", "attribute_type": "string"}
+    ],
+
+    "vocabularies": [
+        {"vocab_name": "pmem", "vocab_values": [
+            {"vocab_value": "pmem"},
+            {"vocab_value": "PMEM"}
+            ]
+        }
+    ]
+}

@@ -18,7 +18,7 @@ class NotificationConfigurationManager:
         for x in self.file_set: #range(1,self.No_of_intents+1):
             with open("./notification_store/reports/"+str(x), "r", encoding='utf-8') as f:
                 load_notification_data=json.load(f)
-                print(x)
+                
                 try:
 
                     if load_notification_data['pilot'] == pilot:

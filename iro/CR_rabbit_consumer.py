@@ -3,6 +3,7 @@
 import pika, sys, os
 import json
 import ast
+from learningAndReasoning.reactions.intent_verification import IntentVerification
 
 class RMQsubscriber:
     def __init__(self, queueName, bindingKey, config):
@@ -10,6 +11,7 @@ class RMQsubscriber:
       self.bindingKey = bindingKey
       self.config = config
       #self.notif_counter = 10
+      self.intent_verif = IntentVerification()
       
 
       self.connection = self._create_connection()
@@ -31,7 +33,6 @@ class RMQsubscriber:
     def on_message_callback(self, channel, method, properties, body):
         print(" [x] Received %r" % body)
         binding_key = method.routing_key
-        print(" [x] Received %r" % body)
         info = json.loads(body.decode('utf-8'))
         _device_product = "Not Defined"
         _time = "Error"
@@ -42,32 +43,32 @@ class RMQsubscriber:
 
         # Parse CEF format
         try:
-            _id = info["details"]['id']
+            _id = info["details"]["id"]
         except:
             try:
-                _id = info['id']
+                _id = info["id"]
             except:
                 _id = "Not Defined"
         # Parse device_event_class_id
         try:
-            _device_event_class_id = info["details"]['device_event_class_id']
+            _device_event_class_id = info["details"]["device_event_class_id"]
         except:
             _device_event_class_id = "Not Defined"
         # Parse 
         try:
             
-            _extensions_list = ast.literal_eval(info["details"]['extensions_list'])
+            _extensions_list = ast.literal_eval(info["details"]["extensions_list"])
         except:
             _extensions_list = ""
 
         # Parse severity
         try:
-            _severity = info["details"]['severity']
+            _severity = info["details"]["severity"]
         except:
             _severity = "Not Defined"
 
         try:
-            _event_name = info["details"]['event_name']
+            _event_name = info["details"]["event_name"]
         except:
             _event_name = "Not Defined"
         
@@ -77,17 +78,17 @@ class RMQsubscriber:
             _time = info["details"]["updated_at"]
         except:
             try:
-                _time = _extensions_list['ts']
+                _time = _extensions_list["ts"]
             except:
                 _time = "Not Defined"
         # Parse device_version
         try:
-            _device_version = info["details"]['device_version']
+            _device_version = info["details"]["device_version"]
         except:
             _device_version = "Not Defined"
         # Parse source
         try:
-            _device_product = info["details"]['device_product']
+            _device_product = info["details"]["device_product"]
         except:
             try:
                 _device_product = info["details"]["report"]["source"]
@@ -98,10 +99,10 @@ class RMQsubscriber:
                     _device_product = "Not Defined"
         # Parse pilot
         try:
-            _pilot_ = info["details"]['pilot']
+            _pilot = info["details"]["pilot"]
         except:
             try:
-                pilot = info["details"]["report"]["data"]["pilot"]
+                _pilot = info["details"]["report"]["data"]["pilot"]
             except:
                 _pilot = "Not Defined"
 
@@ -117,14 +118,12 @@ class RMQsubscriber:
                 "Name": _event_name, #_event_name,
                 "Source": _device_product,
                 "Attributes": _device_version,
-                "Value": _extensions_list,
+                "Value": info["details"]["extensions_list"],
                 "ID": _id,
                 "pilot": _pilot,
                 "Time": _time,
                 "Status": "Open"
                 }
-        
-
         
         # save notif info and state
         fpath = "notification_store/reports/"+_id+".json"
@@ -132,6 +131,11 @@ class RMQsubscriber:
             notif = json.dumps(notif)
             f.write(notif)
         #self.notif_counter += 1
+        self.intent_verif.verify_all_intents(info["details"])
+        
+
+
+
 
 
     def setup(self):
@@ -157,6 +161,15 @@ def run_rabbit(): #queueName, bindingKey , config):
     queueName = 'IROQueue'
     bindingKey = 'reports.#'
     config = { 'host': 'fishymq.xlab.si', 'port': 45672, 'exchange' : 'tasks', 'login':'tubs', 'password':'sbut'}
+    try:
+        queueName = os.environ["CR_QUEUE_NAME"]
+        CRkey = os.environ["CR_KEY"]
+        config =  { 'host': os.environ["RABBIT_NOTIF_HOST"], 'port': os.environ["RABBIT_NOTIF_PORT"], 'exchange' : os.environ["RABBIT_NOTIF_EXCHANGE"], 'login':os.environ["RABBIT_NOTIF_LOGIN"], 'password':os.environ["RABBIT_NOTIF_PASS"]} 
+    except:
+        queueName = "IROQueue"
+        bindingKey = "reports.#"
+        config = { 'host': 'fishymq.xlab.si', 'port': 45672, 'exchange' : 'tasks', 'login':'tubs', 'password':'sbut'}
+
 
     try:
         init_rabbit = RMQsubscriber(queueName, bindingKey , config)

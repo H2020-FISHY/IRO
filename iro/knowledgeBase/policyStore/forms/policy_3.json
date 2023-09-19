@@ -1,0 +1,45 @@
+{
+    "id": 3,
+    "policyname": "pmem_config",  
+
+    "attributes": [
+        {"attribute_name": "attack", "attribute_values": [
+            {"attribute_name": "attack1", "attribute_value": "DDoS"},
+            {"attribute_name": "attack2","attribute_value": "Not Defined"}
+            ]
+        },
+        {"attribute_name": "ip", "attribute_values": [
+            {"attribute_name": "src_ip", "attribute_value": "src_ip"},
+            {"attribute_name": "dst_ip","attribute_value": "dst_ip"}
+            ]
+        },
+        {"attribute_name": "port", "attribute_values": [
+            {"attribute_name": "None","attribute_value": "None"},
+            {"attribute_name": "src_port","attribute_value": "src_port"},
+            {"attribute_name": "dst_port","attribute_value": "dst_port"}
+            ]
+        },
+        {"attribute_name": "time", "attribute_values": [
+            {"attribute_name": "Second","attribute_value": "second"},
+            {"attribute_name": "Minute","attribute_value": "minute"},
+            {"attribute_name": "Hour","attribute_value": "hour"},
+            {"attribute_name": "Day","attribute_value": "day"}
+            ]
+        },
+        {"attribute_name": "action", "attribute_values": [
+            {"attribute_name": "notify","attribute_value": "notify"},
+            {"attribute_name": "no_authorise_access","attribute_value": "no_authorise_access"}
+            ]
+        },
+        {"attribute_name": "notif", "attribute_values": [
+            {"attribute_name": "supply_chain_operator","attribute_value": "supply_chain_operator"},
+            {"attribute_name": "island_operator","attribute_value": "island_operator"}
+            ]
+        },
+        {"attribute_name": "ban", "attribute_values": [
+            {"attribute_name": "src IP","attribute_value": "src IP"},
+            {"attribute_name": "dst PORT","attribute_value": "dst PORT"}
+            ]
+        }
+    ]
+}

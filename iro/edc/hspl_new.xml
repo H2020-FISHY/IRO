@@ -7,11 +7,17 @@
                 <subject type="wallet_id">Malicious_User1</subject>
                 <value>1</value>
                 <period>1</period>
-                <time>minute</time>
+                <time>second</time>
             </threshold>
         </enabling-conditions>
         
         <hspl id="hspl0">
+            <subject>Malicious_User1</subject>
+            <action>notify</action>
+            <object>island_operator</object>
+        </hspl>
+        
+        <hspl id="hspl1">
             <subject>Malicious_User1</subject>
             <action>notify</action>
             <object>supply_chain_operator</object>

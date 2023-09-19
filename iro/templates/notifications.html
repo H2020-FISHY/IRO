@@ -643,8 +643,8 @@
                                             <thead>
                                                 <tr>
                                                     <th scope="col">ID</th>
-                                                    <th scope="col">Attributes</th>
-                                                    <th scope="col">Value</th>
+                                                    <th scope="col">Time</th>
+                                                    <th scope="col">Details</th>
                                                 </tr>
                                             </thead>
                                             <tfoot>
@@ -758,7 +758,7 @@
                             $('#success_deletenotification').hide()
                             $('#success_shownotification').show()
                             $("#tableShow").find('tbody').empty();
-                            $('#tableShow').find('tbody').append("<tr><td>" + data.show_notificationid + "</td><td>"  + data.show_notificationattribute + "</td>    <td>"+ data.show_notificationvalue + "</td></tr>");
+                            $('#tableShow').find('tbody').append("<tr><td>" + data.show_notificationid + "</td><td>  "  + data.show_notificationattribute + " </td>    <td><pre>"+ data.show_notificationvalue + "</pre></td></tr>");
                             $('#error_shownotification').hide();
                         }
         

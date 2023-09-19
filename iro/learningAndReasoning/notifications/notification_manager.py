@@ -32,45 +32,50 @@ class NotificationManager:
         
         try:
             #r = requests.get('https://fishy.xlab.si/tar/api/reports')
-            r = requests.get('https://fishy.xlab.si/tar/api/reports/v2')
+            r = requests.get(os.environ["TIM_URL"])  # 'https://fishy.xlab.si/tar/api/reports/v2')
             #r = requests.get(tim_config["tar"]["url"])
             r = r.content
             r = r.decode("UTF-8")
             r = ast.literal_eval(r)
             data = []
             pilot = None
-            print(len(r))
-            print(r)
-            print('/////////////////////////////////')
+            #print(len(r))
+            #print(r)
+            #print('/////////////////////////////////')
             for el in r:
                 element = el.copy()
 
                 try:
-                    _id = element['id']
-                    _device_product = element['device_product']
-                    _device_version = element['device_version']
-                    _event_name = element['event_name']
-                    _device_event_class_id = element['device_event_class_id']
-                    _severity = element['severity']
+                    #_id = element['id']
+                    #_device_product = element['device_product']
+                    #_device_version = element['device_version']
+                    #_event_name = element['event_name']
+                    #_device_event_class_id = element['device_event_class_id']
+                    #_severity = element['severity']
                     _extensions_list = element['extensions_list']
                     _pilot_ = element['pilot']
 
                     if _pilot == _pilot_:
+                        
 
 
                         _text = "" #"*** pilot: "+_pilot_+" *** [TO BE REMOVED]\n"
-                        for _key, data_info in ast.literal_eval(_extensions_list).items():
-                            try:
-                                if "," in str(data_info):
-                                    tmp_val =  ",\n      ".join(str(data_info).split(","))
-                                    _text += "*  "+_key + ": " + tmp_val + "\n"
-                                elif ";" in str(data_info):
-                                    tmp_val =  ";\n      ".join(str(data_info).split(";"))
-                                    _text += "*  "+_key + ": " + tmp_val + "\n"
-                                else:
-                                    _text += "*  "+_key + ": " + str(data_info) + "\n"
-                            except:
-                                pass
+                        try:
+
+                            for _key, data_info in ast.literal_eval(_extensions_list).items():
+                                try:
+                                    if "," in str(data_info):
+                                        tmp_val =  ",\n      ".join(str(data_info).split(","))
+                                        _text += "*  "+_key + ": " + tmp_val + "\n"
+                                    elif ";" in str(data_info):
+                                        tmp_val =  ";\n      ".join(str(data_info).split(";"))
+                                        _text += "*  "+_key + ": " + tmp_val + "\n"
+                                    else:
+                                        _text += "*  "+_key + ": " + str(data_info) + "\n"
+                                except:
+                                    pass
+                        except:
+                            pass
 
                         element['text'] = _text
                         data.append(element)
@@ -80,7 +85,6 @@ class NotificationManager:
                 except:
                     try:
                         alert = json.loads(el['data'])
-                        print(alert)
                     except:
                         alert = el['data']
                         pass
@@ -88,7 +92,6 @@ class NotificationManager:
 
                         if el['source'] == "SACM":
                             try:
-                                print("HERE: ", ast.literal_eval(el['data'])['pilot'])
                                 _text = ""
                                 for _key, data_info in ast.literal_eval(el['data']).items():
                                     try:
@@ -106,12 +109,7 @@ class NotificationManager:
                             except:
                                 raise Exception("E: Error in reading SACM data")
 
-                        elif el['source'] == "Wazuh":
-                            
-                            try:
-                                alert = alert["attachments"][0] 
-                            except:
-                                raise Exception("E: Error in reading wazuh data")
+                        
                         else:
                             alert = {"id":"test", "title": "test", "text": "test", "fields":[{"title": "test", "value":"test"},{"title": "test", "value":"test"}]}
                     else:
@@ -138,7 +136,7 @@ class NotificationManager:
             #r = session.get(f'http://{tim_config["tar"]["ip"]}:{tim_config["tar"]["port"]}/api/reports')
             #r = self.session.get('https://fishy.xlab.si/tar/api/reports')
             #r = requests.get('https://fishy.xlab.si/tar/api/reports')
-            r = requests.get(tim_config["tar"]["url"])
+            r = requests.get( os.environ["TIM_URL"]) #tim_config["tar"]["url"])
             r = r.content
             r = r.decode("UTF-8")
             r = ast.literal_eval(r)
@@ -237,9 +235,11 @@ class NotificationManager:
             
 
 
-            form, script = self.policyStore.getPolicyFormAndScript(intent_id) 
+            form, script = self.policyStore.getPolicyFormAndScript(intent_id)
+            
 
         except:
             #HTMLtemplate = "except"
             pass
+        
         return form, script, HTMLtemplate, JStemplate

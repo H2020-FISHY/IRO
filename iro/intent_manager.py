@@ -52,6 +52,7 @@ class IntentManager:
         # and update all the other methods using it
         self.intent_structure = IntentCreation()
         self.notif = notif
+        
 
     def reading_command(self, intent_text):
         """
@@ -232,7 +233,7 @@ class IntentManager:
     
     def is_intent_exist(self, intent_text):
         tmp = self.intent_store.query_intentname(intent_text)
-        print(tmp)
+        #print(tmp)
         if tmp['hits']['hits'] != []:
             return True
         return False
@@ -241,7 +242,7 @@ class IntentManager:
         tmp = self.intent_store.query_intentname(intent_text)
         return tmp['hits']['hits'][0]
 
-
+ 
     def create_hspl_from_intent(self,form_data, intent_name):
         # create the json from the form_data
         to_test = {'wallet_id':"wallet id 1", "value": 1, "period": 1, "time":"hour",
@@ -275,7 +276,7 @@ class IntentManager:
         data = {"source": "IRO", "status": "both", "timestamp": str(_timestamp), "HSPL": html_hspl, "attack_info": html_info}
         headers = {'Content-type': 'application/json'}
         r = requests.post(url, data=json.dumps(data), headers=headers)
-        print(r.status_code)
+        #print(r.status_code)
         
         msg = None
         try:
@@ -287,6 +288,38 @@ class IntentManager:
         except FileNotFoundError:
             msg = "Sorry, the file "+ fpath + "does not exist."
 
+        
+        return msg
+    
+    def create_policy_from_intent(self,form_data, intent_name):
+        _path = "policies/pmem/"
+
+        structured_data = {}
+        if intent_name == "pmem_config_form":
+            structured_data['tool'] = "pmem"
+            structured_data['attack'] = form_data['attack']
+            structured_data['IP'] = form_data['IP']
+            structured_data['PORT'] = form_data['PORT']
+            try:
+                    
+                structured_data['value'] = form_data['value']
+                structured_data['period'] = form_data['period']
+                structured_data['time'] = form_data['time']
+            except:
+                structured_data['severity'] = form_data['severity']
+            structured_data['action'] = form_data['action_x']
+            structured_data['object'] = form_data['object_x']
+            updated_intent_name = structured_data['tool'] + "_" + structured_data['attack'] + "_" + structured_data['IP'] + "_" + structured_data['PORT']
+            fpath = _path + updated_intent_name +".json"
+            with open(fpath, 'w') as f:
+                json.dump(structured_data, f, ensure_ascii=False, indent=4)
+                #html_info = render_template(fnamea, attacker=structured_data_attacker)
+                #f.write(html_info)
+                #html_info = json.loads(html_info)
+            if not os.path.exists(fpath):
+                raise Exception("it is not saved :((")
+
+        msg = "Intent generated successfully!\n\n "
         
         return msg
 

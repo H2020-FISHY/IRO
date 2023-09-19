@@ -48,7 +48,7 @@ es_index_client = IndicesClient(es)
 #
 with open(_cwd + "/knowledgeBase/policyStore/policyConfig.json") as f:
     configurations = json.load(f)
-    print(configurations)
+    #print(configurations)
 if es_index_client.exists(index="policy"):
     es_index_client.delete(index="policy", ignore=404)
     es_index_client.delete(index="test", ignore=404)
@@ -60,6 +60,7 @@ class PolicyStoreManager:
         self.client = es
         # this method can be used later to add more policies from the admin (intent configuration)
         self.add_policy_from_JSON(1, "policy_1.json")
+        self.add_policy_from_JSON(4, "policy_4.json")
         
     def getPolicyFormAndScript(self, intent_id):
         # get data from policy store
@@ -78,12 +79,14 @@ class PolicyStoreManager:
             script_list.append(script)
         except:
             #  no error handling at the moment
+            print("E: Cannot find files!!!")
             pass
 
         return form_list, script_list
 
     def format_policy_json(self, _json):
         _data = {}
+        _data["policyname"] = _json["policyname"]
         for el in _json['attributes']:
             val_list = []
             for val in el['attribute_values']:

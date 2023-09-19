@@ -29,7 +29,6 @@ class SCsubscriber:
     def on_message_callback(self, channel, method, properties, body):
         print(" [x] Received %r" % body)
         binding_key = method.routing_key
-        print(" [x] Received %r" % body)
         info = json.loads(body.decode('utf-8'))
         
         notif = {
@@ -75,9 +74,18 @@ class SCsubscriber:
 
 def run_rabbit():
     # Smart Contracts RabbitMQ parameters
-    SCqueueName = 'SCQueue'
-    SCkey = 'sc.validation'
-    SCnotification_consumer_config = { 'host': 'fishymq.xlab.si', 'port': 45672, 'exchange' : 'sc-results', 'login':'tubs', 'password':'sbut'}
+    #SCqueueName = 'SCQueue'
+    #SCkey = 'sc.validation'
+    #SCnotification_consumer_config = { 'host': 'fishymq.xlab.si', 'port': 45672, 'exchange' : 'sc-results', 'login':'tubs', 'password':'sbut'}
+    try:
+        SCqueueName = os.environ["SC_QUEUE_NAME"]
+        SCkey = os.environ["SC_KEY"]
+        SCnotification_consumer_config =  { 'host': os.environ["RABBIT_NOTIF_HOST"], 'port': os.environ["RABBIT_NOTIF_PORT"], 'exchange' : os.environ["RABBIT_SC_EXCHANGE"], 'login':os.environ["RABBIT_NOTIF_LOGIN"], 'password':os.environ["RABBIT_NOTIF_PASS"]} 
+    except:
+        SCqueueName = 'SCQueue'
+        SCkey = 'sc.validation'
+        SCnotification_consumer_config = { 'host': 'fishymq.xlab.si', 'port': 45672, 'exchange' : 'sc-results', 'login':'tubs', 'password':'sbut'}
+
 
     try:
         init_rabbit = SCsubscriber(SCqueueName, SCkey , SCnotification_consumer_config)

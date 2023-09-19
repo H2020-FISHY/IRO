@@ -1,0 +1,9 @@
+{
+    "tool": "pmem",
+    "attack": "DDoS",
+    "IP": "src_ip",
+    "PORT": "None",
+    "severity": "Medium",
+    "action": "no_authorise_access",
+    "object": "src_IP"
+}
