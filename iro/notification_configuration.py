@@ -7,7 +7,10 @@ class NotificationConfigurationManager:
     def __init__(self) -> None:
 
         self.directory_path = './notification_store/reports'
+        if not os.path.exists(self.directory_path):
+            os.makedirs(self.directory_path)
         self.No_of_intents = len(os.listdir(self.directory_path))
+
         root_dir = os.listdir(self.directory_path)
         self.file_set = set()
         self.reset_notifications()
