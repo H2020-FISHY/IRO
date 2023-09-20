@@ -109,15 +109,16 @@ class UserInterface(FlaskView):
         self.intent_manager = IntentManager(notif=self.notification_manager)
         self.intent_conf_manager = icm()
         self.notification_conf_manager = ncm()
-        try:
-            self.oicd_url = os.environ["OICD_URL"] 
-        except:
-            self.oicd_url = "https://fishy-idm.dsi.uminho.pt/auth/realms/fishy-realm/protocol/openid-connect/userinfo"
+        #try:
+        self.oicd_url = os.environ["OICD_URL"] 
+        #except:
+        #    self.oicd_url = "https://fishy-idm.dsi.uminho.pt/auth/realms/fishy-realm/protocol/openid-connect/userinfo"
         self.oicd_headers = {
             'Content-Type': 'application/x-www-form-urlencoded'
             }
         self.test_allowed = True
         self.login_session = ""
+        self.error_message = ""
         
         '''
 
@@ -135,6 +136,8 @@ class UserInterface(FlaskView):
     def index(self):
         try:
             try:
+                self.error_message = "reading session token ..."
+                print(self.error_message)
                 self.login_session = request.args['session']
                 with open("./keyclock_last_token.json") as token_file:
                     json_decoded = json.load(token_file)
@@ -148,11 +151,14 @@ class UserInterface(FlaskView):
                         self.login_session = data["token"]
                         
                 except:
-                    return render_template('404.html',error="MISSING TOKEN")
-            payload='access_token=' + self.login_session 
+                    self.error_message = "keyclock last token file does not exist!"
+                    return render_template('404.html',error="MISSING TOKEN: " + self.error_message) 
+            payload='access_token=' + self.login_session
+            self.error_message = "requesting user info ..."
             response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
             
             if response.status_code == 200: # or self.test_allowed == True:
+                self.error_message = "reading user info ..."
                 user_info = json.loads(response.text)
                 _pilot = user_info['pilot']
                 notifs = self.notification_manager.get_notifications(self.session, tim_config)
@@ -164,7 +170,7 @@ class UserInterface(FlaskView):
             else:
                 return render_template('404.html',error="NOT CONNECTED")#'NOT CONNECTED'
         except:
-            return render_template('404.html',error="MISSING TOKEN") #'MISSING TOKEN'
+            return render_template('404.html',error="MISSING TOKEN: " + self.error_message) #'MISSING TOKEN'
     def post(self):
         try:
             try:
