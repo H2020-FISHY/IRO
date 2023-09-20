@@ -42,7 +42,7 @@ class SCsubscriber:
             "Status": "Open"
             }
         
-        fpath = "notification_store/smart_contracts"+"notification_SC_"+info["id"]+".json"
+        fpath = "/iro/notification_store/smart_contracts"+"notification_SC_"+info["id"]+".json"
         with open(fpath, 'w') as f:
             _notif = json.dumps(notif)
             f.write(_notif)
