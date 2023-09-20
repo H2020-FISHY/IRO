@@ -199,7 +199,7 @@ class IntentVerification:
                 "Status": "Open"
                 }
         
-        fpath = _cwd+ "/notification_store/reports/"+ event["id"]+".json"
+        fpath = "/iro/notification_store/reports/"+ event["id"]+".json"
         with open(fpath, 'w') as f:
             notif = json.dumps(data)
             f.write(notif)
