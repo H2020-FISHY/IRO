@@ -11,7 +11,7 @@ class SCsubscriber:
       self.config = config
       #self.notif_counter = 10
       self.connection = self._create_connection()
-      self.sc_path = "notification_store/smart_contracts/verified_sc.json"
+      self.sc_path = "/iro/notification_store/smart_contracts/verified_sc.json"
 
     def __del__(self):
       self.connection.close()

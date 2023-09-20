@@ -11,7 +11,7 @@ class SCsubscriber:
       self.config = config
       #self.notif_counter = 10
       self.connection = self._create_connection()
-      self.sc_path = "notification_store/smart_contracts/verified_sc.json"
+      self.sc_path = "/iro/notification_store/smart_contracts/verified_sc.json"
 
     def __del__(self):
       self.connection.close()
@@ -43,7 +43,7 @@ class SCsubscriber:
             "Status": "Open"
             }
         
-        fpath = "notification_store/smart_contracts"+"notification_SC_"+info["id"]+".json"
+        fpath = "/iro/notification_store/smart_contracts"+"notification_SC_"+info["id"]+".json"
         with open(fpath, 'w') as f:
             _notif = json.dumps(notif)
             f.write(_notif)

@@ -261,7 +261,7 @@ class UserInterface(FlaskView):
                 # Get all reports
                 data = self.notification_manager.get_all_reports(_pilot=_pilot)
                 
-                sc_path = "notification_store/smart_contracts/verified_sc.json"
+                sc_path = "/iro/notification_store/smart_contracts/verified_sc.json"
                 try:
                     with open(sc_path) as sc_file:
                         json_decoded = json.load(sc_file)                         
