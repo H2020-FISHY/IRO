@@ -41,7 +41,7 @@ class RMQsubscriber:
             "Status": "Open"
             }
         
-        fpath = "notification_store/reports/"+info["id"]+".json"
+        fpath = "/iro/notification_store/reports/"+info["id"]+".json"
         with open(fpath, 'w') as f:
             notif = json.dumps(notif)
             f.write(notif)
