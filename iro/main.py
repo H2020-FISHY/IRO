@@ -203,10 +203,12 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session 
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload,verify=False)
+            #response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload,verify=False)
+            access_token_json = jwt.decode(self.login_session, self.public_key, audience='account')
             
-            if response.status_code == 200: # or self.test_allowed == True:
-                user_info = json.loads(response.text)
+            if access_token_json: # response.status_code == 200: # or self.test_allowed == True:
+                self.error_message = "reading user info ..."
+                user_info = access_token_json
                 _pilot = user_info['pilot']
                 msg = ''
                 my_form = None
@@ -270,10 +272,12 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
+            #response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
+            access_token_json = jwt.decode(self.login_session, self.public_key, audience='account')
             
-            if response.status_code == 200:# or self.test_allowed == True:
-                user_info = json.loads(response.text)
+            if access_token_json: # response.status_code == 200: # or self.test_allowed == True:
+                self.error_message = "reading user info ..."
+                user_info = access_token_json
                 _pilot = user_info['pilot']
                 show_notification_data=[]
                 self.notification_conf_manager.show_notification(show_notification_data,  _pilot)
@@ -317,10 +321,12 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session 
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
+            #response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
+            access_token_json = jwt.decode(self.login_session, self.public_key, audience='account')
             
-            if response.status_code == 200: # or self.test_allowed == True:
-                user_info = json.loads(response.text)
+            if access_token_json: # response.status_code == 200: # or self.test_allowed == True:
+                self.error_message = "reading user info ..."
+                user_info = access_token_json
                 msg = ''
                 my_form = None
                 my_form_script = None
@@ -367,10 +373,12 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session 
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
+            #response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
+            access_token_json = jwt.decode(self.login_session, self.public_key, audience='account')
             
-            if response.status_code == 200: # or self.test_allowed == True:
-                user_info = json.loads(response.text)
+            if access_token_json: # response.status_code == 200: # or self.test_allowed == True:
+                self.error_message = "reading user info ..."
+                user_info = access_token_json
                 _pilot = user_info['pilot']
                 empty_data={'Status': 'Deleted', 'Time': str(datetime.now().replace(microsecond=0)) }
                 intent_data={}
@@ -448,10 +456,12 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
+            #response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
+            access_token_json = jwt.decode(self.login_session, self.public_key, audience='account')
             
-            if response.status_code == 200:# or self.test_allowed == True:
-                user_info = json.loads(response.text)
+            if access_token_json: # response.status_code == 200: # or self.test_allowed == True:
+                self.error_message = "reading user info ..."
+                user_info = access_token_json
                 _pilot = user_info['pilot']
                 show_notification_data=[]
                 self.notification_conf_manager.show_notification(show_notification_data,  _pilot)
@@ -491,10 +501,12 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
+            #response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
+            access_token_json = jwt.decode(self.login_session, self.public_key, audience='account')
             
-            if response.status_code == 200:# or self.test_allowed == True:
-                user_info = json.loads(response.text)
+            if access_token_json: # response.status_code == 200: # or self.test_allowed == True:
+                self.error_message = "reading user info ..."
+                user_info = access_token_json
                 _pilot = user_info['pilot']
                 show_notification_data=[] 
                 self.notification_conf_manager.show_notification(show_notification_data,  _pilot)
@@ -533,10 +545,12 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
+            #response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
+            access_token_json = jwt.decode(self.login_session, self.public_key, audience='account')
             
-            if response.status_code == 200:# or self.test_allowed == True:
-                user_info = json.loads(response.text)
+            if access_token_json: # response.status_code == 200: # or self.test_allowed == True:
+                self.error_message = "reading user info ..."
+                user_info = access_token_json
                 _pilot = user_info['pilot']
                 show_notification_data=[]
                 self.notification_conf_manager.show_notification(show_notification_data,  _pilot)
@@ -578,10 +592,12 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session 
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
+            #response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
+            access_token_json = jwt.decode(self.login_session, self.public_key, audience='account')
             
-            if response.status_code == 200: # or self.test_allowed == True:
-                user_info = json.loads(response.text)
+            if access_token_json: # response.status_code == 200: # or self.test_allowed == True:
+                self.error_message = "reading user info ..."
+                user_info = access_token_json
                 _pilot = user_info['pilot']
                 intent_data={}
                 n_id = request.args.get('n_id', None)
