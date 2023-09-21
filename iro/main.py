@@ -109,10 +109,10 @@ class UserInterface(FlaskView):
         self.intent_manager = IntentManager(notif=self.notification_manager)
         self.intent_conf_manager = icm()
         self.notification_conf_manager = ncm()
-        try:
-            self.oicd_url = os.environ["OICD_URL"] 
-        except:
-            self.oicd_url = "https://fishy-idm.dsi.uminho.pt/auth/realms/fishy-realm/protocol/openid-connect/userinfo"
+        #try:
+        self.oicd_url = os.environ["OICD_URL"] 
+        #except:
+        #    self.oicd_url = "https://fishy-idm.dsi.uminho.pt/auth/realms/fishy-realm/protocol/openid-connect/userinfo"
         self.oicd_headers = {
             'Content-Type': 'application/x-www-form-urlencoded'
             }
@@ -177,7 +177,7 @@ class UserInterface(FlaskView):
                 self.notification_conf_manager.show_notification(show_notification_data, _pilot)
                 return render_template('index.html',form_script=my_form_script, forms=my_form, message=msg, notifications=notifs, show_notification_data=show_notification_data,user_info=user_info)
             else:
-                return render_template('404.html',error="NOT CONNECTED")#'NOT CONNECTED'
+                return render_template('404.html',error="NOT CONNECTED: " + str(response.status_code))#'NOT CONNECTED'
         except:
             return render_template('404.html',error="MISSING TOKEN: " + self.error_message) #'MISSING TOKEN'
     def post(self):
