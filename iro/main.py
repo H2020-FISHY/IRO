@@ -169,7 +169,12 @@ class UserInterface(FlaskView):
             #                         )
             
             #response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False,)
+            
+            
+            
             access_token_json = jwt.decode(self.login_session, self.public_key, audience='account')
+            
+            
             
             if access_token_json: # response.status_code == 200: # or self.test_allowed == True:
                 self.error_message = "reading user info ..."
