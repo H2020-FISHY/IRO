@@ -53,7 +53,29 @@ spec:
         - name: TIM_PORT
           value: "8000"
         - name: TIM_URL
-          value: "https://fishy.xlab.si/tar/api/reports"
+          value: "https://fishy.xlab.si/tar/api/reports/v2"
+        - name: OICD_URL
+          value: "https://10.4.34.136:30443/auth/realms/fishy-realm/protocol/openid-connect/userinfo"
+        - name: CR_QUEUE_NAME
+          value: "IROQueue"
+        - name: CR_KEY
+          value: "reports.#"
+        - name: RABBIT_NOTIF_HOST
+          value: "fishymq.xlab.si"
+        - name: RABBIT_NOTIF_PORT
+          value: 45672
+        - name: RABBIT_NOTIF_EXCHANGE
+          value: "tasks"
+        - name: RABBIT_NOTIF_LOGIN
+          value: "tubs"
+        - name: RABBIT_NOTIF_PASS
+          value: "sbut"
+        - name: SC_QUEUE_NAME
+          value: "SCQueue"
+        - name: SC_KEY
+          value: "sc.validation"
+        - name: RABBIT_SC_EXCHANGE
+          value: "sc-results"
       volumes:
       - name: edc-volume
         hostPath:

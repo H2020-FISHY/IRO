@@ -109,10 +109,10 @@ class UserInterface(FlaskView):
         self.intent_manager = IntentManager(notif=self.notification_manager)
         self.intent_conf_manager = icm()
         self.notification_conf_manager = ncm()
-        #try:
-        self.oicd_url = os.environ["OICD_URL"] 
-        #except:
-        #    self.oicd_url = "https://fishy-idm.dsi.uminho.pt/auth/realms/fishy-realm/protocol/openid-connect/userinfo"
+        try:
+            self.oicd_url = os.environ["OICD_URL"] 
+        except:
+            self.oicd_url = "https://fishy-idm.dsi.uminho.pt/auth/realms/fishy-realm/protocol/openid-connect/userinfo"
         self.oicd_headers = {
             'Content-Type': 'application/x-www-form-urlencoded'
             }
@@ -153,9 +153,18 @@ class UserInterface(FlaskView):
                 except:
                     self.error_message = "keyclock last token file does not exist!"
                     return render_template('404.html',error="MISSING TOKEN: " + self.error_message) 
-            payload='access_token=' + self.login_session
+            #payload='access_token=' + self.login_session
+
             self.error_message = "requesting user info ..."
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
+            payload = {
+                'access_token': self.login_session,
+                }
+            response = requests.post(self.oicd_url,
+                                     data=payload,
+                                     verify=False,
+                                     )
+            
+            #response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False,)
             
             if response.status_code == 200: # or self.test_allowed == True:
                 self.error_message = "reading user info ..."
@@ -189,7 +198,7 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session 
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
+            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload,verify=False)
             
             if response.status_code == 200: # or self.test_allowed == True:
                 user_info = json.loads(response.text)
@@ -256,7 +265,7 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
+            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
             
             if response.status_code == 200:# or self.test_allowed == True:
                 user_info = json.loads(response.text)
@@ -303,7 +312,7 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session 
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
+            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
             
             if response.status_code == 200: # or self.test_allowed == True:
                 user_info = json.loads(response.text)
@@ -353,7 +362,7 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session 
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
+            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
             
             if response.status_code == 200: # or self.test_allowed == True:
                 user_info = json.loads(response.text)
@@ -434,7 +443,7 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
+            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
             
             if response.status_code == 200:# or self.test_allowed == True:
                 user_info = json.loads(response.text)
@@ -477,7 +486,7 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
+            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
             
             if response.status_code == 200:# or self.test_allowed == True:
                 user_info = json.loads(response.text)
@@ -519,7 +528,7 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
+            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
             
             if response.status_code == 200:# or self.test_allowed == True:
                 user_info = json.loads(response.text)
@@ -564,7 +573,7 @@ class UserInterface(FlaskView):
                 except:
                     return render_template('404.html',error="MISSING TOKEN")
             payload='access_token=' + self.login_session 
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
+            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False)
             
             if response.status_code == 200: # or self.test_allowed == True:
                 user_info = json.loads(response.text)
