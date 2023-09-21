@@ -28,6 +28,7 @@ import requests
 #from flask_oidc import OpenIDConnect
 from requests import Session
 from threading import Thread
+import jwt
 
 import policies.remediation.api as rem
 
@@ -119,6 +120,9 @@ class UserInterface(FlaskView):
         self.test_allowed = True
         self.login_session = ""
         self.error_message = ""
+        self.public_key = """-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl0DdHKvVtT1ONng1dOHXbgfnryrtOxJAsrrOwrnqkVELDresRh4VNJPX7wdbgXFjn/THqTWErG3k7SFoDHkcT3vsS66yjAPBNLQpQmphS34hxUzRQo5hON70t4+UY3HdZ9ejk5YmiyMKvoD9XoEISYoFnrPWQBLdNmTIKfW9TJxDVXzazwhc+HajT/ruSsluOaDja/MidMk1sQ8ILMOPLxdC/oInD90XpPRj5LkzITBPJYeP9IzpzzaNo5P8kJKYIwNSoIPzMtPhEBz4oiBtE3XTsQ+oxj+5mxb1AebHIzQyf29f8QXxHoLwy/dQj9WODNnL6elRkOxD9tQrQz/kAQIDAQAB\n-----END PUBLIC KEY-----"""
+
+
         
         '''
 
@@ -164,11 +168,12 @@ class UserInterface(FlaskView):
             #                         verify=False,
             #                         )
             
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False,)
+            #response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False,)
+            access_token_json = jwt.decode(self.login_session, self.public_key, audience='account')
             
-            if response.status_code == 200: # or self.test_allowed == True:
+            if access_token_json: # response.status_code == 200: # or self.test_allowed == True:
                 self.error_message = "reading user info ..."
-                user_info = json.loads(response.text)
+                user_info = access_token_json #json.loads(response.text)
                 _pilot = user_info['pilot']
                 notifs = self.notification_manager.get_notifications(self.session, tim_config)
                 msg = self.notification_manager.get_instructions()
@@ -177,7 +182,7 @@ class UserInterface(FlaskView):
                 self.notification_conf_manager.show_notification(show_notification_data, _pilot)
                 return render_template('index.html',form_script=my_form_script, forms=my_form, message=msg, notifications=notifs, show_notification_data=show_notification_data,user_info=user_info)
             else:
-                return render_template('404.html',error="NOT CONNECTED: " + str(response.status_code) )#'NOT CONNECTED'
+                return render_template('404.html',error="NOT CONNECTED: " )#'NOT CONNECTED'
         except:
             return render_template('404.html',error="MISSING TOKEN: " + self.error_message) #'MISSING TOKEN'
     def post(self):
