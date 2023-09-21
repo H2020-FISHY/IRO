@@ -159,12 +159,12 @@ class UserInterface(FlaskView):
             payload = {
                 'access_token': self.login_session,
                 }
-            response = requests.post(self.oicd_url,
-                                     data=payload,
-                                     verify=False,
-                                     )
+            #response = requests.post(self.oicd_url,
+            #                         data=payload,
+            #                         verify=False,
+            #                         )
             
-            #response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False,)
+            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload, verify=False,)
             
             if response.status_code == 200: # or self.test_allowed == True:
                 self.error_message = "reading user info ..."
@@ -177,7 +177,7 @@ class UserInterface(FlaskView):
                 self.notification_conf_manager.show_notification(show_notification_data, _pilot)
                 return render_template('index.html',form_script=my_form_script, forms=my_form, message=msg, notifications=notifs, show_notification_data=show_notification_data,user_info=user_info)
             else:
-                return render_template('404.html',error="NOT CONNECTED: " + str(response.status_code))#'NOT CONNECTED'
+                return render_template('404.html',error="NOT CONNECTED: " + str(response.status_code) )#'NOT CONNECTED'
         except:
             return render_template('404.html',error="MISSING TOKEN: " + self.error_message) #'MISSING TOKEN'
     def post(self):
