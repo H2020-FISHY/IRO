@@ -38,17 +38,12 @@ Run this command once on your machine:
 echo -e "\nvm.max_map_count=524288\n" | sudo tee -a /etc/sysctl.conf && sudo sysctl -w vm.max_map_count=524288
 ```
 
-Deploy with:
+Build and deploy with:
 ```shell
 cd deployment/
-docker-compose up -d
+docker-compose up --build
 ```
 
-To rebuild IRO without redeploying Elasticsearch:
-
-```shell
-docker-compose up --build -d iro
-```
 
 ### Option 2: vagrant (development only)
 
