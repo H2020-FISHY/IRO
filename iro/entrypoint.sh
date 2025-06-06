@@ -2,6 +2,7 @@
 #expecting interfaces as envronment variable following patter:
 #INTERFACES_UP="eth0:123.123.123.123/24 eth1:124.124.124.3/26"
 INTERFACE_DEFS=($INTERFACES_UP)
+mkdir -p /iro/notification_store/reports
 echo "Configuring IP addresses, expecting config in environment variable like this: INTERFACES_UP=\"eth0:123.123.123.123/24 eth1:124.124.124.3/26\""
 for i in "${!INTERFACE_DEFS[@]}"
 do
