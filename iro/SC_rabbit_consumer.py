@@ -14,17 +14,33 @@ class SCsubscriber:
       self.sc_path = "notification_store/smart_contracts/verified_sc.json"
 
     def __del__(self):
-      self.connection.close()
+        if self.connection is not None:
+            try:
+                self.connection.close()
+            except:
+                pass
 
     def _create_connection(self):
-        credentials = pika.PlainCredentials(self.config['login'], self.config['password']) # 'tubs', 'sbut')
-        parameters = pika.ConnectionParameters(host=self.config['host'], 
-                          port=self.config['port'],
-                          virtual_host='/', 
-                          credentials=credentials)
-        connection = pika.BlockingConnection(parameters)
-        #parameters=pika.ConnectionParameters(host=self.config['host'],  port = self.config['port'])
-        return connection
+        host     = os.getenv("AMQP_HOST", "localhost")
+        port     = int(os.getenv("AMQP_PORT", 5672))
+        vhost    = os.getenv("AMQP_VHOST", "/")
+        rmquser       = os.getenv("RABBITMQ_USER", "tubs")
+        rmqpass       = os.getenv("RABBITMQ_PASS", "sbut")
+        credentials = pika.PlainCredentials(rmquser, rmqpass)
+
+        parameters  = pika.ConnectionParameters(
+            host=host,
+            port=port,
+            virtual_host=vhost,
+            credentials=credentials
+        )
+
+        try:
+            connection = pika.BlockingConnection(parameters)
+            return connection
+        except pika.exceptions.AMQPConnectionError as e:
+            print(f"Failed to connect to RabbitMQ: {e}")
+            return None
 
     def on_message_callback(self, channel, method, properties, body):
         print(" [x] Received %r" % body)
@@ -61,6 +77,7 @@ class SCsubscriber:
         channel = self.connection.channel()
         #channel.exchange_declare(exchange=self.config['exchange'])
         # This method creates or checks a queue
+        channel.exchange_declare(exchange="sc-results", exchange_type="direct", durable=True)
         channel.queue_declare(queue=self.queueName)
         # Binds the queue to the specified exchang
         channel.queue_bind(queue=self.queueName,exchange=self.config['exchange'],routing_key=self.bindingKey)

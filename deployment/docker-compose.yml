@@ -19,13 +19,27 @@ services:
             - elasticsearch
         environment:
             ES_HOST: "elasticsearch"
+            AMQP_HOST: "rabbitmq"
+            AMQP_PORT: 5672
             ES_PORT: "9200"
             TIM_URL: "https://fishy.xlab.si/tar/api/reports/v2"
+            RABBITMQ_USER: "tubs"
+            RABBITMQ_PASS: "sbut"
         ports:
             - "5000:5000"
         volumes:
             - /tmp:/edc
             - ./crt:/crt
+        networks:
+            - iro_lan
+
+    rabbitmq:
+        image: rabbitmq:4.1.1-alpine
+        container_name: rabbitmq
+        restart: always
+        environment:
+            RABBITMQ_DEFAULT_USER: "tubs"
+            RABBITMQ_DEFAULT_PASS: "sbut"
         networks:
             - iro_lan
 
@@ -42,7 +56,5 @@ services:
             - http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization
             - http.cors.allow-credentials=true
             - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-        ports:
-                - "9200:9200"
         networks:
             - iro_lan
