@@ -127,7 +127,7 @@ class RMQsubscriber:
 
         
         # save notif info and state
-        fpath = "notification_store/reports/"+_id+".json"
+        fpath = "/iro/notification_store/reports/"+_id+".json"
         with open(fpath, 'w') as f:
             notif = json.dumps(notif)
             f.write(notif)

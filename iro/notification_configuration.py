@@ -6,7 +6,7 @@ import sys
 class NotificationConfigurationManager:
     def __init__(self) -> None:
 
-        self.directory_path = './notification_store/reports'
+        self.directory_path = '/iro/notification_store/reports'
         self.No_of_intents = len(os.listdir(self.directory_path))
         root_dir = os.listdir(self.directory_path)
         self.file_set = set()
@@ -16,7 +16,7 @@ class NotificationConfigurationManager:
     def show_notification(self, show_notification_data , pilot):
         self.reset_notifications()
         for x in self.file_set: #range(1,self.No_of_intents+1):
-            with open("./notification_store/reports/"+str(x), "r", encoding='utf-8') as f:
+            with open("/iro/notification_store/reports/"+str(x), "r", encoding='utf-8') as f:
                 load_notification_data=json.load(f)
                 print(x)
                 try:
@@ -35,12 +35,12 @@ class NotificationConfigurationManager:
     # 3. Deleted
     # 4. Created - This means chosen notification is created as intent.
     def notification_status(self, single_notification_status, single_notification_id):
-        with open("./notification_store/reports/"+str(single_notification_id)+".json", "r", encoding='utf-8') as f:
+        with open("/iro/notification_store/reports/"+str(single_notification_id)+".json", "r", encoding='utf-8') as f:
             load_notification_data=json.load(f) 
         
         load_notification_data["Status"] = single_notification_status
         
-        with open("./notification_store/reports/"+str(single_notification_id)+".json", "w", encoding='utf-8') as f:
+        with open("/iro/notification_store/reports/"+str(single_notification_id)+".json", "w", encoding='utf-8') as f:
             json.dump(load_notification_data, f, ensure_ascii=False, indent=4)
 
     def reset_notifications(self):
