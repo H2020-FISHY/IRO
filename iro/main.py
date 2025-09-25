@@ -41,6 +41,12 @@ TEMPLATE_ENVIRONMENT = Environment(
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'IRO'
 tim_config = None
+
+try:
+    skip_info=os.environ["SKIP_LOGIN"]
+except:
+    skip_info=True
+
 try:
     tim_cfg_content = {
             "frontend" : {
@@ -133,22 +139,36 @@ class UserInterface(FlaskView):
                         self.login_session = data["token"]
                         
                 except:
-                    return render_template('404.html',error="MISSING TOKEN")
-            payload='access_token=' + self.login_session 
-            response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
-            print("HERE: ", json.loads(response.text))
+                    pass  # ignoring keyclock for testing purposes
+                    # return render_template('404.html',error="MISSING TOKEN")
+            response = None
+            # payload='access_token=' + self.login_session 
+            # response = requests.request("POST", self.oicd_url, headers=self.oicd_headers, data=payload)
+            #print("HERE: ", json.loads(response.text))
             
-            if response.status_code == 200: # or self.test_allowed == True:
-                user_info = json.loads(response.text)
-                _pilot = user_info['pilot']
+            if skip_info:
+                self.error_message = "reading user info ..."
+                user_info = {"email":"example@test.com", "preferred_username":"user"}
+                _pilot =  "USE CASE"
                 notifs = self.notification_manager.get_notifications(self.session, tim_config)
                 msg = self.notification_manager.get_instructions()
                 my_form, my_form_script,  HTMLtemplate, JStemplate = self.notification_manager.get_form("")
                 show_notification_data = []
                 self.notification_conf_manager.show_notification(show_notification_data, _pilot)
                 return render_template('index.html',form_script=my_form_script, forms=my_form, message=msg, notifications=notifs, show_notification_data=show_notification_data,user_info=user_info)
+                
             else:
-                return render_template('404.html',error="NOT CONNECTED")#'NOT CONNECTED'
+                if response.status_code == 200: # or self.test_allowed == True:
+                    user_info = json.loads(response.text)
+                    _pilot = user_info['pilot']
+                    notifs = self.notification_manager.get_notifications(self.session, tim_config)
+                    msg = self.notification_manager.get_instructions()
+                    my_form, my_form_script,  HTMLtemplate, JStemplate = self.notification_manager.get_form("")
+                    show_notification_data = []
+                    self.notification_conf_manager.show_notification(show_notification_data, _pilot)
+                    return render_template('index.html',form_script=my_form_script, forms=my_form, message=msg, notifications=notifs, show_notification_data=show_notification_data,user_info=user_info)
+                else:
+                    return render_template('404.html',error="NOT CONNECTED")#'NOT CONNECTED'
         except:
             return render_template('404.html',error="MISSING TOKEN") #'MISSING TOKEN'
     def post(self):

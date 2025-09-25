@@ -25,6 +25,7 @@ services:
             TIM_URL: "https://fishy.xlab.si/tar/api/reports/v2"
             RABBITMQ_USER: "tubs"
             RABBITMQ_PASS: "sbut"
+            SKIP_LOGIN: True
         ports:
             - "5000:5000"
         volumes:
